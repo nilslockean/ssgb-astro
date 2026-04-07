@@ -1,24 +1,37 @@
 ---
-import { cn } from "@lib/cn.ts";
 import type { HTMLAttributes } from "astro/types";
 
 interface Props extends HTMLAttributes<"a"> {}
 
 const { href, class: className, ...rest } = Astro.props;
-// Normalize path name (Netlify adds trailing slashes automatically)
 const currentPath = Astro.url.pathname.replace(/\/$/, "");
 const isCurrentPage = href === currentPath;
 ---
 
 <a
-  {...rest}
-  class={cn(
-    "text-xl leading-tight text-muted",
-    {
-      underline: isCurrentPage,
-    },
-    className,
-  )}
+  class:list={["nav-link", { underline: isCurrentPage }, className]}
   data-current={isCurrentPage}
-  {href}><slot /></a
->
+  href={href}
+  {...rest}
+><slot /></a>
+
+<style>
+  .nav-link {
+    font-size: var(--text-xl);
+    line-height: var(--leading-tight);
+    color: var(--color-muted);
+    text-decoration: none;
+  }
+
+  .nav-link.underline {
+    text-decoration: underline;
+  }
+
+  .nav-link.text-base {
+    font-size: var(--text-base);
+  }
+
+  .nav-link.text-5xl {
+    font-size: var(--text-5xl);
+  }
+</style>

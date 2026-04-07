@@ -2,7 +2,6 @@
 import type { CollectionEntry } from "astro:content";
 import type { HTMLAttributes } from "astro/types";
 import ButtonLink from "./ButtonLink.astro";
-import { cn } from "@lib/cn";
 import { getPath } from "@config";
 
 interface Props extends HTMLAttributes<"li"> {
@@ -18,12 +17,39 @@ const {
 const href = getPath(slugId);
 ---
 
-<li class={cn("bg-line rounded-xl p-8 flex flex-col justify-between")}>
-  <h3 class="font-heading mt-0 normal-case">
-    <a class="hover:underline" {href} set:html={shortName || title} />
+<li class="course-grid-item">
+  <h3 class="course-grid-item__title font-heading mt-0 normal-case">
+    <a class="course-grid-item__link" href={href}>{shortName || title}</a>
   </h3>
-  <p class="grow">{excerpt}</p>
-  <p class="mt-8">
-    <ButtonLink {href}>{cta}</ButtonLink>
+  <p class="course-grid-item__excerpt">{excerpt}</p>
+  <p class="course-grid-item__action">
+    <ButtonLink href={href}>{cta}</ButtonLink>
   </p>
 </li>
+
+<style>
+  .course-grid-item {
+    background-color: var(--color-line);
+    border-radius: var(--border-radius-xl);
+    padding: var(--space-8);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .course-grid-item__link {
+    text-decoration: none;
+  }
+
+  .course-grid-item__link:hover {
+    text-decoration: underline;
+  }
+
+  .course-grid-item__excerpt {
+    flex-grow: 1;
+  }
+
+  .course-grid-item__action {
+    margin-top: var(--space-8);
+  }
+</style>

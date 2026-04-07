@@ -1,5 +1,4 @@
 ---
-import { cn } from "@lib/cn.ts";
 import type { HTMLAttributes, HTMLTag } from "astro/types";
 
 type Props<T extends HTMLTag = "ul"> = HTMLAttributes<T> & {
@@ -8,10 +7,28 @@ type Props<T extends HTMLTag = "ul"> = HTMLAttributes<T> & {
 
 const { as, class: className, ...rest } = Astro.props;
 
-// Select wrapper element dynamically
 const Tag: HTMLTag = as || "ul";
 ---
 
-<Tag {...rest} class={cn("ml-5 list-disc space-y-1", className)}>
+<Tag class:list={["list", className]} {...rest}>
   <slot />
 </Tag>
+
+<style>
+  .list {
+    margin-left: var(--space-5);
+    list-style: disc;
+  }
+
+  .list > li + li {
+    margin-top: var(--space-1);
+  }
+
+  .list.my-4 {
+    margin-block: var(--space-4);
+  }
+
+  .list.mb-4 {
+    margin-bottom: var(--space-4);
+  }
+</style>

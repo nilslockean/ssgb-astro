@@ -1,7 +1,6 @@
 ---
 import type { CollectionEntry } from "astro:content";
 import type { HTMLAttributes } from "astro/types";
-import { cn } from "@lib/cn";
 import { getImage } from "astro:assets";
 import { Image } from "astro:assets";
 
@@ -23,12 +22,12 @@ const imageData = await getImage({
 });
 ---
 
-<li class={cn("bg-line rounded-2xl flex flex-col justify-between")}>
-  <figure>
-    <div class="overflow-clip rounded-2xl">
+<li class="team-member">
+  <figure class="team-member__figure">
+    <div class="team-member__image-wrapper">
       <Image
         alt={alt}
-        class="w-full grayscale"
+        class="team-member__image"
         height={800}
         layout="constrained"
         loading="lazy"
@@ -38,8 +37,33 @@ const imageData = await getImage({
     </div>
   </figure>
 
-  <div class="grow p-8">
-    <h3 class="font-heading mt-0 normal-case">{name}</h3>
+  <div class="team-member__content">
+    <h3 class="team-member__name font-heading mt-0 normal-case">{name}</h3>
     <p>{description}</p>
   </div>
 </li>
+
+<style>
+  .team-member {
+    background-color: var(--color-line);
+    border-radius: var(--border-radius-2xl);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .team-member__image-wrapper {
+    overflow: clip;
+    border-radius: var(--border-radius-2xl);
+  }
+
+  .team-member__image {
+    width: 100%;
+    filter: grayscale(100%);
+  }
+
+  .team-member__content {
+    flex-grow: 1;
+    padding: var(--space-8);
+  }
+</style>

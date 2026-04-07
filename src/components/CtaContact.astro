@@ -1,5 +1,4 @@
 ---
-import { cn } from "@lib/cn.ts";
 import type { HTMLAttributes, HTMLTag } from "astro/types";
 import Section from "./Section.astro";
 import ButtonLink from "./ButtonLink.astro";
@@ -12,10 +11,31 @@ type Props<T extends HTMLTag = "section"> = HTMLAttributes<T> & {
 const { as, class: className, ...rest } = Astro.props;
 ---
 
-<Section {...rest} as={as} class={cn("pb-16", className)}>
-  <div class="bg-brand-dark rounded-2xl p-8">
-    <h2 class="h3 mt-0 mb-4">Något du undrar över?</h2>
-    <p class="intro mb-8">Hör av dig så hjälper vi dig hitta rätt upplägg.</p>
+<Section class:list={["cta-contact", className]} as={as} {...rest}>
+  <div class="cta-contact__inner">
+    <h2 class="h3 cta-contact__title">Något du undrar över?</h2>
+    <p class="intro cta-contact__subtitle">Hör av dig så hjälper vi dig hitta rätt upplägg.</p>
     <ButtonLink href={getPath(Slug.CONTACT)}>Kontakta oss</ButtonLink>
   </div>
 </Section>
+
+<style>
+  .cta-contact {
+    padding-bottom: var(--space-16);
+  }
+
+  .cta-contact__inner {
+    background-color: var(--color-brand-dark);
+    border-radius: var(--border-radius-2xl);
+    padding: var(--space-8);
+  }
+
+  .cta-contact__title {
+    margin-top: 0;
+    margin-bottom: var(--space-4);
+  }
+
+  .cta-contact__subtitle {
+    margin-bottom: var(--space-8);
+  }
+</style>

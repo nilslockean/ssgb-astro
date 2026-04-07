@@ -1,5 +1,4 @@
 ---
-import { cn } from "@lib/cn";
 import type { HTMLAttributes } from "astro/types";
 
 interface Props extends HTMLAttributes<"div"> {}
@@ -7,12 +6,18 @@ interface Props extends HTMLAttributes<"div"> {}
 const { class: className, ...rest } = Astro.props;
 ---
 
-<div
-  {...rest}
-  class={cn(
-    "bg-line rounded-xl p-8 flex flex-col justify-between max-w-prose",
-    className,
-  )}
->
+<div class:list={["card", className]} {...rest}>
   <slot />
 </div>
+
+<style>
+  .card {
+    background-color: var(--color-line);
+    border-radius: var(--border-radius-xl);
+    padding: var(--space-8);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    max-width: var(--prose);
+  }
+</style>

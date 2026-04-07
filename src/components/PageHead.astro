@@ -22,30 +22,27 @@ const {
 ---
 
 <Section
-  {...rest}
-  class={cn(
-    "flex flex-col gap-6",
-    {
-      "justify-center items-center": centered,
-    },
+  class:list={[
+    "page-head",
+    { "page-head--centered": centered },
     className,
-  )}
+  ]}
+  {...rest}
 >
   {
     eyebrow && (
-      <Eyebrow class={cn({ "text-center": centered })}>{eyebrow}</Eyebrow>
+      <Eyebrow class={centered ? "text-center" : undefined}>{eyebrow}</Eyebrow>
     )
   }
   <h1
-    class={cn("text-h1", {
-      "text-center lg:max-w-8/10": centered,
-    })}
+    class:list={["page-head__title", { "page-head__title--centered": centered }]}
     set:html={title}
   />
   <div
-    class={cn("intro color-default", {
-      "text-center": centered,
-    })}
+    class:list={[
+      "page-head__intro",
+      { "page-head__intro--centered": centered },
+    ]}
   >
     <slot>
       <p>
@@ -55,3 +52,38 @@ const {
   </div>
   <slot name="buttons" />
 </Section>
+
+<style>
+  .page-head {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+  }
+
+  .page-head--centered {
+    justify-content: center;
+    align-items: center;
+  }
+
+  .page-head__title {
+    font-size: var(--text-h1);
+  }
+
+  .page-head__title--centered {
+    text-align: center;
+  }
+
+  @media (--breakpoint-lg) {
+    .page-head__title--centered {
+      max-width: 80%;
+    }
+  }
+
+  .page-head__intro {
+    color: var(--color-default);
+  }
+
+  .page-head__intro--centered {
+    text-align: center;
+  }
+</style>

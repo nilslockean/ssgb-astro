@@ -1,6 +1,5 @@
 ---
 import type { HTMLAttributes } from "astro/types";
-import { cn } from "@lib/cn";
 import { formatPrice } from "@lib/stringUtils";
 import config from "@config";
 
@@ -18,7 +17,7 @@ const list = [
 ] as const satisfies [string, number][];
 ---
 
-<ul {...rest} class={cn(className)}>
+<ul class:list={[className]} {...rest}>
   {
     list.map(([label, price]) => (
       <li>

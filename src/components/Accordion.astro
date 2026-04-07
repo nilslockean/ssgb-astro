@@ -1,5 +1,4 @@
 ---
-import { cn } from "@lib/cn.ts";
 import type { HTMLAttributes } from "astro/types";
 
 interface Props extends HTMLAttributes<"details"> {
@@ -9,15 +8,9 @@ interface Props extends HTMLAttributes<"details"> {
 const { title, class: className, ...rest } = Astro.props;
 ---
 
-<details
-  {...rest}
-  class={cn(
-    "border-b border-line group first:border-t portable-text",
-    className,
-  )}
->
-  <summary class="flex w-full cursor-pointer items-baseline gap-4 py-6">
-    <span class="transition-all group-open:rotate-45">
+<details class:list={["accordion", className]} {...rest}>
+  <summary class="accordion__summary">
+    <span class="accordion__icon">
       <svg
         fill="none"
         height="16"
@@ -28,18 +21,54 @@ const { title, class: className, ...rest } = Astro.props;
         <g clip-path="url(#clip0_223_2)">
           <path
             d="M8.5 7.5H16V8.5H8.5V16H7.5V8.5H0V7.5H7.5V0H8.5V7.5Z"
-            fill="black"></path>
+            fill="black"
+          />
         </g>
         <defs>
           <clipPath id="clip0_223_2">
-            <rect fill="white" height="16" width="16"></rect>
+            <rect fill="white" height="16" width="16" />
           </clipPath>
         </defs>
       </svg>
     </span>
     <span class="h4 m-0 text-left"> {title}</span>
   </summary>
-  <div class="max-w-prose pb-6">
+  <div class="accordion__content max-w-prose">
     <slot />
   </div>
 </details>
+
+<style>
+  .accordion {
+    border-bottom: 1px solid var(--color-line);
+  }
+
+  .accordion:first-child {
+    border-top: 1px solid var(--color-line);
+  }
+
+  .accordion__summary {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-4);
+    cursor: pointer;
+    padding-block: var(--space-6);
+    list-style: none;
+  }
+
+  .accordion__summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .accordion__icon {
+    transition: transform var(--default-transition-duration) var(--default-transition-timing-function);
+  }
+
+  details[open] .accordion__icon {
+    transform: rotate(45deg);
+  }
+
+  .accordion__content {
+    padding-bottom: var(--space-6);
+  }
+</style>

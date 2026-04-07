@@ -1,6 +1,5 @@
 ---
 import { getPath, type Slug } from "@config";
-import { cn } from "@lib/cn.ts";
 import type { HTMLAttributes } from "astro/types";
 
 export interface Props extends HTMLAttributes<"a"> {
@@ -11,8 +10,15 @@ const { slug, href, class: className, ...rest } = Astro.props;
 const to = slug ? getPath(slug) : href;
 ---
 
-<a
-  {...rest}
-  class={cn("underline underline-offset-4 hover:underline-offset-1", className)}
-  href={to}><slot /></a
->
+<a class:list={["link", className]} href={to} {...rest}><slot /></a>
+
+<style>
+  .link {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+
+  .link:hover {
+    text-underline-offset: 1px;
+  }
+</style>

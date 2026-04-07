@@ -2,7 +2,6 @@
 import type { CollectionEntry } from "astro:content";
 import List from "./List.astro";
 import Link from "./Link.astro";
-import { cn } from "@lib/cn";
 
 interface Props {
   events: CollectionEntry<"events">[];
@@ -15,11 +14,7 @@ const { events } = Astro.props;
   events.length > 0 ? (
     <List>
       {events.map((event) => (
-        <li
-          class={cn({
-            italic: event.data.draft,
-          })}
-        >
+        <li class:list={[{ italic: event.data.draft }]}>
           <Link href={event.data.ticketUrl}>{event.data.title.sv}</Link>
         </li>
       ))}

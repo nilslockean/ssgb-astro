@@ -1,5 +1,4 @@
 ---
-import { cn } from "@lib/cn.ts";
 import type { HTMLAttributes } from "astro/types";
 
 export interface Props extends HTMLAttributes<"a"> {
@@ -7,23 +6,64 @@ export interface Props extends HTMLAttributes<"a"> {
 }
 
 const { href, variant = "default", class: className, ...rest } = Astro.props;
-
-const baseStyles =
-  "btn border-2 px-4 py-2 font-cooper-hewitt uppercase rounded-full text-sm inline-block";
-
-const variants = {
-  primary: [
-    "bg-line border-transparent text-default",
-    "hover:bg-brand-dark",
-    "ring-brand-darker",
-    "active:bg-line active:border-brand-dark",
-  ].join(" "),
-  default: ["bg-transparent", "hover:bg-white/20", "active:bg-black/10"].join(
-    " ",
-  ),
-};
 ---
 
-<a {...rest} class={cn(baseStyles, variants[variant], className)} href={href}>
+<a class:list={["btn-link", `btn-link--${variant}`, className]} href={href} {...rest}>
   <slot />
 </a>
+
+<style>
+  .btn-link {
+    display: inline-block;
+    font-family: var(--font-cooper-hewitt);
+    font-size: var(--text-sm);
+    text-transform: uppercase;
+    border: 2px solid transparent;
+    border-radius: var(--border-radius-full);
+    padding: var(--space-2) var(--space-4);
+    cursor: pointer;
+    text-decoration: none;
+    transition:
+      background-color var(--default-transition-duration) var(--default-transition-timing-function),
+      border-color var(--default-transition-duration) var(--default-transition-timing-function);
+  }
+
+  .btn-link--default {
+    background-color: transparent;
+  }
+
+  .btn-link--default:hover {
+    background-color: rgb(255 255 255 / 0.2);
+  }
+
+  .btn-link--default:active {
+    background-color: rgb(0 0 0 / 0.1);
+  }
+
+  .btn-link--primary {
+    background-color: var(--color-line);
+    border-color: transparent;
+    color: var(--color-default);
+  }
+
+  .btn-link--primary:hover {
+    background-color: var(--color-brand-dark);
+  }
+
+  .btn-link--primary:active {
+    background-color: var(--color-line);
+    border-color: var(--color-brand-dark);
+  }
+
+  .btn-link.text-xs {
+    font-size: var(--text-xs);
+  }
+
+  .btn-link.text-base {
+    font-size: var(--text-base);
+  }
+
+  .btn-link.whitespace-nowrap {
+    white-space: nowrap;
+  }
+</style>

@@ -1,6 +1,5 @@
 ---
 import { getPath, Slug } from "@config";
-import { cn } from "@lib/cn.ts";
 import type { HTMLAttributes } from "astro/types";
 
 interface Props extends HTMLAttributes<"form"> {
@@ -23,13 +22,13 @@ const {
 ---
 
 <form
-  {...rest}
+  class:list={["booking-form", className]}
   action={getPath(Slug.FORM_SUCCESS)}
-  class={cn("mt-8", className)}
   data-netlify="true"
   method="POST"
   name={name}
   netlify-honeypot="bot-field"
+  {...rest}
 >
   <p class="hidden">
     <label>
@@ -37,7 +36,7 @@ const {
     </label>
   </p>
 
-  <div class="grid gap-8 lg:grid-cols-2">
+  <div class="booking-form__grid">
     <p>
       <label>
         E-post
@@ -76,7 +75,7 @@ const {
       </label>
     </p>
 
-    <p class="lg:col-start-1 lg:col-end-3">
+    <p class="booking-form__message">
       <label>
         Meddelande (valfritt)
         <br />
@@ -85,7 +84,39 @@ const {
     </p>
   </div>
 
-  <p class="mt-4 text-right">
+  <p class="booking-form__submit">
     <button type="submit">{submitLabel}</button>
   </p>
 </form>
+
+<style>
+  .booking-form {
+    margin-top: var(--space-8);
+  }
+
+  .booking-form__grid {
+    display: grid;
+    gap: var(--space-8);
+  }
+
+  @media (--breakpoint-lg) {
+    .booking-form__grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  .booking-form__message {
+    grid-column: 1 / -1;
+  }
+
+  @media (--breakpoint-lg) {
+    .booking-form__message {
+      grid-column: 1 / -1;
+    }
+  }
+
+  .booking-form__submit {
+    margin-top: var(--space-4);
+    text-align: right;
+  }
+</style>

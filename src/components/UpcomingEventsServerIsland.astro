@@ -1,7 +1,6 @@
 ---
 import List from "./List.astro";
 import Link from "./Link.astro";
-import { cn } from "@lib/cn";
 import { fetchEvents } from "@lib/fientaUtils";
 import { FIENTA_API_KEY } from "astro:env/server";
 import { toEvents } from "@lib/eventUtils";
@@ -32,11 +31,7 @@ const events = (await fetchEvents(FIENTA_API_KEY).then(toEvents)).filter(
   events.length > 0 ? (
     <List>
       {events.map((event) => (
-        <li
-          class={cn({
-            italic: event.draft,
-          })}
-        >
+        <li class:list={[{ italic: event.draft }]}>
           <Link href={event.ticketUrl}>{event.title.sv}</Link>
         </li>
       ))}

@@ -2,7 +2,6 @@
 import type { CollectionEntry } from "astro:content";
 import type { HTMLAttributes } from "astro/types";
 import TeamMember from "./TeamMember.astro";
-import { cn } from "@lib/cn";
 
 interface Props extends HTMLAttributes<"ul"> {
   entries: CollectionEntry<"team">[];
@@ -11,9 +10,26 @@ interface Props extends HTMLAttributes<"ul"> {
 const { entries, class: className, ...rest } = Astro.props;
 ---
 
-<ul
-  {...rest}
-  class={cn("grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 gap-8", className)}
->
+<ul class:list={["team", className]} {...rest}>
   {entries.map((person) => <TeamMember {person} />)}
 </ul>
+
+<style>
+  .team {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-8);
+  }
+
+  @media (--breakpoint-lg) {
+    .team {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (--breakpoint-2xl) {
+    .team {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+</style>

@@ -1,5 +1,4 @@
 ---
-import { cn } from "@lib/cn.ts";
 import type { HTMLAttributes, HTMLTag } from "astro/types";
 
 type Props<T extends HTMLTag = "p"> = HTMLAttributes<T> & {
@@ -8,16 +7,31 @@ type Props<T extends HTMLTag = "p"> = HTMLAttributes<T> & {
 
 const { as, class: className, ...rest } = Astro.props;
 
-// Select wrapper element dynamically
 const Tag: HTMLTag = as || "p";
 ---
 
-<Tag
-  {...rest}
-  class={cn(
-    "font-cooper-hewitt text-accent uppercase tracking-widest text-sm",
-    className,
-  )}
->
+<Tag class:list={["eyebrow", className]} {...rest}>
   <slot />
 </Tag>
+
+<style>
+  .eyebrow {
+    font-family: var(--font-cooper-hewitt);
+    font-size: var(--text-sm);
+    color: var(--color-accent);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-widest);
+  }
+
+  .eyebrow.text-center {
+    text-align: center;
+  }
+
+  .eyebrow.text-white {
+    color: var(--color-white);
+  }
+
+  .eyebrow.mb-8 {
+    margin-bottom: var(--space-8);
+  }
+</style>
