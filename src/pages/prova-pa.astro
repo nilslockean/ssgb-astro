@@ -42,7 +42,7 @@ const heroButtons: HeroButton[] = [
   />
 
   <Section>
-    <p class="intro mt-8 xl:my-16 xl:text-2xl">
+    <p class="intro mt-8">
       Prova på-klättring är ett tryggt första steg ut på klippan. Vi går igenom
       säkerhet, visar hur klättring utomhus faktiskt fungerar och låter dig
       klättra flera leder anpassade efter din nivå. I mån av tid och intresse
@@ -60,7 +60,7 @@ const heroButtons: HeroButton[] = [
 
   <Section>
     <h2>Varför prova på?</h2>
-    <div class="grid gap-8 lg:grid-cols-2 xl:grid-cols-3">
+    <div class="grid grid-cols-1">
       <Card>
         <h3 class="mt-0">Upplevelsen</h3>
         <p>
@@ -156,7 +156,7 @@ const heroButtons: HeroButton[] = [
   </Section>
 
   <Section class="pb-16" id="boka">
-    <div class="bg-brand-light max-w-4xl rounded-xl px-8 py-6 md:px-12 md:py-8">
+    <div class="booking-card">
       <h2 class="mt-0">Boka prova på-klättring</h2>
       <div class="max-w-prose">
         <p class="text-lg">
@@ -189,3 +189,18 @@ const heroButtons: HeroButton[] = [
     </div>
   </Section>
 </Layout>
+
+<style>
+  .booking-card {
+    background-color: var(--color-brand-light);
+    border-radius: var(--border-radius-xl);
+    padding: var(--space-6) var(--space-8);
+    max-width: 56rem;
+  }
+
+  @media (--breakpoint-md) {
+    .booking-card {
+      padding: var(--space-8) var(--space-12);
+    }
+  }
+</style>

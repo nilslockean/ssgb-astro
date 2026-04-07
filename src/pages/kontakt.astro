@@ -33,12 +33,12 @@ const phoneLink = `tel:${config.contact.phone
     </p>
   </Section>
   <Section class="mt-8">
-    <div class="bg-brand-light max-w-4xl rounded-xl px-8 py-6 md:px-12 md:py-8">
+    <div class="contact-form-card">
       <h2 class="h3 mt-2">Skriv ett meddelande</h2>
 
       <form
         action={getPath(Slug.FORM_SUCCESS)}
-        class="mt-8"
+        class="contact-form"
         data-netlify="true"
         method="POST"
         name="kontakt"
@@ -50,7 +50,7 @@ const phoneLink = `tel:${config.contact.phone
           </label>
         </p>
 
-        <div class="grid gap-8 lg:grid-cols-2">
+        <div class="contact-form__grid">
           <p>
             <label>
               Namn
@@ -75,7 +75,7 @@ const phoneLink = `tel:${config.contact.phone
             </label>
           </p>
 
-          <p class="lg:col-start-1 lg:col-end-3">
+          <p class="contact-form__message">
             <label>
               Meddelande
               <br />
@@ -87,10 +87,49 @@ const phoneLink = `tel:${config.contact.phone
           </p>
         </div>
 
-        <p class="mt-4 text-right">
+        <p class="contact-form__submit">
           <button type="submit">Skicka meddelande</button>
         </p>
       </form>
     </div>
   </Section>
 </Layout>
+
+<style>
+  .contact-form-card {
+    background-color: var(--color-brand-light);
+    border-radius: var(--border-radius-xl);
+    padding: var(--space-6) var(--space-8);
+    max-width: 56rem;
+  }
+
+  @media (--breakpoint-md) {
+    .contact-form-card {
+      padding: var(--space-8) var(--space-12);
+    }
+  }
+
+  .contact-form {
+    margin-top: var(--space-8);
+  }
+
+  .contact-form__grid {
+    display: grid;
+    gap: var(--space-8);
+  }
+
+  @media (--breakpoint-lg) {
+    .contact-form__grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  .contact-form__message {
+    grid-column: 1 / -1;
+  }
+
+  .contact-form__submit {
+    margin-top: var(--space-4);
+    text-align: right;
+  }
+</style>

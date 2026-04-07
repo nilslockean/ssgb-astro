@@ -9,12 +9,7 @@ import ButtonLink from "@components/ButtonLink.astro";
 import MobileHeader from "@components/MobileHeader.astro";
 import NavLink from "@components/NavLink.astro";
 import config, { NavArea } from "@config";
-import {
-  ENABLE_POSTHOG,
-  POSTHOG_PROJECT_API_KEY,
-  ENABLE_WEGLOT,
-  WEGLOT_API_KEY,
-} from "astro:env/server";
+import {ENABLE_POSTHOG, POSTHOG_PROJECT_API_KEY} from "astro:env/client";
 import Fienta from "@components/fienta.astro";
 
 interface Props {
@@ -54,7 +49,6 @@ const title = metaTitle
     <meta content="/og-default.png" name="twitter:image" />
 
     {ENABLE_POSTHOG && <PostHog projectApiKey={POSTHOG_PROJECT_API_KEY} />}
-    {ENABLE_WEGLOT && <WeGlot apiKey={WEGLOT_API_KEY} />}
     {
       fientaEmbed && (
         <Fienta
