@@ -1,0 +1,190 @@
+---
+import { getCollection, getEntry, render } from "astro:content";
+import Accordion from "@components/Accordion.astro";
+import ButtonGroup from "@components/ButtonGroup.astro";
+import ButtonLink from "@components/ButtonLink.astro";
+import Hero, { type HeroButton } from "@components/Hero.astro";
+import Layout from "../../layouts/Layout.astro";
+import Gallery from "@components/Gallery.astro";
+import PageHead from "@components/PageHead.astro";
+import BookingForm from "@components/BookingForm.astro";
+import PrivateBookingPricingList from "@components/PrivateBookingPricingList.astro";
+import { formatPrice } from "@lib/stringUtils";
+import Link from "@components/Link.astro";
+import { FIENTA_INCLUDE_DRAFTS } from "astro:env/server";
+import UpcomingEvents from "@components/UpcomingEvents.astro";
+import Section from "@components/Section.astro";
+
+// 1. Generate a new path for every collection entry
+export async function getStaticPaths() {
+  const posts = await getCollection("courses");
+  return posts.map((post) => ({
+    params: { id: post.id },
+    props: { post },
+  }));
+}
+// 2. For your template, you can get the entry directly from the prop
+const { post } = Astro.props;
+const { Content } = await render(post);
+const norm = post.data.norm && (await getEntry(post.data.norm));
+const gallery = post.data.gallery && (await getEntry(post.data.gallery));
+
+const events = await getCollection("events", (event) => {
+  if (event.data.past) {
+    return false;
+  }
+
+  if (event.data.draft && !FIENTA_INCLUDE_DRAFTS) {
+    return false;
+  }
+
+  const title = event.data.title.sv;
+
+  // Strip all the &shy; characters from the course name
+  const normalizedPostTile = String(
+    post.data.shortName || post.data.title,
+  ).replaceAll("&shy;", "");
+
+  return title.includes(normalizedPostTile);
+});
+// console.log({ events });
+
+const numDays = post.data.numDays.join("-");
+const numDaysSuffix = numDays === "1" ? "dag" : "dagar";
+const numDaysDesc = `${numDays} ${numDaysSuffix}`;
+const heroButtons: HeroButton[] = [{ label: post.data.cta, href: "#boka" }];
+if (norm) {
+  heroButtons.push({
+    label: "Läs kursnormen",
+    href: norm.data.url,
+    target: "_blank",
+  });
+}
+---
+
+<Layout
+  fientaEmbed
+  metaDescription={post.data.excerpt}
+  metaTitle={post.data.shortName || post.data.title}
+>
+  {
+    post.data.heroImage ? (
+      <Hero
+        buttons={heroButtons}
+        content={post.data.excerpt}
+        eyebrow={post.data.aka}
+        image={post.data.heroImage}
+        title={post.data.title}
+      />
+    ) : (
+      <PageHead
+        content={post.data.excerpt}
+        eyebrow={post.data.aka}
+        title={post.data.title}
+      >
+        <ButtonGroup slot="buttons">
+          {heroButtons.map(({ href, label, target }, i) => (
+            <ButtonLink
+              {href}
+              {target}
+              variant={i == 0 ? "primary" : "default"}
+            >
+              {label}
+            </ButtonLink>
+          ))}
+        </ButtonGroup>
+      </PageHead>
+    )
+  }
+  <Section>
+    <div class="collection-entry">
+      <Content />
+      <p>
+        <strong>Tidsåtgång:</strong>
+        {numDaysDesc}.
+      </p>
+    </div>
+  </Section>
+  {
+    gallery && (
+      <Section>
+        <Gallery entry={gallery} />
+      </Section>
+    )
+  }
+
+  <Section>
+    {
+      post.data.prerequisites && (
+        <Accordion title="Förkunskapskrav">
+          <p>{post.data.prerequisites}</p>
+        </Accordion>
+      )
+    }
+    <Accordion title="Åldersgräns">
+      <p>
+        <strong
+          >Lägsta ålder för att delta på kursen är 13 år.
+        </strong>Minderåriga endast i målsmans sällskap.
+      </p>
+    </Accordion>
+    {
+      norm && (
+        <Accordion title="Kursnorm">
+          <>
+            <p>
+              Denna kurs uppfyller{" "}
+              <Link href={norm.data.url} target="_blank">
+                Svenska Klätterförbundets norm för
+                {norm.data.title}.
+              </Link>
+            </p>
+            <p>
+              Normerna säkerställer att kursen leds av instruktörer med rätt
+              kompetens och att innehållet följer etablerade säkerhetskrav.
+            </p>
+          </>
+        </Accordion>
+      )
+    }
+    <Accordion title="Pris">
+      <p>
+        Ibland erbjuds fasta kursdatum med öppen anmälan. Då är priset
+        <strong>{formatPrice([post.data.openBookingPrice])}</strong>
+        per person och tillfällena annonseras under <Link href="#boka"
+          >{post.data.cta}</Link
+        > nedan.
+      </p>
+
+      <p>Privat bokning:</p>
+      <PrivateBookingPricingList class="mt-4" />
+    </Accordion>
+  </Section>
+  <Section class="pb-16" id="boka">
+    <div class="bg-brand-light max-w-4xl rounded-xl px-8 py-6 md:px-12 md:py-8">
+      <h2 class="mt-0">{post.data.cta}</h2>
+      <div class="max-w-prose">
+        <p class="text-lg">
+          Välj det upplägg som passar dig bäst. Du kan anmäla dig till ett av
+          våra öppna kurstillfällen eller boka kursen som en privat grupp vid
+          ett datum som passar dig.
+        </p>
+      </div>
+      <div class="max-w-prose">
+        <h3 class="h4">Kommande öppna kurstillfällen</h3>
+        <UpcomingEvents {events} />
+      </div>
+      <div class="max-w-prose">
+        <h3 class="h4">Privat bokning</h3>
+        <p>
+          För dig som vill boka kursen för dig själv eller en egen grupp. Du
+          föreslår ett datum, så återkommer vi med bekräftelse.
+        </p>
+      </div>
+      <BookingForm
+        maxParticipants={post.data.maxParticipants}
+        name={post.data.cta}
+      />
+    </div>
+  </Section>
+</Layout>

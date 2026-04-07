@@ -1,0 +1,18 @@
+---
+interface Props {
+  apiKey: string;
+}
+
+const { apiKey } = Astro.props;
+---
+
+<script
+  is:inline
+  src="https://cdn.weglot.com/weglot.min.js"
+  type="text/javascript"></script>
+
+<script define:vars={{ apiKey }} is:inline>
+  Weglot.initialize({
+    api_key: apiKey,
+  });
+</script>

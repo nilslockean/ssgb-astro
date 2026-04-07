@@ -1,0 +1,17 @@
+---
+import { cn } from "@lib/cn";
+import type { HTMLAttributes, HTMLTag } from "astro/types";
+
+type Props<T extends HTMLTag = "section"> = HTMLAttributes<T> & {
+  as?: T;
+};
+
+const { as, class: className, ...rest } = Astro.props;
+
+// Select wrapper element dynamically
+const Tag: HTMLTag = as || "section";
+---
+
+<Tag {...rest} class={cn("bg-brand p-8", className)}>
+  <slot />
+</Tag>

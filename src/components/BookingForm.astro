@@ -1,0 +1,91 @@
+---
+import { getPath, Slug } from "@config";
+import { cn } from "@lib/cn.ts";
+import type { HTMLAttributes } from "astro/types";
+
+interface Props extends HTMLAttributes<"form"> {
+  name: string;
+  maxParticipants: number;
+  dateLabel?: string;
+  submitLabel?: string;
+  messagePlaceholder?: string;
+}
+
+const {
+  name,
+  maxParticipants,
+  messagePlaceholder,
+  dateLabel = "Önskat startdatum",
+  submitLabel = "Skicka bokningsförfrågan",
+  class: className,
+  ...rest
+} = Astro.props;
+---
+
+<form
+  {...rest}
+  action={getPath(Slug.FORM_SUCCESS)}
+  class={cn("mt-8", className)}
+  data-netlify="true"
+  method="POST"
+  name={name}
+  netlify-honeypot="bot-field"
+>
+  <p class="hidden">
+    <label>
+      Gör inte något här: <input name="bot-field" />
+    </label>
+  </p>
+
+  <div class="grid gap-8 lg:grid-cols-2">
+    <p>
+      <label>
+        E-post
+        <br />
+        <input name="email" required type="email" />
+      </label>
+    </p>
+
+    <p>
+      <label>
+        Telefonnummer
+        <br />
+        <input name="phone" required type="tel" />
+      </label>
+    </p>
+
+    <p>
+      <label>
+        {dateLabel}
+        <br />
+        <input name="date" required type="date" />
+      </label>
+    </p>
+
+    <p>
+      <label>
+        Antal deltagare
+        <br />
+        <input
+          max={maxParticipants}
+          min="1"
+          name="participants"
+          required
+          type="number"
+        />
+      </label>
+    </p>
+
+    <p class="lg:col-start-1 lg:col-end-3">
+      <label>
+        Meddelande (valfritt)
+        <br />
+        <textarea name="message" placeholder={messagePlaceholder}></textarea>
+      </label>
+    </p>
+  </div>
+
+  <p class="mt-4 text-right">
+    <button type="submit">{submitLabel}</button>
+  </p>
+</form>

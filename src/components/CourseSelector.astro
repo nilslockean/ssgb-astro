@@ -1,0 +1,63 @@
+---
+import { Slug } from "@config";
+import Accordion from "./Accordion.astro";
+import Link from "./Link.astro";
+import Section from "./Section.astro";
+---
+
+<Section>
+  <h2 class="mb-4">Vilken kurs passar dig?</h2>
+  <Accordion title="Helt ny ute?">
+    <p>
+      Om du aldrig har klättrat förut, välj <Link slug={Slug.TRY}>prova på</Link
+      > eller
+      <Link slug={Slug.COURSE_TOPROPE}> topprepskurs</Link>.
+    </p>
+    <p>
+      Om du redan kan säkra en klättrare på topprep är det <Link
+        slug={Slug.COURSE_TOPROPE}>grundkursen</Link
+      > du ska gå. Där får du lära dig att lägga säkringar, bygga topprepsankare och
+      fira.
+    </p>
+    <p>
+      Om du kan ledsäkra och vet med dig att du vill hålla dig till bultade
+      leder så är <Link slug={Slug.COURSE_SPORT}>sportklätterkursen</Link> ett bra
+      alternativ.
+    </p>
+  </Accordion>
+
+  <Accordion title="Redo att börja leda?">
+    <p>
+      Har du redan gått grundkurs klippa är det helt klart <Link
+        slug={Slug.COURSE_CRAG_ADV}>fortsättningskursen</Link
+      > du ska gå. Här får du bland annat lära dig leda på egenplacerade säkringar,
+      bygga standplats och säkra upp en andreman.
+    </p>
+    <p>
+      Om du hellre vill hålla dig till bultade leder kan du gå en <Link
+        slug={Slug.COURSE_SPORT}>sportklätterkurs</Link
+      >.
+    </p>
+  </Accordion>
+
+  <Accordion title="Redan igång med sportklättring?">
+    <p>
+      Under <Link slug={Slug.COURSE_TRAD}>tradkursen</Link> får du lära dig leda på
+      egenplacerade säkringar, bygga standplats och i mån av tid klättra multipitch.
+    </p>
+  </Accordion>
+
+  <Accordion title="Vad gör du när något går fel?">
+    <p>
+      Kamraträddningskurserna ger dig metoder för att hantera incidenter som kan
+      uppstå på klippan.
+    </p>
+    <p>
+      Lär dig hjälpa en andreman i nöd på <Link slug={Slug.COURSE_RESCUE_BASIC}
+        >Räddningskurs 1</Link
+      > och ta metoderna vidare till att rädda en utsatt försteman under <Link
+        slug={Slug.COURSE_RESCUE_ADV}>Räddningskurs 2</Link
+      >.
+    </p>
+  </Accordion>
+</Section>

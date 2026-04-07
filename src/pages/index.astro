@@ -1,0 +1,106 @@
+---
+import heroImage from "@assets/images/visitgrottan.jpg";
+import provaPaImage from "@assets/images/FU1A3970.jpg";
+import Hero, { type HeroButton } from "@components/Hero.astro";
+import Layout from "../layouts/Layout.astro";
+import CourseGrid from "@components/CourseGrid.astro";
+import MediaBlock from "@components/MediaBlock.astro";
+import { getCourses } from "@lib/contentUtils";
+import ButtonLink from "@components/ButtonLink.astro";
+import Eyebrow from "@components/Eyebrow.astro";
+import { getPath, Slug } from "@config";
+import CourseSelector from "@components/CourseSelector.astro";
+import CtaContact from "@components/CtaContact.astro";
+import Link from "@components/Link.astro";
+import Section from "@components/Section.astro";
+import { MAINTENANCE_MODE } from "astro:env/server";
+import { siteConfig } from "@config";
+
+if (MAINTENANCE_MODE) {
+  return Astro.rewrite("/kommer-snart");
+}
+
+const featuredCourses = await getCourses((course) => course.data.featured);
+const heroButtons: HeroButton[] = [
+  {
+    label: "Boka en kurs",
+    href: getPath(Slug.COURSES),
+  },
+  {
+    label: "Ställ en fråga",
+    href: getPath(Slug.CONTACT),
+  },
+];
+---
+
+<Layout metaDescription={siteConfig.siteTagline}>
+  <Hero
+    buttons={heroButtons}
+    content={siteConfig.siteTagline}
+    eyebrow="Kullaberg - Snuvestuan - Billebjer"
+    image={heroImage}
+    size="large"
+    title="Skåne är inte så platt som du tror"
+  />
+
+  <Section>
+    <h2>Kurser</h2>
+    <p class="intro mb-8">
+      Följ med ut och upptäck Skånes klippor med Dubbelåtta. Kurser och
+      aktiviteter erbjuds alla dagar i veckan och vänder sig både till dig som
+      är ny inom klättring och till dig som vill bygga vidare på dina kunskaper.
+    </p>
+    <ButtonLink href={getPath(Slug.COURSES)}>Se kursutbud</ButtonLink>
+    <Eyebrow class="mt-16 mb-4">Populära kurser</Eyebrow>
+    <CourseGrid class="mb-8" entries={featuredCourses}>
+      <p class="flex items-end">
+        <Link slug={Slug.COURSES}>Fler kurser &rarr;</Link>
+      </p>
+    </CourseGrid>
+  </Section>
+  <Section>
+    <MediaBlock
+      image={{ src: provaPaImage, alt: "En person klättrar topprep" }}
+    >
+      <h2 class="mt-0">Prova på</h2>
+      <p class="intro mb-8">
+        På en prova på-klättring får du ett smakprov på vad klippklättring
+        innebär. Du får prova att både klättra och fira, vi pratar säkerhet och
+        visar grundläggande teknik. En uppskattad aktivitet att ge i present
+        eller som teambuilding för mindre grupper.
+      </p>
+      <ButtonLink href="/prova-pa">Boka prova på-klättring</ButtonLink>
+    </MediaBlock>
+  </Section>
+
+  <!-- <div class="p-8">
+		<h2 class="mb-4">Här klättrar vi</h2>
+
+		<MediaBlock image={{ src: heroImage, alt: "En hög bröd på ett bord" }}>
+			<h3 class="mb-4">Kullaberg</h3>
+			<p class="text-lg mb-4 max-w-prose">
+				Branta klippor, havsvind och många leder i olika grader. Ett av landets
+				mest klassiska områden.
+			</p>
+		</MediaBlock>
+
+		<MediaBlock image={{ src: heroImage, alt: "En hög bröd på ett bord" }}>
+			<h3 class="mb-4">Snuvestuan</h3>
+			<p class="text-lg mb-4 max-w-prose">
+				Skyddat läge i skogen och perfekt för både grundkurser och prova
+				på-tillfällen.
+			</p>
+		</MediaBlock>
+
+		<MediaBlock image={{ src: heroImage, alt: "En hög bröd på ett bord" }}>
+			<h3 class="mb-4">Söderåsen</h3>
+			<p class="text-lg mb-4 max-w-prose">
+				Längre klippor och varierad terräng som lämpar sig för kurser där du
+				bygger vidare på tekniken.
+			</p>
+		</MediaBlock>
+	</div> -->
+
+  <CourseSelector />
+  <CtaContact />
+</Layout>

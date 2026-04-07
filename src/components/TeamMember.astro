@@ -1,0 +1,45 @@
+---
+import type { CollectionEntry } from "astro:content";
+import type { HTMLAttributes } from "astro/types";
+import { cn } from "@lib/cn";
+import { getImage } from "astro:assets";
+import { Image } from "astro:assets";
+
+interface Props extends HTMLAttributes<"li"> {
+  person: CollectionEntry<"team">;
+}
+
+const {
+  person: {
+    data: { name, description, image, alt },
+  },
+} = Astro.props;
+
+const imageData = await getImage({
+  src: image,
+  format: "webp",
+  width: 600,
+  height: 800,
+});
+---
+
+<li class={cn("bg-line rounded-2xl flex flex-col justify-between")}>
+  <figure>
+    <div class="overflow-clip rounded-2xl">
+      <Image
+        alt={alt}
+        class="w-full grayscale"
+        height={800}
+        layout="constrained"
+        loading="lazy"
+        src={imageData.src}
+        width={600}
+      />
+    </div>
+  </figure>
+
+  <div class="grow p-8">
+    <h3 class="font-heading mt-0 normal-case">{name}</h3>
+    <p>{description}</p>
+  </div>
+</li>

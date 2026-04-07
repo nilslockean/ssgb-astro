@@ -1,0 +1,65 @@
+---
+import Section from "@components/Section.astro";
+import Layout from "../layouts/Layout.astro";
+import Team from "@components/Team.astro";
+import { getCollection } from "astro:content";
+import CtaContact from "@components/CtaContact.astro";
+import Link from "@components/Link.astro";
+
+const teamMembers = await getCollection("team");
+---
+
+<Layout
+  metaDescription="Dubbelåtta startades 2022 ur en vilja att tillgängliggöra Skånes klippor för så många som möjligt."
+  metaTitle="Om Dubbelåtta"
+>
+  <Section class="pb-0">
+    <h1 class="mb-6">Om Dubbelåtta</h1>
+    <p class="intro">
+      Vi tror på ett Skåne där klättringen bygger på ett gott samarbete mellan
+      ideella och kommersiella krafter, där alla är välkomna oavsett erfarenhet
+      och där nästa steg i din utveckling som klättrare alltid finns nära
+      tillhands.
+    </p>
+  </Section>
+
+  <Section class="max-w-prose pb-16">
+    <p>
+      Dubbelåtta startades 2022 ur en vilja att tillgängliggöra Skånes klippor
+      för så många som möjligt. Vi själva upptäckte klättringen ett par år
+      tidigare och den har sedan dess gett oss några av våra största
+      upplevelser. För oss handlar klättring inte om prestation, utan om att få
+      ta del av något nytt och att lära sig mer om sig själv.
+    </p>
+    <p>
+      Vi vill bidra till en klätterkultur där fler kan ta sig ut på klippan med
+      rätt förutsättningar, respekt för naturen och förståelse för de risker som
+      finns.
+    </p>
+  </Section>
+  <Section>
+    <h2>Medarbetare</h2>
+    <p class="intro mb-8">
+      Dubbelåtta drivs av Lina och Nils. Vi har varit tillsammans sedan 2012,
+      drivit företag ihop sedan 2016, och varit gifta sedan 2019.
+    </p>
+    <Team entries={teamMembers} />
+  </Section>
+  <Section>
+    <h2>Samarbeten</h2>
+    <p class="intro">
+      För att kunna erbjuda hela bredden av kurser enligt gällande normer
+      samarbetar Dubbelåtta med andra etablerade aktörer i Skåne, bland annat
+      Christian på
+      <Link href="https://sydsverigesguidebyra.se">Sydsveriges Guidebyrå</Link>
+      och Sami på <Link href="https://www.surmount.se/">Surmount</Link>.
+    </p>
+    <p class="max-w-prose">
+      Samarbetena gör det möjligt att hålla utbildningar på rätt nivå, med rätt
+      instruktörskompetens och enligt Svenska Klätterförbundets kursnormer. För
+      dig som deltagare innebär det tydliga ramar, igenkännbara metoder och
+      utbildningar som är jämförbara oavsett arrangör.
+    </p>
+  </Section>
+  <CtaContact />
+</Layout>

@@ -1,0 +1,19 @@
+---
+import Section from "@components/Section.astro";
+import config from "@config";
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout metaDescription="Vi har tagit emot ditt meddelande.">
+  <Section class="min-h-screen">
+    <h1 class="mb-6">Tack!</h1>
+    <p class="mb-4 max-w-prose text-xl font-medium">
+      Vi har tagit emot ditt meddelande och återkommer så snart vi kan. Om du
+      har delat ditt telefonnummer så ringer Nils från {config.contact.phone}.
+    </p>
+    <p>
+      Tveka inte att kontakta oss om du misstänker att vi har missat ditt
+      meddelande.
+    </p>
+  </Section>
+</Layout>

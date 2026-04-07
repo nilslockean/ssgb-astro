@@ -1,0 +1,29 @@
+---
+import { cn } from "@lib/cn.ts";
+import type { HTMLAttributes } from "astro/types";
+
+export interface Props extends HTMLAttributes<"a"> {
+  variant?: "primary" | "default";
+}
+
+const { href, variant = "default", class: className, ...rest } = Astro.props;
+
+const baseStyles =
+  "btn border-2 px-4 py-2 font-cooper-hewitt uppercase rounded-full text-sm inline-block";
+
+const variants = {
+  primary: [
+    "bg-line border-transparent text-default",
+    "hover:bg-brand-dark",
+    "ring-brand-darker",
+    "active:bg-line active:border-brand-dark",
+  ].join(" "),
+  default: ["bg-transparent", "hover:bg-white/20", "active:bg-black/10"].join(
+    " ",
+  ),
+};
+---
+
+<a {...rest} class={cn(baseStyles, variants[variant], className)} href={href}>
+  <slot />
+</a>

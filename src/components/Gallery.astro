@@ -1,0 +1,36 @@
+---
+import type { CollectionEntry } from "astro:content";
+import type { HTMLAttributes } from "astro/types";
+import GalleryItem from "./GalleryItem.astro";
+
+interface Props extends HTMLAttributes<"section"> {
+  entry: CollectionEntry<"galleries">;
+}
+
+const { entry, ...rest } = Astro.props;
+---
+
+<section {...rest} class="gallery">
+  <ul class="gallery-grid grid max-w-4xl gap-6 lg:grid-cols-2">
+    {
+      entry.data.images.map(({ image, alt, caption }) => (
+        <GalleryItem
+          {alt}
+          {caption}
+          data-fancybox={entry.id}
+          height={600}
+          {image}
+          width={800}
+        />
+      ))
+    }
+  </ul>
+</section>
+
+<script>
+  import { Fancybox } from "@fancyapps/ui/dist/fancybox/";
+
+  Fancybox.bind("[data-fancybox]", {
+    // Your custom options
+  });
+</script>

@@ -1,0 +1,15 @@
+---
+import type { HTMLAttributes } from "astro/types";
+import CourseNavItem from "./CourseNavItem.astro";
+import { type Navigation } from "@config";
+
+interface Props extends HTMLAttributes<"ul"> {
+  entries: Navigation;
+}
+
+const { entries } = Astro.props;
+---
+
+<ul class="flex flex-col gap-2">
+  {entries.map((entry) => <CourseNavItem entry={entry.link} />)}
+</ul>

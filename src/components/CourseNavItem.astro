@@ -1,0 +1,20 @@
+---
+import type { HTMLAttributes } from "astro/types";
+import NavLink from "./NavLink.astro";
+import { type NavLink as INavLink } from "@config";
+import { cn } from "@lib/cn";
+
+interface Props extends HTMLAttributes<"li"> {
+  entry: INavLink;
+}
+
+const { entry } = Astro.props;
+---
+
+<li>
+  <NavLink
+    class={cn("text-base", entry.className)}
+    href={entry.path}
+    set:html={entry.label}
+  />
+</li>

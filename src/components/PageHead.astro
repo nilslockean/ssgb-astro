@@ -1,0 +1,57 @@
+---
+import { cn } from "@lib/cn.ts";
+import type { HTMLAttributes } from "astro/types";
+import Eyebrow from "./Eyebrow.astro";
+import Section from "./Section.astro";
+
+interface Props extends HTMLAttributes<"section"> {
+  eyebrow?: string;
+  content?: string;
+  title: string;
+  centered?: boolean;
+}
+
+const {
+  eyebrow,
+  title,
+  content,
+  centered,
+  class: className,
+  ...rest
+} = Astro.props;
+---
+
+<Section
+  {...rest}
+  class={cn(
+    "flex flex-col gap-6",
+    {
+      "justify-center items-center": centered,
+    },
+    className,
+  )}
+>
+  {
+    eyebrow && (
+      <Eyebrow class={cn({ "text-center": centered })}>{eyebrow}</Eyebrow>
+    )
+  }
+  <h1
+    class={cn("text-h1", {
+      "text-center lg:max-w-8/10": centered,
+    })}
+    set:html={title}
+  />
+  <div
+    class={cn("intro color-default", {
+      "text-center": centered,
+    })}
+  >
+    <slot>
+      <p>
+        {content}
+      </p>
+    </slot>
+  </div>
+  <slot name="buttons" />
+</Section>

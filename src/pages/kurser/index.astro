@@ -1,0 +1,54 @@
+---
+import PageHead from "@components/PageHead.astro";
+import Layout from "../../layouts/Layout.astro";
+import { getCourses } from "@lib/contentUtils";
+import CourseGrid from "@components/CourseGrid.astro";
+import CourseSelector from "@components/CourseSelector.astro";
+import Section from "@components/Section.astro";
+import CtaBooking from "@components/CtaBooking.astro";
+
+const coursesWithNorms = await getCourses((course) => course.data.norm);
+const coursesWithoutNorms = await getCourses((course) => !course.data.norm);
+---
+
+<Layout
+  metaDescription="Dubbelåtta erbjuder kurser för dig som vill börja klättra utomhus och för dig som redan är igång och vill bygga vidare på dina kunskaper. "
+  metaTitle="Kurser"
+>
+  <PageHead
+    content="Oavsett om du vill ta dina första steg på klippan eller bygga vidare på dina kunskaper hittar du kurser i Skåne som matchar din nivå."
+    title="Klippklättring i Skåne – kurser på alla nivåer"
+  />
+  <Section class="mt-0 max-w-prose pt-0">
+    <p>
+      Dubbelåtta erbjuder kurser för dig som vill börja klättra utomhus och för
+      dig som redan är igång och vill bygga vidare på dina kunskaper. Vi håller
+      kurser alla dagar i veckan, året runt, förutsatt att vädret tillåter det.
+      Priset baseras på dagsarvode, och fokus ligger alltid på säkerhet,
+      tydlighet och att du ska få kunskap att fatta kloka beslut på egen hand.
+    </p>
+  </Section>
+  <Section>
+    <h2>Normerade kurser</h2>
+    <p class="intro mb-8">
+      Dessa kurser följer Svenska Klätterförbundets kursnormer. Normerna syftar
+      till att skapa en enhetlig och trygg nivå på kurser, och säkerställer att
+      utbildningen genomförs av instruktörer med rätt kompetens, i en form och
+      miljö som är anpassad för kursens nivå och syfte.
+    </p>
+    <CourseGrid entries={coursesWithNorms} />
+  </Section>
+  <Section>
+    <h2>Övriga kurser</h2>
+    <p class="intro mb-8">
+      Här ryms kurser som inte omfattas av förbundets kursnormer, men som ändå
+      genomförs med samma fokus på säkerhet och kvalitet. De passar bra för dig
+      som vill fördjupa ett specifikt moment eller få ett upplägg anpassat till
+      förkunskaper som inte helt är i linje med vad normerna förutsätter.
+    </p>
+    <CourseGrid entries={coursesWithoutNorms} />
+  </Section>
+
+  <CourseSelector />
+  <CtaBooking />
+</Layout>

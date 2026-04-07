@@ -1,0 +1,51 @@
+---
+import List from "./List.astro";
+import Link from "./Link.astro";
+import { cn } from "@lib/cn";
+import { fetchEvents } from "@lib/fientaUtils";
+import { FIENTA_API_KEY } from "astro:env/server";
+import { toEvents } from "@lib/eventUtils";
+import { FIENTA_INCLUDE_DRAFTS } from "astro:env/server";
+
+interface Props {
+  matchTitle: string;
+}
+
+const { matchTitle } = Astro.props;
+
+const events = (await fetchEvents(FIENTA_API_KEY).then(toEvents)).filter(
+  (event) => {
+    if (event.past) {
+      return false;
+    }
+
+    if (event.draft && !FIENTA_INCLUDE_DRAFTS) {
+      return false;
+    }
+
+    return event.title.sv.includes(matchTitle);
+  },
+);
+---
+
+{
+  events.length > 0 ? (
+    <List>
+      {events.map((event) => (
+        <li
+          class={cn({
+            italic: event.draft,
+          })}
+        >
+          <Link href={event.ticketUrl}>{event.title.sv}</Link>
+        </li>
+      ))}
+    </List>
+  ) : (
+    <slot>
+      <p>
+        <strong>Inga öppna kurstillfällen inplanerade just nu.</strong>
+      </p>
+    </slot>
+  )
+}

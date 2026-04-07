@@ -1,0 +1,55 @@
+---
+import type { HTMLAttributes } from "astro/types";
+import { Image, ImageMetadata } from "astro:assets";
+import { getImage } from "astro:assets";
+
+interface Props extends HTMLAttributes<"li"> {
+  image: ImageMetadata;
+  alt: string;
+  width: number;
+  height: number;
+  caption?: string;
+}
+
+const { image, alt, width, height, caption, ...rest } = Astro.props;
+
+const thumbnail = await getImage({
+  src: image,
+  format: "webp",
+  width,
+  height,
+});
+
+const imageData = await getImage({
+  src: image,
+  format: "webp",
+});
+---
+
+<li
+  {...rest}
+  class="gallery-item cursor-pointer"
+  data-caption={caption}
+  data-src={imageData.src}
+>
+  <figure>
+    <div
+      class="ring-brand-light hover:ring-brand-light overflow-clip rounded-2xl ring-3 transition-all hover:ring-5"
+    >
+      <Image
+        alt={alt}
+        class="grayscale"
+        height={height}
+        layout="constrained"
+        loading="lazy"
+        src={thumbnail.src}
+        width={width}
+      />
+    </div>
+    {
+      caption && (
+        <figcaption class="text-accent mt-2 ml-2">{caption}</figcaption>
+      )
+    }
+  </figure>
+</li>

@@ -1,0 +1,46 @@
+{
+  "name": "astro",
+  "type": "module",
+  "version": "0.0.1",
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro",
+    "format": "prettier . --write",
+    "lint": "npx eslint \"src/**/*.{js,astro}\"",
+    "test": "npm run test:unit && npm run test:e2e",
+    "test:unit": "vitest run",
+    "test:e2e": "playwright test",
+    "watch": "vitest"
+  },
+  "dependencies": {
+    "@astrojs/mdx": "^5.0.2",
+    "@astrojs/netlify": "^7.0.4",
+    "@astrojs/sitemap": "^3.7.1",
+    "@sanity/astro": "^3.3.1",
+    "@sanity/client": "^7.20.0",
+    "astro": "^6.0.8",
+    "astro-portabletext": "^0.13.0",
+    "posthog-js": "^1.363.1"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "^4.11.1",
+    "@eslint/js": "^10.0.1",
+    "@playwright/test": "^1.58.2",
+    "@types/node": "^25.5.0",
+    "@typescript-eslint/parser": "^8.57.1",
+    "autoprefixer": "^10.4.27",
+    "dotenv": "^17.3.1",
+    "eslint": "^10.1.0",
+    "eslint-plugin-astro": "^1.6.0",
+    "postcss-custom-media": "^12.0.1",
+    "prettier": "^3.8.1",
+    "prettier-plugin-astro": "^0.14.1",
+    "vite-tsconfig-paths": "^6.1.1",
+    "vitest": "^4.1.0"
+  }
+}

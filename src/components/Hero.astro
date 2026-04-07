@@ -1,0 +1,98 @@
+---
+import { getImage, Image, ImageMetadata } from "astro:assets";
+import { cn } from "@lib/cn";
+import type { HTMLAttributes } from "astro/types";
+import ButtonGroup from "./ButtonGroup.astro";
+import ButtonLink from "./ButtonLink.astro";
+import Eyebrow from "./Eyebrow.astro";
+
+export type HeroButton = { label: string; href: string; target?: string };
+
+interface Props extends HTMLAttributes<"section"> {
+  image: ImageMetadata;
+  title: string;
+  content: string;
+  size?: "default" | "large";
+  buttons?: HeroButton[];
+  eyebrow?: string;
+}
+
+const {
+  image,
+  title,
+  content,
+  buttons,
+  eyebrow,
+  size = "default",
+  class: className,
+  ...rest
+} = Astro.props;
+const imageData = await getImage({
+  src: image,
+  format: "webp",
+});
+---
+
+<section {...rest} class={cn("p-8 relative hero--container", className)}>
+  <!-- Overlay -->
+  <span
+    aria-hidden="true"
+    class="absolute inset-0 z-10 bg-linear-65 from-black/90 to-black/50"></span>
+  <Image
+    alt=""
+    class="hero--img absolute fixed inset-0 -z-1 h-full w-full object-cover grayscale"
+    height={image.height}
+    role="presentation"
+    src={imageData.src}
+    width={image.width}
+  />
+  <div class="relative z-20 w-full text-white">
+    <div
+      class={cn("flex flex-col pb-6 gap-36 justify-between", {
+        "min-h-[80vh]": size === "large",
+      })}
+    >
+      <div>
+        {eyebrow && <Eyebrow class="text-white/70">{eyebrow}</Eyebrow>}
+        <h1 class="text-h1 lg:text-h0 text-white" set:html={title} />
+      </div>
+
+      <div class="max-w-prose">
+        <p class="text-xl">{content}</p>
+
+        {
+          buttons && buttons.length && (
+            <ButtonGroup class="mt-10 lg:mt-6">
+              {buttons.map(({ label, href, target }, i) => (
+                <ButtonLink
+                  class="text-base"
+                  href={href}
+                  target={target}
+                  variant={i === 0 ? "primary" : "default"}
+                >
+                  {label}
+                </ButtonLink>
+              ))}
+            </ButtonGroup>
+          )
+        }
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  @keyframes blur-on-scroll {
+    from {
+      filter: blur(0px) grayscale(100%);
+    }
+    to {
+      filter: blur(48px) grayscale(100%);
+    }
+  }
+
+  .hero--img {
+    animation: blur-on-scroll linear;
+    animation-timeline: scroll();
+  }
+</style>

@@ -1,0 +1,16 @@
+[
+  {
+    "id": "lina",
+    "name": "Lina Lockean",
+    "description": "Lina är klätterledare och på väg mot hjälpinstruktör klippa. Hon drivs av att få introducera människor till klättring och till upplevelsen av att röra sig i naturen på ett nytt sätt. Med ett lugnt och närvarande förhållningssätt skapar hon trygga förutsättningar för deltagare som kanske är nya inför höjd, exponering eller klippmiljö. Ambitionen är att fortsätta utvecklas som instruktör enligt normerna och att bidra till upplevelser där både platsen och klättringen får ta sin tid.",
+    "image": "../assets/images/lina-4.jpeg",
+    "alt": "Lina cloggar vid Högberget i Bohuslän"
+  },
+  {
+    "id": "nils",
+    "name": "Nils Lockean",
+    "description": "Nils är ledklätterinstruktör inomhus och hjälpinstruktör klippa. Han är på god väg mot att bli auktoriserad klippklätterinstruktör och har därför gått de normerade kurser som krävs enligt Svenska Klätterförbundet, klättrat i höga berg, praktiserat hos flera företag inom branschen och genomgått examination i egen färdighet. Nils har samlat på sig gedigen praktik och erfarenhet för att utveckla sin kunskap samt öka förståelsen för ledarskap och upplevelser i bland klipporna.",
+    "image": "../assets/images/nils.jpg",
+    "alt": "Nils vid Stanage Edge i England"
+  }
+]

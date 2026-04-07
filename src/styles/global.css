@@ -1,0 +1,137 @@
+@import "tailwindcss";
+
+@theme {
+  /* Bright yellow */
+  --hue: 53;
+  /* Mustard yellow */
+  --hue: 48;
+
+  --color-brand: hsl(var(--hue), 100%, 50%);
+  --color-brand-dark: hsl(var(--hue), 100%, 42%);
+  --color-brand-darker: hsl(var(--hue), 100%, 37%);
+  --color-brand-darkest: hsl(var(--hue), 100%, 25%);
+  --color-brand-light: hsl(var(--hue), 100%, 63%);
+  --color-brand-lighter: hsl(var(--hue), 100%, 75%);
+  --color-brand-lightest: hsl(var(--hue), 100%, 87%);
+
+  /* Tailwind yellow */
+  /*--color-brand: var(--color-yellow-400);
+	--color-brand-dark: var(--color-yellow-500);
+	--color-brand-darker: var(--color-yellow-700);
+	--color-brand-darkest: var(--color-yellow-900);
+	--color-brand-light: var(--color-yellow-300);
+	--color-brand-lighter: var(--color-yellow-200);
+	--color-brand-lightest: var(--color-yellow-100);*/
+
+  --color-accent: var(--color-brand-darkest);
+  --color-line: var(--color-brand-dark);
+
+  /* Text */
+  --color-default: hsl(var(--hue), 0%, 5%);
+  --color-muted: hsl(var(--hue), 0%, 0%, 75%);
+
+  /* Fonts */
+  --font-sans:
+    "Host Grotesk Variable", sans-serif, "DM Sans Variable", sans-serif;
+  --font-cooper-hewitt: "Cooper Hewitt", sans-serif;
+  --font-heading: "Instrument Serif", serif;
+
+  /*
+        These are a bit too big...
+    --text-h0: clamp(80px, 5rem + ((1vw - 3.2px) * 3.213), 160px);
+    --text-h1: clamp(72px, 4.5rem + ((1vw - 3.2px) * 2.5), 128px);
+    --text-h2: clamp(56px, 3.5rem + ((1vw - 3.2px) * 1.786), 96px);
+    --text-h3: clamp(48px, 3rem + ((1vw - 3.2px) * 1.429), 80px);
+    --text-h4: clamp(40px, 2.5rem + ((1vw - 3.2px) * 1.071), 64px);
+    --text-h5: clamp(32px, 2rem + ((1vw - 3.2px) * 0.714), 48px);
+    --text-h6: clamp(24px, 1.5rem + ((1vw - 3.2px) * 0.357), 32px);*/
+
+  --text-h0: clamp(56px, 3.5rem + ((1vw - 3.2px) * 1.786), 96px);
+  --text-h1: clamp(48px, 3rem + ((1vw - 3.2px) * 1.429), 80px);
+  --text-h2: clamp(40px, 2.5rem + ((1vw - 3.2px) * 1.071), 64px);
+  --text-h3: clamp(32px, 2rem + ((1vw - 3.2px) * 0.714), 48px);
+  --text-h4: clamp(24px, 1.5rem + ((1vw - 3.2px) * 0.357), 32px);
+}
+
+@layer base {
+  @view-transition {
+    navigation: auto;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply text-default;
+  }
+
+  /* Headings */
+  h1,
+  .h1 {
+    @apply font-heading text-h1 leading-tight;
+  }
+
+  h2,
+  .h2 {
+    @apply font-heading text-h2 mt-8 mb-6 leading-tight;
+  }
+
+  h3,
+  .h3 {
+    @apply font-heading text-h3 mt-8 mb-6 leading-tight;
+  }
+
+  h4,
+  .h4 {
+    @apply mt-8 mb-4 font-sans text-xl leading-relaxed font-light tracking-wide uppercase xl:text-2xl;
+  }
+
+  h5,
+  .h5 {
+    @apply mt-6 mb-3 font-sans text-lg font-bold;
+  }
+
+  .intro {
+    @apply mb-4 max-w-prose text-lg;
+  }
+
+  .intro-lg,
+  h1 + .intro {
+    @apply max-w-prose text-xl font-medium;
+  }
+
+  .collection-entry {
+    @apply max-w-prose;
+  }
+
+  .collection-entry p + p,
+  .max-w-prose p + p {
+    @apply mt-4;
+  }
+
+  .collection-entry a {
+    @apply underline underline-offset-4 hover:underline-offset-1;
+  }
+
+  .collection-entry ul {
+    @apply my-4 ml-5 list-disc space-y-1;
+  }
+
+  form label {
+    @apply text-accent mb-1 block font-medium;
+  }
+
+  form input {
+    @apply border-line focus:border-muted text-muted w-full rounded-none border-0 border-b-2 bg-transparent px-0 py-2 focus:ring-0 focus:outline-none;
+  }
+
+  form textarea {
+    @apply border-line focus:border-muted text-muted min-h-[120px] w-full rounded-none border-0 border-b-2 bg-transparent px-0 py-2 focus:ring-0 focus:outline-none;
+  }
+
+  form button[type="submit"] {
+    @apply font-cooper-hewitt bg-default hover:bg-muted ring-default inline-block cursor-pointer rounded-full border-2 border-transparent px-4 py-2 text-sm text-white uppercase active:border-black active:bg-black;
+  }
+}

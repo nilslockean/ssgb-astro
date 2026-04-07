@@ -1,0 +1,70 @@
+[
+  {
+    "id": "grundkurs",
+    "images": [
+      {
+        "image": "../assets/images/gaurav-pikale-GWSj-0zrj_E-unsplash.jpg",
+        "alt": "Person ledklättrar på långtur"
+      },
+      {
+        "image": "../assets/images/gaurav-pikale-GWSj-0zrj_E-unsplash.jpg",
+        "alt": "Person ledklättrar på 2",
+        "caption": "Lär dig ledklättra på egenplacerade säkringar"
+      },
+      {
+        "image": "../assets/images/gaurav-pikale-GWSj-0zrj_E-unsplash.jpg",
+        "alt": "Person ledklättrar på 3"
+      },
+      {
+        "image": "../assets/images/gaurav-pikale-GWSj-0zrj_E-unsplash.jpg",
+        "alt": "Person 4 på långtur"
+      }
+    ]
+  },
+  {
+    "id": "fortsattningskurs",
+    "images": [
+      {
+        "image": "../assets/images/demo-lead-3.jpg",
+        "alt": "Klättrare står på en pelare och letar placeringar",
+        "caption": "Bli bättre på att bedöma placeringar och stenkvalitet"
+      },
+      {
+        "image": "../assets/images/demo-girth-anchor.jpg",
+        "alt": "Bild på en standplats av typen lärkfot.",
+        "caption": "Bygg olika typer av standplatser"
+      },
+      {
+        "image": "../assets/images/demo-lead-2.jpg",
+        "alt": "Person ledklättrar",
+        "caption": "Placera egna säkringar på led"
+      },
+      {
+        "image": "../assets/images/demo-lead-5.jpg",
+        "alt": "Klättrare leder starten av en replängd",
+        "caption": "Lär dig grunderna i långtursklättring"
+      }
+    ]
+  },
+  {
+    "id": "prova-pa",
+    "images": [
+      {
+        "image": "../assets/images/alice-uvhallsklack-krux-1906-1024x717.jpeg",
+        "alt": "Topprepsklättrare sträcker sig efter ett grepp"
+      },
+      {
+        "image": "../assets/images/FU1A3970.jpg",
+        "alt": "Topprepsklättrare provar på vid Snuvestuan"
+      },
+      {
+        "image": "../assets/images/FU1A4030.jpg",
+        "alt": "Leende person firas ned från klippan"
+      },
+      {
+        "image": "../assets/images/topprep-eva.jpg",
+        "alt": "Äldre person klättrar topprep i Bohuslän"
+      }
+    ]
+  }
+]

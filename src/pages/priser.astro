@@ -1,0 +1,47 @@
+---
+import Section from "@components/Section.astro";
+import config from "@config";
+import { formatPrice } from "@lib/stringUtils";
+import Layout from "../layouts/Layout.astro";
+import PrivateBookingPricingList from "@components/PrivateBookingPricingList.astro";
+import CtaBooking from "@components/CtaBooking.astro";
+import PageHead from "@components/PageHead.astro";
+---
+
+<Layout
+  metaDescription="Våra priser bygger på dagsarvode och ger utrymme för ett upplägg som kan anpassas efter små grupper."
+  metaTitle="Priser"
+>
+  <PageHead eyebrow="Samtliga priser anges inkl. moms" title="Priser">
+    <p>
+      Att hålla klätterkurser på en hög och säker nivå kräver rätt kompetens,
+      rätt utrustning och tid för att planera och genomföra varje aktivitet
+      ordentligt. Våra priser bygger på dagsarvode och ger utrymme för ett
+      upplägg som kan anpassas efter små grupper.
+    </p>
+  </PageHead>
+  <Section class="max-w-prose pt-0 pb-16">
+    <h2>Privat bokning</h2>
+    <p class="intro">
+      Det vanligaste alternativet för enskilda sällskap som vill boka en
+      specifik dag eller anpassa kursupplägget.
+    </p>
+    <p>
+      Priserna gäller samtliga kurser. De flesta kurser genomförs under två
+      dagar.
+    </p>
+    <PrivateBookingPricingList class="my-4" />
+    <h2>Öppen bokning</h2>
+    <p class="intro">
+      För dig som kan tänka dig att gå kursen med andra deltagare du kanske inte
+      känner. Priset varierar beroende på kursens längd.
+    </p>
+    <p>
+      Öppna kurstillfällen annonseras vid utvalda tillfällen. Priset är i regel
+      <strong>{formatPrice([config.defaultPrices.openBooking])}</strong>
+      {" "}per person och kurs, men kan vara lägre för endagskurser, till
+      exempel topprepskurs eller prova på. Läs mer på respektive kurs-sida.
+    </p>
+  </Section>
+  <CtaBooking />
+</Layout>

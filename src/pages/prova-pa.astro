@@ -1,0 +1,191 @@
+---
+import heroImage from "@assets/images/FU1A3970.jpg";
+import Hero, { type HeroButton } from "@components/Hero.astro";
+import Layout from "../layouts/Layout.astro";
+import Section from "@components/Section.astro";
+import Accordion from "@components/Accordion.astro";
+import Gallery from "@components/Gallery.astro";
+import { getEntry } from "astro:content";
+import BookingForm from "@components/BookingForm.astro";
+import Card from "@components/Card.astro";
+import { getPath, Slug } from "@config";
+import Eyebrow from "@components/Eyebrow.astro";
+import Link from "@components/Link.astro";
+import List from "@components/List.astro";
+import UpcomingEventsServerIsland from "@components/UpcomingEventsServerIsland.astro";
+
+const gallery = await getEntry("galleries", "prova-pa");
+const heroButtons: HeroButton[] = [
+  {
+    label: "Boka prova på",
+    href: "#bokning",
+  },
+  {
+    label: "Ställ en fråga",
+    href: getPath(Slug.CONTACT),
+  },
+];
+---
+
+<Layout
+  fientaEmbed
+  metaDescription="Få ett smakprov på vad klippklättring innebär, helt utan krav på tidigare erfarenhet."
+  metaTitle="Prova på"
+>
+  <Hero
+    buttons={heroButtons}
+    content="Få ett smakprov på vad klippklättring innebär, helt utan krav på tidigare erfarenhet."
+    eyebrow="Kullaberg / Snuvestuan"
+    image={heroImage}
+    size="large"
+    title="Prova på klippklättring i Skåne"
+  />
+
+  <Section>
+    <p class="intro mt-8 xl:my-16 xl:text-2xl">
+      Prova på-klättring är ett tryggt första steg ut på klippan. Vi går igenom
+      säkerhet, visar hur klättring utomhus faktiskt fungerar och låter dig
+      klättra flera leder anpassade efter din nivå. I mån av tid och intresse
+      får du även prova att fira dig ned för en vertikal klippvägg.
+    </p>
+  </Section>
+
+  {
+    gallery && (
+      <Section>
+        <Gallery entry={gallery} />
+      </Section>
+    )
+  }
+
+  <Section>
+    <h2>Varför prova på?</h2>
+    <div class="grid gap-8 lg:grid-cols-2 xl:grid-cols-3">
+      <Card>
+        <h3 class="mt-0">Upplevelsen</h3>
+        <p>
+          Under dagen klättrar du flera leder på topprep och får känna hur det
+          är att röra sig på klippan. Vi pratar om säkerhet, kommandon,
+          utrustning och grundläggande rörelseteknik. Våra ledare är examinerade
+          enligt Svenska Klätterförbundets normer och anpassar upplägget efter
+          gruppens behov.
+        </p>
+      </Card>
+
+      <Card>
+        <h3 class="mt-0">Platsen</h3>
+        <p>
+          Att klättra ute handlar lika mycket om miljön som själva klättringen.
+          Klipporna i Skåne är flera hundra miljoner år gamla och bjuder på en
+          naturupplevelse som är svår att slå. När du inte klättrar hinner du
+          fika, titta på de andra och ta in känslan av att vara mitt i naturen.
+          Det är lugnt, enkelt och väldigt trevligt.
+        </p>
+      </Card>
+
+      <Card>
+        <h3 class="mt-0">Gruppen</h3>
+        <p>
+          Klättring utomhus ger olika typer av utmaningar. Allt från höjd till
+          tillit, teknik och kroppskontroll. Alla kommer med olika
+          förutsättningar och det är helt okej. Vi hjälper dig att hitta en nivå
+          som känns trygg och lagom utmanande. Aktiviteten fungerar lika bra för
+          en person som vill testa något nytt, som present till någon du tycker
+          om eller som teambuilding för en mindre grupp.
+        </p>
+      </Card>
+    </div>
+  </Section>
+
+  <Section>
+    <Accordion title="Detta ingår">
+      <List>
+        <li>Utrustning: rep, sele, hjälm och klätterskor</li>
+        <li>Flera klätterleder i varierande svårighetsgrad</li>
+        <li>Säkerhetsgenomgång</li>
+        <li>Genomgång av utrustning och grundläggande teknik</li>
+      </List>
+    </Accordion>
+
+    <Accordion title="Du står själv för">
+      <List>
+        <li>Transport till och från parkeringen</li>
+        <li>Mat och fika</li>
+        <li>Kläder efter väder</li>
+        <li>Egen utrustning om du har – annars lånar du av oss</li>
+      </List>
+    </Accordion>
+    <Accordion title="Plats">
+      <p>
+        Vi anordnar prova på-klättring på Kullaberg och vid Snuvestuan i
+        Klåveröds strövområde. Plats väljer vi utifrån gruppens önskemål och
+        tidigare erfarenhet.
+      </p>
+    </Accordion>
+
+    <Accordion title="Pris">
+      <Eyebrow>Priser anges inkl. moms</Eyebrow>
+      <h5>Öppna tillfällen - 950 kr /person</h5>
+
+      <p>
+        Ibland annonserar vi prova på-klättring med öppen anmälan. Då deltar du
+        tillsammans med andra i en mindre grupp till ett fast pris. Öppna
+        tillfällen publiceras löpande under <Link href="#boka"
+          >Boka prova på-klättring</Link
+        > nedan.
+      </p>
+
+      <h5>Privat bokning</h5>
+      <p class="mb-4">
+        För dig som vill boka ett eget tillfälle för vänner, familj eller
+        kollegor. Privat bokning ger större flexibilitet och möjlighet att
+        anpassa upplägget efter gruppens förutsättningar.
+      </p>
+      <List class="mb-4">
+        <li>
+          1-4 personer - <strong>4 200 kr</strong>
+        </li>
+        <li>
+          5-8 personer - <strong>7 980 kr</strong>
+        </li>
+        <li>
+          9-12 personer - <strong>11 760 kr</strong>
+        </li>
+      </List>
+    </Accordion>
+  </Section>
+
+  <Section class="pb-16" id="boka">
+    <div class="bg-brand-light max-w-4xl rounded-xl px-8 py-6 md:px-12 md:py-8">
+      <h2 class="mt-0">Boka prova på-klättring</h2>
+      <div class="max-w-prose">
+        <p class="text-lg">
+          Välj det upplägg som passar dig bäst. Du kan anmäla dig till ett av
+          våra öppna prova på-tillfällen eller boka som en privat grupp vid ett
+          datum som passar dig.
+        </p>
+      </div>
+      <div class="max-w-prose">
+        <h3 class="h4">Kommande öppna prova på-tillfällen</h3>
+        <UpcomingEventsServerIsland matchTitle="Prova på" server:defer>
+          <p slot="fallback">Hämtar kommande evenemang...</p>
+          <p>
+            <strong>Inga öppna prova på-tillfällen inplanerade just nu.</strong>
+          </p>
+        </UpcomingEventsServerIsland>
+      </div>
+      <div class="max-w-prose">
+        <h3 class="h4">Privat bokning</h3>
+        <p>
+          För dig som vill boka en prova på-klättring för dig själv eller en
+          egen grupp. Du föreslår ett datum, så återkommer vi med bekräftelse.
+        </p>
+      </div>
+      <BookingForm
+        dateLabel="Önskat datum"
+        maxParticipants={12}
+        name="Boka prova på"
+      />
+    </div>
+  </Section>
+</Layout>
