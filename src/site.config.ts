@@ -139,14 +139,14 @@ export type SiteConfig = {
 
 // Site-level config
 export const siteConfig = {
-  siteTitle: "Dubbelåtta",
-  siteUrl: "https://dubbel8.se",
+  siteTitle: "Sydsveriges Guidebyrå",
+  siteUrl: "https://ssgb.se",
   siteTagline:
-    "Klätterkurser, utbildningar och evenemang på Skånes bästa klippor",
+    "Klätterkurser på Kullaberg, i Spanien och Itailen",
 
   // Contact info if you ever want it on footer pages
   contact: {
-    email: "hej@dubbel8.se",
+    email: "hej@ssgb.se",
     phone: "073-666 59 97",
   },
 

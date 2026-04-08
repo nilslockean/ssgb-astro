@@ -57,10 +57,21 @@ select {
 :root,
 :host {
   /* Hue: mustard yellow */
-  --hue: 48;
+  --hue: 357;
+
+  /* Surface palette */
+  --hue-surface: 12;
+
+  --color-surface: hsl(var(--hue-surface), 7%, 15%);
+  --color-surface-light: hsl(var(--hue-surface), 7%, 20%);
+  --color-surface-lighter: hsl(var(--hue-surface), 7%, 30%);
+  /* --color-surface-lightest: hsl(var(--hue-surface), 33%, 100%); */
+  --color-surface-dark: hsl(var(--hue-surface), 7%, 10%);
+  --color-surface-darker: hsl(var(--hue-surface), 7%, 5%);
+  /* --color-surface-darkest: hsl(var(--hue-surface), 18%, 47%); */
 
   /* Brand palette */
-  --color-brand: hsl(var(--hue), 100%, 50%);
+  --color-brand: hsl(var(--hue), 100%, 38%);
   --color-brand-dark: hsl(var(--hue), 100%, 42%);
   --color-brand-darker: hsl(var(--hue), 100%, 37%);
   --color-brand-darkest: hsl(var(--hue), 100%, 25%);
@@ -70,9 +81,9 @@ select {
 
   /* Semantic colors */
   --color-accent: var(--color-brand-darkest);
-  --color-line: var(--color-brand-dark);
-  --color-default: hsl(var(--hue), 0%, 5%);
-  --color-muted: hsl(var(--hue), 0%, 0%, 75%);
+  --color-line: var(--color-surface-lighter);
+  --color-default: hsl(var(--hue), 0%, 95%);
+  --color-muted: hsl(var(--hue), 0%, 80%);
 
   /* White / black helpers */
   --color-white: #fff;
