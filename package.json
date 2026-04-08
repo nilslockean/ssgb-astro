@@ -25,6 +25,7 @@
     "@sanity/client": "^7.20.0",
     "astro": "^6.0.8",
     "astro-portabletext": "^0.13.0",
+    "fancybox": "^3.0.1",
     "posthog-js": "^1.363.1"
   },
   "devDependencies": {
