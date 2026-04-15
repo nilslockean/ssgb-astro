@@ -19,7 +19,7 @@ const href = getPath(slugId);
 
 <li class="course-grid-item">
   <h3 class="course-grid-item__title font-heading mt-0 normal-case">
-    <a class="course-grid-item__link" href={href}>{shortName || title}</a>
+    <a class="course-grid-item__link" href={href} set:html={shortName || title}></a>
   </h3>
   <p class="course-grid-item__excerpt">{excerpt}</p>
   <p class="course-grid-item__action">
@@ -39,6 +39,7 @@ const href = getPath(slugId);
 
   .course-grid-item__link {
     text-decoration: none;
+    color: var(--color-text);
   }
 
   .course-grid-item__link:hover {

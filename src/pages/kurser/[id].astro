@@ -12,7 +12,6 @@ import PrivateBookingPricingList from "@components/PrivateBookingPricingList.ast
 import { formatPrice } from "@lib/stringUtils";
 import Link from "@components/Link.astro";
 import { FIENTA_INCLUDE_DRAFTS } from "astro:env/server";
-import UpcomingEvents from "@components/UpcomingEvents.astro";
 import Section from "@components/Section.astro";
 
 // 1. Generate a new path for every collection entry
@@ -165,20 +164,7 @@ if (norm) {
       <h2 class="mt-0">{post.data.cta}</h2>
       <div class="max-w-prose">
         <p class="text-lg">
-          Välj det upplägg som passar dig bäst. Du kan anmäla dig till ett av
-          våra öppna kurstillfällen eller boka kursen som en privat grupp vid
-          ett datum som passar dig.
-        </p>
-      </div>
-      <div class="max-w-prose">
-        <h3 class="h4">Kommande öppna kurstillfällen</h3>
-        <UpcomingEvents {events} />
-      </div>
-      <div class="max-w-prose">
-        <h3 class="h4">Privat bokning</h3>
-        <p>
-          För dig som vill boka kursen för dig själv eller en egen grupp. Du
-          föreslår ett datum, så återkommer vi med bekräftelse.
+          Du föreslår ett datum, så återkommer vi med bekräftelse.
         </p>
       </div>
       <BookingForm

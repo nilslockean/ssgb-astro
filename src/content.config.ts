@@ -1,10 +1,7 @@
-import { defineCollection, reference, z } from "astro:content";
+import { defineCollection, reference } from "astro:content";
 import { file, glob } from "astro/loaders";
 import config, { Slug } from "@config";
-import { eventEntrySchema } from "@lib/types/event";
-import { FIENTA_API_KEY } from "astro:env/server";
-import { fetchEvents } from "@lib/fientaUtils";
-import { toEvents } from "@lib/eventUtils";
+import { z } from "astro/zod";
 
 const courses = defineCollection({
   loader: glob({ base: "./src/content/courses", pattern: "**/*.{md,mdx}" }),
@@ -24,7 +21,7 @@ const courses = defineCollection({
       norm: reference("norms").optional(),
       aka: z.string().optional(),
       gallery: reference("galleries").optional(),
-      slugId: z.nativeEnum(Slug),
+      slugId: z.enum(Slug),
     }),
 });
 
@@ -34,7 +31,7 @@ const pages = defineCollection({
     z.object({
       title: z.string(),
       excerpt: z.string(),
-      slugId: z.nativeEnum(Slug),
+      slugId: z.enum(Slug),
     }),
 });
 
@@ -55,7 +52,7 @@ const galleries = defineCollection({
 const norms = defineCollection({
   loader: file("./src/content/norms.json"),
   schema: z.object({
-    url: z.string().url(),
+    url: z.url(),
     title: z.string(),
   }),
 });
@@ -71,13 +68,6 @@ const team = defineCollection({
     }),
 });
 
-const events = defineCollection({
-  loader: async () => {
-    const result = await fetchEvents(FIENTA_API_KEY);
-    return toEvents(result);
-  },
-  schema: eventEntrySchema,
-});
 
 // 4. Export a single `collections` object to register your collection(s)
-export const collections = { courses, galleries, norms, team, pages, events };
+export const collections = { courses, galleries, norms, team, pages };

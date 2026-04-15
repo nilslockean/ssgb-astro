@@ -36,6 +36,7 @@ export enum Slug {
   COURSE_SPORT = "course_sport",
   COURSE_ROPE_SOLO_BASIC = "course_rope_solo_basic",
   COURSE_TRAD = "course_trad",
+  COURSE_ASSISTANT = "course_assisting_instructor",
 
   TERMS_PRIVACY = "terms_privacy",
   TERMS_BOOKING = "terms_booking",
@@ -62,6 +63,7 @@ export const Paths: Record<Slug, string> = {
   [Slug.COURSE_SPORT]: "/kurser/sportkurs",
   [Slug.COURSE_ROPE_SOLO_BASIC]: "/kurser/clogkurs",
   [Slug.COURSE_TRAD]: "/kurser/tradkurs",
+  [Slug.COURSE_ASSISTANT]: "/kurser/hjalpinstruktorskurs",
 
   [Slug.TERMS_BOOKING]: "/bokningsvillkor",
   [Slug.TERMS_PRIVACY]: "/integritetspolicy",
@@ -82,20 +84,21 @@ function link(slug: Slug, label: string, className?: string): NavLink {
 
 // Static navigation definitions
 const courseNav: Navigation = [
-  { link: link(Slug.COURSE_TOPROPE, "Topprepskurs") },
+  // { link: link(Slug.COURSE_TOPROPE, "Topprepskurs") },
   { link: link(Slug.COURSE_CRAG_BASIC, "Grundkurs klippa") },
   { link: link(Slug.COURSE_CRAG_ADV, "Fortsättningskurs klippa") },
   { link: link(Slug.COURSE_RESCUE_BASIC, "Räddning 1") },
   { link: link(Slug.COURSE_RESCUE_ADV, "Räddning 2") },
   { link: link(Slug.COURSE_SPORT, "Sportklätterkurs") },
-  { link: link(Slug.COURSE_TRAD, "Tradkurs") },
-  { link: link(Slug.COURSE_ROPE_SOLO_BASIC, "Clogkurs") },
+  { link: link(Slug.COURSE_ASSISTANT, "Hjälpinstruktörskurs") },
+  // { link: link(Slug.COURSE_TRAD, "Tradkurs") },
+  // { link: link(Slug.COURSE_ROPE_SOLO_BASIC, "Clogkurs") },
 ];
 
 const mobileNav: Navigation = [
   { link: link(Slug.HOME, "Hem") },
   { link: link(Slug.COURSES, "Kurser"), subMenu: courseNav },
-  { link: link(Slug.TRY, "Prova på") },
+  // { link: link(Slug.TRY, "Prova på") },
   { link: link(Slug.PRICES, "Priser") },
   { link: link(Slug.ABOUT, "Om") },
   { link: link(Slug.CONTACT, "Kontakt") },
@@ -103,7 +106,7 @@ const mobileNav: Navigation = [
 
 const mainNav: Navigation = [
   { link: link(Slug.COURSES, "Kurser") },
-  { link: link(Slug.TRY, "Prova på") },
+  // { link: link(Slug.TRY, "Prova på") },
   { link: link(Slug.PRICES, "Priser") },
   { link: link(Slug.ABOUT, "Om") },
   { link: link(Slug.CONTACT, "Kontakt") },
@@ -112,7 +115,7 @@ const mainNav: Navigation = [
 const footerNav: Navigation = [
   { link: link(Slug.TERMS_BOOKING, "Bokningsvillkor") },
   { link: link(Slug.TERMS_PRIVACY, "Integritetspolicy") },
-  { link: link(Slug.WEB_DEVELOPMENT, "Webbutveckling") },
+  // { link: link(Slug.WEB_DEVELOPMENT, "Webbutveckling") },
 ];
 
 const headerNav: Navigation = [

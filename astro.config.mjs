@@ -1,5 +1,5 @@
 /* eslint-disable no-undef */
-import { defineConfig, envField } from "astro/config";
+import { defineConfig, envField, fontProviders } from "astro/config";
 // import sanity from "@sanity/astro";
 import dotenv from "dotenv";
 import netlify from "@astrojs/netlify";
@@ -48,6 +48,20 @@ export default defineConfig({
       "devserver-main--ssgb-astro.netlify.app",
     ],
   },
+
+  fonts: [
+    {
+      name: 'Barlow Condensed',
+      cssVariable: '--font-barlow-condensed',
+      provider: fontProviders.fontsource(),
+      weights: [500, 700]
+    },
+    {
+      name: "Host Grotesk",
+      cssVariable: "--font-host-grotesk",
+      provider: fontProviders.fontsource()
+    }
+  ],
 
   env: {
     schema: {

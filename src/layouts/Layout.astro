@@ -11,6 +11,7 @@ import NavLink from "@components/NavLink.astro";
 import config, { NavArea } from "@config";
 import {ENABLE_POSTHOG, POSTHOG_PROJECT_API_KEY} from "astro:env/client";
 import Fienta from "@components/fienta.astro";
+import { Font } from "astro:assets"
 
 interface Props {
   metaDescription: string;
@@ -47,6 +48,9 @@ const title = metaTitle
     <meta content={title} name="twitter:title" />
     <meta content={metaDescription} name="twitter:description" />
     <meta content="/og-default.png" name="twitter:image" />
+
+    <Font cssVariable="--font-barlow-condensed" preload />
+    <Font cssVariable="--font-host-grotesk" preload />
 
     {ENABLE_POSTHOG && <PostHog projectApiKey={POSTHOG_PROJECT_API_KEY} />}
     {
@@ -137,7 +141,7 @@ const title = metaTitle
   }
 
   .layout__sidebar {
-    background-color: var(--color-surface);
+    background-color: var(--color-surface-dark);
     border-right: 1px solid var(--color-line);
     position: sticky;
     top: 0;

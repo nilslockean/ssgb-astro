@@ -51,55 +51,13 @@ const heroButtons: HeroButton[] = [
       är ny inom klättring och till dig som vill bygga vidare på dina kunskaper.
     </p>
     <ButtonLink href={getPath(Slug.COURSES)}>Se kursutbud</ButtonLink>
-    <Eyebrow class="mt-16 mb-4">Populära kurser</Eyebrow>
+    <Eyebrow class="mt-16 mb-4 ml-4">Populära kurser</Eyebrow>
     <CourseGrid class="mb-8" entries={featuredCourses}>
       <p class="flex items-end">
         <Link slug={Slug.COURSES}>Fler kurser &rarr;</Link>
       </p>
     </CourseGrid>
   </Section>
-  <Section>
-    <MediaBlock
-      image={{ src: provaPaImage, alt: "En person klättrar topprep" }}
-    >
-      <h2 class="mt-0">Prova på</h2>
-      <p class="intro mb-8">
-        På en prova på-klättring får du ett smakprov på vad klippklättring
-        innebär. Du får prova att både klättra och fira, vi pratar säkerhet och
-        visar grundläggande teknik. En uppskattad aktivitet att ge i present
-        eller som teambuilding för mindre grupper.
-      </p>
-      <ButtonLink href="/prova-pa">Boka prova på-klättring</ButtonLink>
-    </MediaBlock>
-  </Section>
-
-  <!-- <div class="p-8">
-		<h2 class="mb-4">Här klättrar vi</h2>
-
-		<MediaBlock image={{ src: heroImage, alt: "En hög bröd på ett bord" }}>
-			<h3 class="mb-4">Kullaberg</h3>
-			<p class="text-lg mb-4 max-w-prose">
-				Branta klippor, havsvind och många leder i olika grader. Ett av landets
-				mest klassiska områden.
-			</p>
-		</MediaBlock>
-
-		<MediaBlock image={{ src: heroImage, alt: "En hög bröd på ett bord" }}>
-			<h3 class="mb-4">Snuvestuan</h3>
-			<p class="text-lg mb-4 max-w-prose">
-				Skyddat läge i skogen och perfekt för både grundkurser och prova
-				på-tillfällen.
-			</p>
-		</MediaBlock>
-
-		<MediaBlock image={{ src: heroImage, alt: "En hög bröd på ett bord" }}>
-			<h3 class="mb-4">Söderåsen</h3>
-			<p class="text-lg mb-4 max-w-prose">
-				Längre klippor och varierad terräng som lämpar sig för kurser där du
-				bygger vidare på tekniken.
-			</p>
-		</MediaBlock>
-	</div> -->
 
   <CourseSelector />
   <CtaContact />
