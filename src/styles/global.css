@@ -193,6 +193,7 @@ h4,
 h5,
 h6 {
   color: var(--color-default);
+  font-weight: 400;
 }
 
 h1,
