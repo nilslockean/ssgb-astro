@@ -44,7 +44,7 @@ export default defineConfig({
 
   server: {
     allowedHosts: [
-      "ssgb-staging.netlify.app",
+      "sydsverigesguidebyra.netlify.app",
       "devserver-main--ssgb-astro.netlify.app",
     ],
   },
@@ -54,7 +54,7 @@ export default defineConfig({
       name: 'Barlow Condensed',
       cssVariable: '--font-barlow-condensed',
       provider: fontProviders.fontsource(),
-      weights: [400, 600]
+      weights: [400]
     },
     {
       name: "Host Grotesk",
