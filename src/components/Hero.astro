@@ -1,5 +1,6 @@
 ---
-import { getImage, Image, ImageMetadata } from "astro:assets";
+import { getImage, Image } from "astro:assets";
+import { ImageMetadata } from "astro";
 import type { HTMLAttributes } from "astro/types";
 import ButtonGroup from "./ButtonGroup.astro";
 import ButtonLink from "./ButtonLink.astro";
@@ -8,7 +9,8 @@ import Eyebrow from "./Eyebrow.astro";
 export type HeroButton = { label: string; href: string; target?: string };
 
 interface Props extends HTMLAttributes<"section"> {
-  image: ImageMetadata;
+  image?: ImageMetadata;
+  video?: string;
   title: string;
   content: string;
   size?: "default" | "large";
@@ -18,6 +20,7 @@ interface Props extends HTMLAttributes<"section"> {
 
 const {
   image,
+  video,
   title,
   content,
   buttons,
@@ -26,22 +29,41 @@ const {
   class: className,
   ...rest
 } = Astro.props;
-const imageData = await getImage({
-  src: image,
-  format: "webp",
-});
+
+let imageData: { src: string } | undefined;
+if (image) {
+  imageData = await getImage({
+    src: image,
+    format: "webp",
+  });
+}
 ---
 
-<section class:list={["hero", { "hero--large": size === "large" }, className]} {...rest}>
+<section class:list={["hero", { "hero--large": size === "large", "hero--video": Boolean(video) }, className]} {...rest}>
   <span aria-hidden="true" class="hero__overlay"></span>
-  <Image
-    alt=""
-    class="hero__img"
-    height={image.height}
-    role="presentation"
-    src={imageData.src}
-    width={image.width}
-  />
+  {
+    video ? (
+      <video
+        autoplay
+        class="hero__video"
+        loop
+        muted
+        playsinline
+        poster={imageData ? imageData.src : undefined}
+      >
+        <source src={video} type="video/mp4" />
+      </video>
+    ) : imageData ? (
+      <Image
+        alt=""
+        class="hero__img"
+        height={image!.height}
+        role="presentation"
+        src={imageData.src}
+        width={image!.width}
+      />
+    ) : null
+  }
   <div class="hero__content text-white">
     <div class="hero__inner">
       <div>
@@ -93,10 +115,15 @@ const imageData = await getImage({
   }
 
   .hero__overlay {
+    --opacity: 0.9;
     position: absolute;
     inset: 0;
     z-index: 10;
-    background: linear-gradient(65deg, rgb(0 0 0 / 0.9), rgb(0 0 0 / 0.5));
+    background: linear-gradient(65deg, rgb(0 0 0 / var(--opacity)), rgb(0 0 0 / 0.5));
+  }
+
+  .hero--video .hero__overlay {
+    --opacity: 0.65;
   }
 
   .hero__img {
@@ -107,6 +134,17 @@ const imageData = await getImage({
     width: 100%;
     object-fit: cover;
     /* filter: grayscale(100%); */
+    animation: blur-on-scroll linear;
+    animation-timeline: scroll();
+  }
+
+  .hero__video {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
     animation: blur-on-scroll linear;
     animation-timeline: scroll();
   }
