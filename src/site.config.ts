@@ -149,8 +149,8 @@ export const siteConfig = {
 
   // Contact info if you ever want it on footer pages
   contact: {
-    email: "hej@ssgb.se",
-    phone: "073-666 59 97",
+    email: "instruktor@ssgb.se",
+    phone: "+46 (0) 70-494 77 82",
   },
 
   defaultPrices: {

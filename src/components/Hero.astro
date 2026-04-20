@@ -72,14 +72,13 @@ if (image) {
       </div>
 
       <div class="hero__bottom">
-        <p class="hero__text">{content}</p>
+        <p class="hero__text intro">{content}</p>
 
         {
           buttons && buttons.length && (
             <ButtonGroup class="hero__buttons">
               {buttons.map(({ label, href, target }, i) => (
                 <ButtonLink
-                  class="text-base"
                   href={href}
                   target={target}
                   variant={i === 0 ? "primary" : "default"}
@@ -188,7 +187,7 @@ if (image) {
 
   .hero__buttons {
     margin-top: var(--space-10);
-    font-size: var(--text-xl);
+    font-size: var(--text-lg);
   }
 
   @media (--breakpoint-lg) {
