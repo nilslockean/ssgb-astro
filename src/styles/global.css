@@ -95,8 +95,7 @@ select {
 
   /* Typography */
   --font-sans: var(--font-host-grotesk);
-  --font-cooper-hewitt: var(--font-barlow-condensed), "Barlow Condensed", sans-serif;
-  --font-heading: var(--font-barlow-condensed), "Barlow Condensed", serif;
+  --font-heading: var(--font-barlow-condensed);
 
   /* Text sizes (clamp-based headings) */
   --text-h0: clamp(56px, 3.5rem + ((1vw - 3.2px) * 1.786), 96px);
@@ -351,7 +350,7 @@ form textarea {
 }
 
 form button[type="submit"] {
-  font-family: var(--font-cooper-hewitt);
+  font-family: var(--font-barlow-condensed);
   background-color: var(--color-default);
   color: var(--color-white);
   text-transform: uppercase;
