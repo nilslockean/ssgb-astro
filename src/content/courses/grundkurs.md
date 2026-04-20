@@ -1,6 +1,6 @@
 ---
 title: Grund&shy;kurs i klipp&shy;klättring
-shortName: Grundkurs klippa
+shortName: Grundkurs
 excerpt: Lär dig bygga topprepsankare på naturliga säkringar samt grunderna i klättring, säkring och firning.
 numDays: [2]
 order: 20

@@ -182,6 +182,124 @@ body {
   color: var(--color-muted);
 }
 
+/* Main layout */
+.layout {
+  background-color: var(--color-surface);
+  color: var(--color-muted);
+}
+
+.layout__wrapper {
+  display: flex;
+  flex-wrap: nowrap;
+}
+
+.layout__sidebar {
+  background-color: var(--color-surface-dark);
+  border-right: 1px solid var(--color-line);
+  position: sticky;
+  top: 0;
+  height: 100dvh;
+  flex-grow: 0;
+  flex-shrink: 0;
+  width: 16rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: var(--space-16);
+  overflow-y: auto;
+  padding: var(--space-8);
+}
+
+@media (max-width: 47.99rem) {
+  .layout__sidebar {
+    display: none;
+  }
+}
+
+@media (--breakpoint-md) {
+  .layout__sidebar {
+    display: flex;
+  }
+}
+
+.layout__sidebar-top {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+}
+
+.layout__sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.layout__main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.layout__header {
+  background-color: var(--color-surface);
+  border-bottom: 1px solid var(--color-line);
+  padding: var(--space-4) var(--space-6);
+  display: none;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+}
+
+@media (--breakpoint-md) {
+  .layout__header {
+    display: flex;
+  }
+}
+
+.layout__tagline {
+  color: var(--color-muted);
+  flex-shrink: 1;
+}
+
+.layout__header-actions {
+  flex: 1;
+  justify-content: flex-end;
+}
+
+.layout__footer {
+  background-color: var(--color-surface);
+  border-top: 1px solid var(--color-line);
+  padding: var(--space-4) var(--space-6);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: var(--space-6);
+}
+
+.layout__footer-nav-mobile {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  flex-basis: 100%;
+  padding-block: var(--space-6);
+}
+
+@media (--breakpoint-md) {
+  .layout__footer-nav-mobile {
+    display: none;
+  }
+}
+
+.layout__copyright {
+  font-weight: var(--font-weight-bold);
+}
+
+.layout__footer-nav {
+  display: flex;
+  gap: var(--space-3);
+}
+
 /* -------------------------------------------------------------------------
    Headings
    ------------------------------------------------------------------------- */

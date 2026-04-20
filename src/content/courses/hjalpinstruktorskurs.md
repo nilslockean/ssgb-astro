@@ -1,6 +1,5 @@
 ---
-title: Hjälpinstruktörskurs
-shortName: Hjälpinstruktör
+title: Hjälpinstruktörs&shy;kurs
 excerpt: Räddningskurs 1 ger dig grunderna i hur du assisterar och räddar en andreman när något går fel.
 numDays: [2]
 order: 50

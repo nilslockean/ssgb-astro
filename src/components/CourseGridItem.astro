@@ -10,11 +10,12 @@ interface Props extends HTMLAttributes<"li"> {
 
 const {
   course: {
-    data: { title, shortName, excerpt, cta, slugId },
+    data: { title, shortName, excerpt, slugId },
   },
 } = Astro.props;
 
 const href = getPath(slugId);
+const cta = "Läs mer om " + (shortName || title).replaceAll('&shy;', '').toLowerCase();
 ---
 
 <li class="course-grid-item">
@@ -23,7 +24,7 @@ const href = getPath(slugId);
   </h3>
   <p class="course-grid-item__excerpt">{excerpt}</p>
   <p class="course-grid-item__action">
-    <ButtonLink href={href}>{cta}</ButtonLink>
+  <ButtonLink href={href}>{cta}</ButtonLink>
   </p>
 </li>
 

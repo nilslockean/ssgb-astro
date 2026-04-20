@@ -10,7 +10,7 @@ interface Props extends HTMLAttributes<"ul"> {
 const { entries, class: className, ...rest } = Astro.props;
 ---
 
-<ul class:list={["course-grid", className]} {...rest}>
+<ul class:list={["course-grid", "grid-cols-1", "lg:grid-cols-2", "xl:grid-cols-3", className]} {...rest}>
   {entries.map((course) => <CourseGridItem {course} />)}
   <slot />
 </ul>
@@ -18,19 +18,6 @@ const { entries, class: className, ...rest } = Astro.props;
 <style>
   .course-grid {
     display: grid;
-    grid-template-columns: 1fr;
     gap: var(--space-8);
-  }
-
-  @media (--breakpoint-lg) {
-    .course-grid {
-      grid-template-columns: repeat(2, 1fr);
-    }
-  }
-
-  @media (--breakpoint-2xl) {
-    .course-grid {
-      grid-template-columns: repeat(3, 1fr);
-    }
   }
 </style>
