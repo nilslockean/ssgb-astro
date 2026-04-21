@@ -15,6 +15,6 @@ describe("cl classList utility", () => {
   });
 
   it("should evaluate object values", () => {
-    expect(cl({ "foo": true, "bar": false })).toMatchObject(["foo"]);
-  })
+    expect(cl({ foo: true, bar: false })).toMatchObject(["foo"]);
+  });
 });

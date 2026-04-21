@@ -21,11 +21,7 @@ const {
 ---
 
 <Section
-  class:list={[
-    "page-head",
-    { "page-head--centered": centered },
-    className,
-  ]}
+  class:list={["page-head", { "page-head--centered": centered }, className]}
   {...rest}
 >
   {
@@ -34,7 +30,10 @@ const {
     )
   }
   <h1
-    class:list={["page-head__title", { "page-head__title--centered": centered }]}
+    class:list={[
+      "page-head__title",
+      { "page-head__title--centered": centered },
+    ]}
     set:html={title}
   />
   <div

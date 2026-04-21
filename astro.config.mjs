@@ -51,16 +51,16 @@ export default defineConfig({
 
   fonts: [
     {
-      name: 'Barlow Condensed',
-      cssVariable: '--font-barlow-condensed',
+      name: "Barlow Condensed",
+      cssVariable: "--font-barlow-condensed",
       provider: fontProviders.fontsource(),
-      weights: [400, 500]
+      weights: [400, 500],
     },
     {
       name: "Host Grotesk",
       cssVariable: "--font-host-grotesk",
-      provider: fontProviders.fontsource()
-    }
+      provider: fontProviders.fontsource(),
+    },
   ],
 
   env: {

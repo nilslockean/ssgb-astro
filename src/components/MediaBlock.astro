@@ -12,10 +12,20 @@ const { image, reverse, class: className, ...rest } = Astro.props;
 ---
 
 <div class:list={["media-block", className]} {...rest}>
-  <div class:list={["media-block__image", { "media-block__image--reverse": reverse }]}>
+  <div
+    class:list={[
+      "media-block__image",
+      { "media-block__image--reverse": reverse },
+    ]}
+  >
     <Image class="media-block__img" {...image} />
   </div>
-  <div class:list={["media-block__content", { "media-block__content--reverse": reverse }]}>
+  <div
+    class:list={[
+      "media-block__content",
+      { "media-block__content--reverse": reverse },
+    ]}
+  >
     <slot />
   </div>
 </div>
@@ -65,8 +75,10 @@ const { image, reverse, class: className, ...rest } = Astro.props;
     opacity: 0.8;
     filter: grayscale(100%);
     transition:
-      opacity var(--default-transition-duration) var(--default-transition-timing-function),
-      filter var(--default-transition-duration) var(--default-transition-timing-function);
+      opacity var(--default-transition-duration)
+        var(--default-transition-timing-function),
+      filter var(--default-transition-duration)
+        var(--default-transition-timing-function);
   }
 
   .media-block__img:hover {

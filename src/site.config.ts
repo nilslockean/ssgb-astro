@@ -144,8 +144,7 @@ export type SiteConfig = {
 export const siteConfig = {
   siteTitle: "Sydsveriges Guidebyrå",
   siteUrl: "https://ssgb.se",
-  siteTagline:
-    "Klätterkurser på Kullaberg, i Spanien och Itailen",
+  siteTagline: "Klätterkurser på Kullaberg, i Spanien och Itailen",
 
   // Contact info if you ever want it on footer pages
   contact: {

@@ -18,7 +18,7 @@ export function cl(...rest: unknown[]): string[] {
     }
 
     if (!curr) {
-      return acc
+      return acc;
     }
   }, []);
 }

@@ -15,16 +15,21 @@ const {
 } = Astro.props;
 
 const href = getPath(slugId);
-const cta = "Läs mer om " + (shortName || title).replaceAll('&shy;', '').toLowerCase();
+const cta =
+  "Läs mer om " + (shortName || title).replaceAll("&shy;", "").toLowerCase();
 ---
 
 <li class="course-grid-item">
   <h3 class="course-grid-item__title font-heading mt-0 normal-case">
-    <a class="course-grid-item__link" href={href} set:html={shortName || title}></a>
+    <a
+      class="course-grid-item__link"
+      href={href}
+      set:html={shortName || title}
+    />
   </h3>
   <p class="course-grid-item__excerpt">{excerpt}</p>
   <p class="course-grid-item__action">
-  <ButtonLink href={href}>{cta}</ButtonLink>
+    <ButtonLink href={href}>{cta}</ButtonLink>
   </p>
 </li>
 

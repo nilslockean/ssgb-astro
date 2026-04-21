@@ -8,7 +8,11 @@ export interface Props extends HTMLAttributes<"a"> {
 const { href, variant = "default", class: className, ...rest } = Astro.props;
 ---
 
-<a class:list={["btn-link", `btn-link--${variant}`, className]} href={href} {...rest}>
+<a
+  class:list={["btn-link", `btn-link--${variant}`, className]}
+  href={href}
+  {...rest}
+>
   <slot />
 </a>
 
@@ -25,8 +29,10 @@ const { href, variant = "default", class: className, ...rest } = Astro.props;
     text-decoration: none;
     color: var(--color-default);
     transition:
-      background-color var(--default-transition-duration) var(--default-transition-timing-function),
-      border-color var(--default-transition-duration) var(--default-transition-timing-function);
+      background-color var(--default-transition-duration)
+        var(--default-transition-timing-function),
+      border-color var(--default-transition-duration)
+        var(--default-transition-timing-function);
   }
 
   .btn-link--default {

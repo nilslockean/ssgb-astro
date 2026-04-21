@@ -13,7 +13,9 @@ const { as, class: className, ...rest } = Astro.props;
 <Section class:list={["cta-booking", className]} as={as} id="boka" {...rest}>
   <div class="cta-booking__inner">
     <h2 class="cta-booking__title">Boka kurs</h2>
-    <p class="cta-booking__subtitle">Föreslå ett datum, så återkommer vi med bekräftelse.</p>
+    <p class="cta-booking__subtitle">
+      Föreslå ett datum, så återkommer vi med bekräftelse.
+    </p>
     <BookingForm
       maxParticipants={12}
       messagePlaceholder="Vilken kurs vill du boka?"

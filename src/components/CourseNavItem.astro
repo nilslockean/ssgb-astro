@@ -11,5 +11,9 @@ const { entry } = Astro.props;
 ---
 
 <li>
-  <NavLink class:list={["text-base", entry.className]} href={entry.path} set:html={entry.label} />
+  <NavLink
+    class:list={["text-base", entry.className]}
+    href={entry.path}
+    set:html={entry.label}
+  />
 </li>

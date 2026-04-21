@@ -68,6 +68,5 @@ const team = defineCollection({
     }),
 });
 
-
 // 4. Export a single `collections` object to register your collection(s)
 export const collections = { courses, galleries, norms, team, pages };

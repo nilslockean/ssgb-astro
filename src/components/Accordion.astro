@@ -21,12 +21,11 @@ const { title, class: className, ...rest } = Astro.props;
         <g clip-path="url(#clip0_223_2)">
           <path
             d="M8.5 7.5H16V8.5H8.5V16H7.5V8.5H0V7.5H7.5V0H8.5V7.5Z"
-            fill="currentColor"
-          />
+            fill="currentColor"></path>
         </g>
         <defs>
           <clipPath id="clip0_223_2">
-            <rect fill="currentColor" height="16" width="16" />
+            <rect fill="currentColor" height="16" width="16"></rect>
           </clipPath>
         </defs>
       </svg>
@@ -61,7 +60,8 @@ const { title, class: className, ...rest } = Astro.props;
   }
 
   .accordion__icon {
-    transition: transform var(--default-transition-duration) var(--default-transition-timing-function);
+    transition: transform var(--default-transition-duration)
+      var(--default-transition-timing-function);
   }
 
   details[open] .accordion__icon {

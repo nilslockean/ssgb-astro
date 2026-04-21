@@ -10,9 +10,7 @@ interface Props {
 const { links } = Astro.props;
 ---
 
-<header
-  class="flex justify-between md:hidden"
->
+<header class="flex justify-between md:hidden">
   <SiteLogo />
   <button aria-haspopup="dialog" aria-label="Toggle menu" id="menu-toggle">
     <span class="sr-only">Öppna eller stäng huvudmenyn</span>
@@ -67,12 +65,10 @@ const { links } = Astro.props;
 <!-- Navigation -->
 <nav
   aria-label="Primary"
-  class="  interpolate-size z-50 hidden flex-col"
+  class="interpolate-size z-50 hidden flex-col"
   id="primary-nav"
 >
-  <ul
-    class="nav-links flex flex-col flex-wrap items-start gap-4 text-xl"
-  >
+  <ul class="nav-links flex flex-col flex-wrap items-start gap-4 text-xl">
     {
       links.map((item) => (
         <li>
@@ -137,7 +133,6 @@ const { links } = Astro.props;
   #menu-toggle[aria-expanded="true"] .mobile-menu__icon--close {
     display: block;
   }
-
 </style>
 
 <!-- Client-side script for toggling menu -->

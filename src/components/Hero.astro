@@ -39,7 +39,14 @@ if (image) {
 }
 ---
 
-<section class:list={["hero", { "hero--large": size === "large", "hero--video": Boolean(video) }, className]} {...rest}>
+<section
+  class:list={[
+    "hero",
+    { "hero--large": size === "large", "hero--video": Boolean(video) },
+    className,
+  ]}
+  {...rest}
+>
   <span aria-hidden="true" class="hero__overlay"></span>
   {
     video ? (
@@ -118,7 +125,11 @@ if (image) {
     position: absolute;
     inset: 0;
     z-index: 10;
-    background: linear-gradient(65deg, rgb(0 0 0 / var(--opacity)), rgb(0 0 0 / 0.5));
+    background: linear-gradient(
+      65deg,
+      rgb(0 0 0 / var(--opacity)),
+      rgb(0 0 0 / 0.5)
+    );
   }
 
   .hero--video .hero__overlay {
