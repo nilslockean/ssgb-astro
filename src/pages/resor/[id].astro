@@ -16,7 +16,7 @@ import Section from "@components/Section.astro";
 
 // 1. Generate a new path for every collection entry
 export async function getStaticPaths() {
-  const posts = await getCollection("courses");
+  const posts = await getCollection("trips");
   return posts.map((post) => ({
     params: { id: post.id },
     props: { post },
@@ -25,40 +25,8 @@ export async function getStaticPaths() {
 // 2. For your template, you can get the entry directly from the prop
 const { post } = Astro.props;
 const { Content } = await render(post);
-const norm = post.data.norm && (await getEntry(post.data.norm));
 const gallery = post.data.gallery && (await getEntry(post.data.gallery));
-
-const events = await getCollection("events", (event) => {
-  if (event.data.past) {
-    return false;
-  }
-
-  if (event.data.draft && !FIENTA_INCLUDE_DRAFTS) {
-    return false;
-  }
-
-  const title = event.data.title.sv;
-
-  // Strip all the &shy; characters from the course name
-  const normalizedPostTile = String(
-    post.data.shortName || post.data.title,
-  ).replaceAll("&shy;", "");
-
-  return title.includes(normalizedPostTile);
-});
-// console.log({ events });
-
-const numDays = post.data.numDays.join("-");
-const numDaysSuffix = numDays === "1" ? "dag" : "dagar";
-const numDaysDesc = `${numDays} ${numDaysSuffix}`;
 const heroButtons: HeroButton[] = [{ label: post.data.cta, href: "#boka" }];
-if (norm) {
-  heroButtons.push({
-    label: "Läs kursnormen",
-    href: norm.data.url,
-    target: "_blank",
-  });
-}
 ---
 
 <Layout
@@ -98,10 +66,6 @@ if (norm) {
   <Section>
     <div class="collection-entry">
       <Content />
-      <p>
-        <strong>Tidsåtgång:</strong>
-        {numDaysDesc}.
-      </p>
     </div>
   </Section>
   {
@@ -120,48 +84,22 @@ if (norm) {
         </Accordion>
       )
     }
-    <Accordion title="Åldersgräns">
-      <p>
-        <strong
-          >Lägsta ålder för att delta på kursen är 13 år.
-        </strong>Minderåriga endast i målsmans sällskap.
-      </p>
-    </Accordion>
-    {
-      norm && (
-        <Accordion title="Kursnorm">
-          <>
-            <p>
-              Denna kurs uppfyller{" "}
-              <Link href={norm.data.url} target="_blank">
-                Svenska Klätterförbundets norm för
-                {norm.data.title}.
-              </Link>
-            </p>
-            <p>
-              Normerna säkerställer att kursen leds av instruktörer med rätt
-              kompetens och att innehållet följer etablerade säkerhetskrav.
-            </p>
-          </>
-        </Accordion>
-      )
-    }
     <Accordion title="Pris">
       <p>
-        Ibland erbjuds fasta kursdatum med öppen anmälan. Då är priset
-        <strong>{formatPrice([post.data.openBookingPrice])}</strong>
-        per person och tillfällena annonseras under <Link href="#boka"
-          >{post.data.cta}</Link
-        > nedan.
+        Kursavgiften är {formatPrice([post.data.price])} inkl. moms för fem dagar.
+        Du ska ha med dig personlig utrustning och all annan nödvändig klätterutrustning.
+        Vi är alltid auktoriserade klätterinstruktörer av Svenska Klätterförbundet och UIAA.
+        Transporter och rekommenderad utrustning (utrustningslista) på vad du bör ta med dig skickas ut vid anmälan.
       </p>
-
-      <p>Privat bokning:</p>
-      <PrivateBookingPricingList class="mt-4" />
+      <p>
+        Utöver kursavgiften tillkommer kostnader för flyg och kost/logi.
+        Du måste även vara medlem i en av Klätterförbundets klubbar och därmed ha en klätterförsäkring.
+      </p>
     </Accordion>
   </Section>
   <Section class="pb-16" id="boka">
     <div class="booking-card">
-      <h2 class="mt-0">{post.data.cta}</h2>
+      <h2 class="mt-0">Så gör du</h2>
       <div class="max-w-prose">
         <p class="text-lg">
           Du föreslår ett datum, så återkommer vi med bekräftelse.

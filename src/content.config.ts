@@ -25,6 +25,22 @@ const courses = defineCollection({
     }),
 });
 
+const trips = defineCollection({
+  loader: glob({ base: "./src/content/trips", pattern: "**/*.{md,mdx}" }),
+  schema: ({ image }) =>
+    z.object({
+      title: z.string(),
+      shortName: z.string().optional(),
+      excerpt: z.string(),
+      price: z.number(),
+      prerequisites: z.string().optional(),
+      heroImage: image().optional(),
+      cta: z.string(),
+      gallery: reference("galleries").optional(),
+      slugId: z.enum(Slug),
+    }),
+});
+
 const pages = defineCollection({
   loader: glob({ base: "./src/content/pages", pattern: "**/*.{md,mdx}" }),
   schema: () =>
@@ -69,4 +85,4 @@ const team = defineCollection({
 });
 
 // 4. Export a single `collections` object to register your collection(s)
-export const collections = { courses, galleries, norms, team, pages };
+export const collections = { courses, galleries, norms, team, pages, trips };

@@ -38,6 +38,10 @@ export enum Slug {
   COURSE_TRAD = "course_trad",
   COURSE_ASSISTANT = "course_assisting_instructor",
 
+  TRIPS = "trips",
+  TRIP_ITALY = "trip_italy",
+  TRIP_SPAIN = "trip_spain",
+
   TERMS_PRIVACY = "terms_privacy",
   TERMS_BOOKING = "terms_booking",
 
@@ -64,6 +68,10 @@ export const Paths: Record<Slug, string> = {
   [Slug.COURSE_ROPE_SOLO_BASIC]: "/kurser/clogkurs",
   [Slug.COURSE_TRAD]: "/kurser/tradkurs",
   [Slug.COURSE_ASSISTANT]: "/kurser/hjalpinstruktorskurs",
+
+  [Slug.TRIPS]: "/resor",
+  [Slug.TRIP_ITALY]: "/resor/italien",
+  [Slug.TRIP_SPAIN]: "/resor/spanien",
 
   [Slug.TERMS_BOOKING]: "/bokningsvillkor",
   [Slug.TERMS_PRIVACY]: "/integritetspolicy",
@@ -95,10 +103,15 @@ const courseNav: Navigation = [
   // { link: link(Slug.COURSE_ROPE_SOLO_BASIC, "Clogkurs") },
 ];
 
+const tripNav: Navigation = [
+  { link: link(Slug.TRIP_ITALY, "Klättring i Dolomiterna") },
+  { link: link(Slug.TRIP_SPAIN, "Sportklättring i Spanien") }
+];
+
 const mobileNav: Navigation = [
   { link: link(Slug.HOME, "Hem") },
   { link: link(Slug.COURSES, "Kurser"), subMenu: courseNav },
-  // { link: link(Slug.TRY, "Prova på") },
+  { link: link(Slug.TRIPS, "Resor"), subMenu: tripNav },
   { link: link(Slug.PRICES, "Priser") },
   { link: link(Slug.ABOUT, "Om") },
   { link: link(Slug.CONTACT, "Kontakt") },
@@ -106,7 +119,7 @@ const mobileNav: Navigation = [
 
 const mainNav: Navigation = [
   { link: link(Slug.COURSES, "Kurser") },
-  // { link: link(Slug.TRY, "Prova på") },
+  { link: link(Slug.TRIPS, "Resor") },
   { link: link(Slug.PRICES, "Priser") },
   { link: link(Slug.ABOUT, "Om") },
   { link: link(Slug.CONTACT, "Kontakt") },
@@ -115,7 +128,6 @@ const mainNav: Navigation = [
 const footerNav: Navigation = [
   { link: link(Slug.TERMS_BOOKING, "Bokningsvillkor") },
   { link: link(Slug.TERMS_PRIVACY, "Integritetspolicy") },
-  // { link: link(Slug.WEB_DEVELOPMENT, "Webbutveckling") },
 ];
 
 const headerNav: Navigation = [

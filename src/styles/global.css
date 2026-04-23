@@ -417,31 +417,92 @@ h1 + .intro {
 /* -------------------------------------------------------------------------
    Links
    ------------------------------------------------------------------------- */
-main a:not(.btn):not(.btn-link),
-footer a:not(.btn):not(.btn-link),
-nav a:not(.btn):not(.btn-link) {
+main a:not(.btn),
+footer a:not(.btn),
+nav a:not(.btn) {
   text-decoration: underline;
   text-decoration-thickness: 2px;
   text-underline-offset: 2px;
 }
 
-main a:not(.btn):not(.btn-link):hover,
-footer a:not(.btn):not(.btn-link):hover,
-nav a:not(.btn):not(.btn-link):hover {
+main a:not(.btn):hover,
+footer a:not(.btn):hover,
+nav a:not(.btn):hover {
   text-decoration: none;
 }
 
-main a:not(.btn):not(.btn-link):focus-visible,
-footer a:not(.btn):not(.btn-link):focus-visible,
-nav a:not(.btn):not(.btn-link):focus-visible {
+main a:not(.btn):focus-visible,
+footer a:not(.btn):focus-visible,
+nav a:not(.btn):focus-visible {
   outline: 2px solid var(--color-brand-darker);
+}
+
+/* -------------------------------------------------------------------------
+   Buttons
+   ------------------------------------------------------------------------- */
+.btn {
+  display: inline-block;
+  font-family: var(--font-barlow-condensed);
+  font-weight: 500;
+  text-transform: uppercase;
+  border: 2px solid transparent;
+  border-radius: var(--border-radius-full);
+  padding: calc(var(--space-2) - 2px) var(--space-4) var(--space-2);
+  cursor: pointer;
+  text-decoration: none;
+  color: var(--color-default);
+  transition:
+    background-color var(--default-transition-duration)
+      var(--default-transition-timing-function),
+    border-color var(--default-transition-duration)
+      var(--default-transition-timing-function);
+}
+
+.btn:hover {
+  background-color: rgb(255 255 255 / 0.2);
+}
+
+.btn:active {
+  background-color: rgb(0 0 0 / 0.1);
+}
+
+.btn--default {
+  background-color: transparent;
+  border-color: var(--color-default);
+}
+
+.btn--primary {
+  background-color: var(--color-brand);
+  border-color: var(--color-brand);
+  color: var(--color-default);
+}
+
+.btn--primary:hover {
+  background-color: var(--color-brand-dark);
+}
+
+.btn--primary:active {
+  background-color: var(--color-line);
+  border-color: var(--color-brand-dark);
+}
+
+.btn.text-xs {
+  font-size: var(--text-xs);
+}
+
+.btn.text-base {
+  font-size: var(--text-base);
+}
+
+.btn.whitespace-nowrap {
+  white-space: nowrap;
 }
 
 /* -------------------------------------------------------------------------
    Forms
    ------------------------------------------------------------------------- */
 form label {
-  color: var(--color-accent);
+  color: var(--color-muted);
   margin-bottom: var(--space-1);
   display: block;
   font-weight: var(--font-weight-medium);
@@ -465,33 +526,6 @@ form textarea:focus {
 
 form textarea {
   min-height: 120px;
-}
-
-form button[type="submit"] {
-  font-family: var(--font-barlow-condensed);
-  background-color: var(--color-default);
-  color: var(--color-white);
-  text-transform: uppercase;
-  font-size: var(--text-sm);
-  display: inline-block;
-  cursor: pointer;
-  border: var(--border-width) solid transparent;
-  border-radius: var(--border-radius-full);
-  padding: var(--space-2) var(--space-4);
-  transition:
-    background-color var(--default-transition-duration)
-      var(--default-transition-timing-function),
-    border-color var(--default-transition-duration)
-      var(--default-transition-timing-function);
-}
-
-form button[type="submit"]:hover {
-  background-color: var(--color-muted);
-}
-
-form button[type="submit"]:active {
-  background-color: var(--color-black);
-  border-color: var(--color-black);
 }
 
 /* -------------------------------------------------------------------------
