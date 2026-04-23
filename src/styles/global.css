@@ -395,15 +395,6 @@ h1 + .intro {
   margin-top: var(--space-4);
 }
 
-.collection-entry a {
-  text-decoration: underline;
-  text-underline-offset: 4px;
-}
-
-.collection-entry a:hover {
-  text-underline-offset: 1px;
-}
-
 .collection-entry ul {
   margin-block: var(--space-4);
   margin-left: var(--space-5);
@@ -423,6 +414,7 @@ nav a:not(.btn) {
   text-decoration: underline;
   text-decoration-thickness: 2px;
   text-underline-offset: 2px;
+  color: var(--color-default);
 }
 
 main a:not(.btn):hover,
