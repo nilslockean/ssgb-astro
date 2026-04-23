@@ -42,6 +42,8 @@ export enum Slug {
   TRIP_ITALY = "trip_italy",
   TRIP_SPAIN = "trip_spain",
 
+  INSTRUCTOR_TRAINING = "instructor_training",
+
   TERMS_PRIVACY = "terms_privacy",
   TERMS_BOOKING = "terms_booking",
 
@@ -72,6 +74,8 @@ export const Paths: Record<Slug, string> = {
   [Slug.TRIPS]: "/resor",
   [Slug.TRIP_ITALY]: "/resor/italien",
   [Slug.TRIP_SPAIN]: "/resor/spanien",
+
+  [Slug.INSTRUCTOR_TRAINING]: "/utbildning",
 
   [Slug.TERMS_BOOKING]: "/bokningsvillkor",
   [Slug.TERMS_PRIVACY]: "/integritetspolicy",
@@ -112,6 +116,7 @@ const mobileNav: Navigation = [
   { link: link(Slug.HOME, "Hem") },
   { link: link(Slug.COURSES, "Kurser"), subMenu: courseNav },
   { link: link(Slug.TRIPS, "Resor"), subMenu: tripNav },
+  { link: link(Slug.INSTRUCTOR_TRAINING, "Utbildning") },
   { link: link(Slug.PRICES, "Priser") },
   { link: link(Slug.ABOUT, "Om") },
   { link: link(Slug.CONTACT, "Kontakt") },
@@ -120,6 +125,7 @@ const mobileNav: Navigation = [
 const mainNav: Navigation = [
   { link: link(Slug.COURSES, "Kurser") },
   { link: link(Slug.TRIPS, "Resor") },
+  { link: link(Slug.INSTRUCTOR_TRAINING, "Utbildning") },
   { link: link(Slug.PRICES, "Priser") },
   { link: link(Slug.ABOUT, "Om") },
   { link: link(Slug.CONTACT, "Kontakt") },
