@@ -7,7 +7,10 @@ export type NavLink = {
 
 export type Navigation = Array<{
   link: NavLink;
-  subMenu?: Navigation;
+  subMenu?: {
+    nav: Navigation,
+    more?: NavLink
+  };
 }>;
 
 // Useful if you ever want to render footer-specific or header-specific menus
@@ -116,8 +119,13 @@ const tripNav: Navigation = [
 
 const mobileNav: Navigation = [
   { link: link(Slug.HOME, "Hem") },
-  { link: link(Slug.COURSES, "Kurser"), subMenu: courseNav },
-  { link: link(Slug.TRIPS, "Resor"), subMenu: tripNav },
+  {
+    link: link(Slug.COURSES, "Kurser"), subMenu: {
+      nav: courseNav,
+      more: link(Slug.COURSES, "Fler kurser →")
+    }
+  },
+  { link: link(Slug.TRIPS, "Resor"), subMenu: { nav: tripNav } },
   { link: link(Slug.INSTRUCTOR_TRAINING, "Utbildning") },
   { link: link(Slug.PRICES, "Priser") },
   { link: link(Slug.ABOUT, "Om") },

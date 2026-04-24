@@ -77,11 +77,12 @@ const { links } = Astro.props;
           </a>
           {item.subMenu && (
             <ul class="mt-6 ml-4 flex flex-col gap-2">
-              {item.subMenu.map((entry) => (
+              {item.subMenu.nav.map((entry) => (
                 <li>
                   <NavLink href={entry.link.path} set:html={entry.link.label} />
                 </li>
               ))}
+              {item.subMenu.more && <li><NavLink href={item.subMenu.more.path}>{item.subMenu.more.label}</li>}
             </ul>
           )}
         </li>
