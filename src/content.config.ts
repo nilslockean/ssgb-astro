@@ -82,6 +82,7 @@ const team = defineCollection({
       description: z.string(),
       image: image(),
       alt: z.string(),
+      featured: z.boolean().default(false)
     }),
 });
 

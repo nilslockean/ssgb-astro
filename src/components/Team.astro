@@ -10,26 +10,12 @@ interface Props extends HTMLAttributes<"ul"> {
 const { entries, class: className, ...rest } = Astro.props;
 ---
 
-<ul class:list={["team", className]} {...rest}>
+<ul class:list={["team grid lg:grid-cols-2 xl:grid-cols-3", className]} {...rest}>
   {entries.map((person) => <TeamMember {person} />)}
 </ul>
 
 <style>
   .team {
-    display: grid;
-    grid-template-columns: 1fr;
     gap: var(--space-8);
-  }
-
-  @media (--breakpoint-lg) {
-    .team {
-      grid-template-columns: repeat(2, 1fr);
-    }
-  }
-
-  @media (--breakpoint-2xl) {
-    .team {
-      grid-template-columns: repeat(3, 1fr);
-    }
   }
 </style>

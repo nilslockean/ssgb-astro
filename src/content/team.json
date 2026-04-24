@@ -1,10 +1,11 @@
 [
   {
-    "id": "lina",
-    "name": "Lina Lockean",
-    "description": "Lina är klätterledare och på väg mot hjälpinstruktör klippa. Hon drivs av att få introducera människor till klättring och till upplevelsen av att röra sig i naturen på ett nytt sätt. Med ett lugnt och närvarande förhållningssätt skapar hon trygga förutsättningar för deltagare som kanske är nya inför höjd, exponering eller klippmiljö. Ambitionen är att fortsätta utvecklas som instruktör enligt normerna och att bidra till upplevelser där både platsen och klättringen får ta sin tid.",
-    "image": "../assets/images/lina-4.jpeg",
-    "alt": "Lina cloggar vid Högberget i Bohuslän"
+    "id": "christian",
+    "name": "Christian Persson",
+    "description": "Jag (Christian Persson) är auktoriserad instruktör och examinator i klippklättring enligt Svenska Klätterförbundet och UIAA. Hela mitt yrkesliv (35 år) har jag arbetat med aktiviteter, ledarskap, grupptveckling och friluftssäkerhet. Numera vill jag vara på berget, ge kurser, utveckla andra i den vertikala sporten och få klättra mycket själv. I bagaget har jag en MSc i Outdoor Education, erfarenhet som universitetsadjunkt på Linnéuniversitetet och har skapat ett flertal utbildningar och kurser på universitets- och gymnasienivå.",
+    "image": "../assets/images/christian-persson-500.jpg",
+    "alt": "Christian Persson profilbild",
+    "featured": true
   },
   {
     "id": "nils",
