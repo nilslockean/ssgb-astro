@@ -6,7 +6,6 @@ import Layout from "../layouts/Layout.astro";
 import CourseGrid from "@components/CourseGrid.astro";
 import MediaBlock from "@components/MediaBlock.astro";
 import { getCourses } from "@lib/contentUtils";
-import ButtonLink from "@components/ButtonLink.astro";
 import Eyebrow from "@components/Eyebrow.astro";
 import { getPath, Slug } from "@config";
 import CourseSelector from "@components/CourseSelector.astro";
@@ -14,14 +13,10 @@ import CtaContact from "@components/CtaContact.astro";
 import Link from "@components/Link.astro";
 import Section from "@components/Section.astro";
 import { siteConfig } from "@config";
-
-const MAINTENANCE_MODE = false;
-
-if (MAINTENANCE_MODE) {
-  return Astro.rewrite("/kommer-snart");
-}
+import { getCollection } from "astro:content";
 
 const featuredCourses = await getCourses((course) => course.data.featured);
+const featuredTrips = await getCollection("trips");
 const heroButtons: HeroButton[] = [
   {
     label: "Boka en kurs",
@@ -54,7 +49,6 @@ const heroButtons: HeroButton[] = [
       erbjuder våra kurser samtliga dagar i veckan, du bokar själv när det
       passar och hur många ni vill vara.
     </p>
-    <ButtonLink href={getPath(Slug.COURSES)}>Se kursutbud</ButtonLink>
     <Eyebrow class="mt-16 mb-4 ml-4">Populära kurser</Eyebrow>
     <CourseGrid class="mb-8" entries={featuredCourses}>
       <p class="flex items-end">
@@ -63,6 +57,18 @@ const heroButtons: HeroButton[] = [
     </CourseGrid>
   </Section>
 
+  <Section>
+    <h2>Resor</h2>
+    <p class="intro">
+      För dig som vill uppleva klättring och bergsmiljöer utanför Sverige.
+      Resorna riktar sig till klättrare med viss erfarenhet som vill utvecklas
+      vidare i en ny miljö, med stöd av instruktör och guide. Fokus ligger på
+      säkerhet, metodik och att ge dig förutsättningar att ta tillvara på
+      möjligheterna som platsen erbjuder.
+    </p>
+    <Eyebrow class="mt-16 mb-4 ml-4">Våra resor</Eyebrow>
+    <CourseGrid class="mb-8" entries={featuredTrips} />
+  </Section>
   <CourseSelector />
   <CtaContact />
 </Layout>
