@@ -5,8 +5,8 @@ excerpt: Upplev storslagen natur och klättra höga berg i världsarvet Dolomite
 order: 10
 cta: Res till Italien med oss
 price: 15500
-prerequisites: Detta är en grundkurs utan direkta krav på förkunskap, men du kommer få ut mycket mer av kursen om du redan har grönt kort. Gå gärna en topprepskurs först om du inte redan har gjort det.
-heroImage: ../../assets/images/dolomiterna-4.jpg
+prerequisites: För att anmäla dig till den här kursen ska du ha gått minst en kurs hos Sydsveriges Guidebyrå.
+heroImage: ../../assets/images/dolomiterna-5.jpg
 slugId: trip_italy
 ---
 

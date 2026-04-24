@@ -1,7 +1,7 @@
 ---
 title: Grund&shy;kurs i kamrat&shy;räddning
 shortName: Räddning 1
-excerpt: Räddningskurs 1 ger dig grunderna i hur du assisterar och räddar en andreman när något går fel.
+excerpt: Räddningskurs 1 ger dig grunderna i hur du räddar och kan hjälpa en andreman.
 numDays: [2]
 order: 50
 cta: Boka räddningskurs

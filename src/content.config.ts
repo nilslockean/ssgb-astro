@@ -14,7 +14,7 @@ const courses = defineCollection({
       featured: z.boolean().optional(),
       openBookingPrice: z.number().default(config.defaultPrices.openBooking),
       maxParticipants: z.number().min(1).default(4),
-      minAge: z.number().nullable().default(13),
+      minAge: z.number().nullable().default(null),
       shortName: z.string().optional(),
       prerequisites: z.string().optional(),
       heroImage: image().optional(),

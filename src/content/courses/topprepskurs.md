@@ -3,6 +3,7 @@ title: Topprepskurs
 excerpt: Topprepskursen ger dig grunderna för att säkra och klättra på topprep både inomhus och utomhus.
 numDays: [1]
 order: 10
+minAge: 13
 cta: Boka topprepskurs
 prerequisites: Inga förkunskaper krävs.
 openBookingPrice: 1650

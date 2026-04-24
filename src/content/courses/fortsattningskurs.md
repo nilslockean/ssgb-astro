@@ -1,7 +1,7 @@
 ---
 title: Fortsättnings&shy;kurs i klipp&shy;klättring
 shortName: Fortsättnings&shy;kurs
-excerpt: Kursen för dig som vill lära dig leda självständigt på egenplacerade säkringar, bygga stand och ta första steget mot multipitch.
+excerpt: För dig som klättrat en del redan. I den här kursen börjar du gå som försteman på egna säkringar.
 numDays: [1, 2]
 order: 30
 cta: Boka fortsättningskurs

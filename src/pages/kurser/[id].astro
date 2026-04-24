@@ -151,15 +151,6 @@ if (norm) {
       )
     }
     <Accordion title="Pris">
-      <p>
-        Ibland erbjuds fasta kursdatum med öppen anmälan. Då är priset
-        <strong>{formatPrice([post.data.openBookingPrice])}</strong>
-        per person och tillfällena annonseras under <Link href="#boka"
-          >{post.data.cta}</Link
-        > nedan.
-      </p>
-
-      <p>Privat bokning:</p>
       <PrivateBookingPricingList class="mt-4" />
     </Accordion>
   </Section>

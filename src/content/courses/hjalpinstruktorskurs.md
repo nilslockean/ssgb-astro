@@ -3,7 +3,7 @@ title: Hjälpinstruktörs&shy;kurs
 excerpt: Här blir du drillad i de moment som krävs för att bli examinerad till hjälpinstruktör klippa.
 numDays: [2]
 minAge: null
-order: 50
+order: 80
 cta: Boka hjälpinstruktörskurs
 norm: hjalpinstruktor
 featured: false

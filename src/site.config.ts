@@ -37,6 +37,7 @@ export enum Slug {
   COURSE_ROPE_SOLO_BASIC = "course_rope_solo_basic",
   COURSE_TRAD = "course_trad",
   COURSE_ASSISTANT = "course_assisting_instructor",
+  COURSE_REFRESHER = "course_refresher",
 
   TRIPS = "trips",
   TRIP_ITALY = "trip_italy",
@@ -70,6 +71,7 @@ export const Paths: Record<Slug, string> = {
   [Slug.COURSE_ROPE_SOLO_BASIC]: "/kurser/clogkurs",
   [Slug.COURSE_TRAD]: "/kurser/tradkurs",
   [Slug.COURSE_ASSISTANT]: "/kurser/hjalpinstruktorskurs",
+  [Slug.COURSE_REFRESHER]: "/kurser/uppfraschningskurs",
 
   [Slug.TRIPS]: "/resor",
   [Slug.TRIP_ITALY]: "/resor/italien",
