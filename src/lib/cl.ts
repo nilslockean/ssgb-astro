@@ -1,26 +1,44 @@
-export function cl(...rest: unknown[]): string[] {
-  return rest.reduce<string[]>((acc, curr) => {
-    if (typeof curr === "string") {
-      return acc.concat(curr);
-    }
+type ClArg =
+  | string
+  | number
+  | boolean
+  | null
+  | undefined
+  | Record<string, boolean>
+  | ClArg[];
 
-    if (typeof curr === "number") {
-      return acc.concat(String(curr));
-    }
+function parseArg(arg: ClArg): string[] {
+  if (typeof arg === "string") {
+    return [arg];
+  }
 
-    if (typeof curr === "object") {
-      for (const key in curr) {
-        const value = curr[key];
-        if (value) {
-          return acc.concat(String(key));
-        }
-      }
-    }
+  if (typeof arg === "number") {
+    return [String(arg)];
+  }
 
-    if (!curr) {
-      return acc;
-    }
-  }, []);
+  if (typeof arg === "boolean") {
+    return [];
+  }
+
+  if (arg === null || arg === undefined) {
+    return [];
+  }
+
+  if (Array.isArray(arg)) {
+    return arg.flatMap(parseArg);
+  }
+
+  if (typeof arg === "object") {
+    return Object.entries(arg)
+      .filter(([, value]) => value)
+      .map(([key]) => key);
+  }
+
+  return [];
+}
+
+export function cl(...rest: ClArg[]): string[] {
+  return rest.flatMap(parseArg);
 }
 
 export default cl;
