@@ -1,0 +1,34 @@
+---
+import Section from "./Section.astro";
+import { Image } from "astro:assets";
+import badge from "../assets/images/forbundet.png";
+---
+
+<Section>
+  <div class="card">
+    <Image width={320} src={badge} alt="Auktoriserad instruktör" />
+    <div>
+      <h2 class="h3">Auktoriserad instruktör</h2>
+      <p><strong>Använd alltid en auktoriserad instruktör.</strong>
+      Att vara klippklätterinstruktör innebär att instruktören genomgått flera års utbildning, är examinerad av Svenska klätterförbundet och håller sin licens uppdaterad genom kontinuerlig utbildning. 'Rock Climbing Instructor' är en internationell standard under UIAA (den internationella organisationen för klättring och bergsbestigning "Union Internationale des Associations d'Alpinisme") som kvalitetssäkrar instruktörers erfarenhet och kompetens.</p>
+    </div>
+  </div>
+</Section>
+
+<style>
+  .card {
+    container-type: inline-size;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+  }
+
+  .card img {
+    width: 160px;
+    height: 177px;
+  }
+
+  .h3 {
+    margin-top: 0;
+  }
+</style>
