@@ -8,7 +8,6 @@ import { getCourses } from "@lib/contentUtils";
 import Eyebrow from "@components/Eyebrow.astro";
 import { getPath, Slug } from "@config";
 import CourseSelector from "@components/CourseSelector.astro";
-import CtaContact from "@components/CtaContact.astro";
 import Link from "@components/Link.astro";
 import Section from "@components/Section.astro";
 import { siteConfig } from "@config";
@@ -69,5 +68,4 @@ const heroButtons: HeroButton[] = [
     <CourseGrid class="mb-8" entries={featuredTrips} />
   </Section>
   <CourseSelector />
-  <CtaContact />
 </Layout>

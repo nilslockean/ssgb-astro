@@ -3,7 +3,6 @@ import Section from "@components/Section.astro";
 import Layout from "../layouts/Layout.astro";
 import Team from "@components/Team.astro";
 import { getCollection } from "astro:content";
-import CtaContact from "@components/CtaContact.astro";
 import Link from "@components/Link.astro";
 
 const teamMembers = await getCollection("team");
@@ -30,5 +29,4 @@ const teamMembers = await getCollection("team");
     </p>
     <Team entries={teamMembers} />
   </Section>
-  <CtaContact />
 </Layout>
