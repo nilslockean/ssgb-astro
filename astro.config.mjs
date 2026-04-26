@@ -20,7 +20,7 @@ dotenv.config();
 
 // https://astro.build/config
 export default defineConfig({
-  site: "https://malmoklatterklubb.se",
+  site: "https://ssgb.se",
 
   integrations: [
     // sanity({
@@ -75,11 +75,11 @@ export default defineConfig({
         access: "public",
         default: "", // dev API key is the default
       }),
-      FIENTA_API_KEY: envField.string({
-        context: "server",
-        access: "secret",
-        optional: false,
-      }),
+      // FIENTA_API_KEY: envField.string({
+      //   context: "server",
+      //   access: "secret",
+      //   optional: false,
+      // }),
       FIENTA_INCLUDE_DRAFTS: envField.boolean({
         context: "server",
         access: "public",
