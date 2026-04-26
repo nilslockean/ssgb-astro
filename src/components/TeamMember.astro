@@ -3,12 +3,10 @@ import type { CollectionEntry } from "astro:content";
 import type { HTMLAttributes } from "astro/types";
 import { getImage } from "astro:assets";
 import { Image } from "astro:assets";
-import { cl } from "@lib/cl";
 
 interface Props extends HTMLAttributes<"li"> {
   person: CollectionEntry<"team">;
 }
-
 const {
   person: {
     data: { name, description, image, alt, featured },
@@ -23,7 +21,7 @@ const imageData = await getImage({
 });
 ---
 
-<li class:list={cl("team-member", { "team-member--featured": featured })}>
+<li class:list={["team-member", { "team-member--featured": featured }]}>
   <figure class="team-member__figure">
     <div class="team-member__image-wrapper">
       <Image
