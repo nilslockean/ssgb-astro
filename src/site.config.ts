@@ -8,8 +8,8 @@ export type NavLink = {
 export type Navigation = Array<{
   link: NavLink;
   subMenu?: {
-    nav: Navigation,
-    more?: NavLink
+    nav: Navigation;
+    more?: NavLink;
   };
 }>;
 
@@ -114,16 +114,17 @@ const courseNav: Navigation = [
 
 const tripNav: Navigation = [
   { link: link(Slug.TRIP_ITALY, "Klättring i Dolomiterna") },
-  { link: link(Slug.TRIP_SPAIN, "Sportklättring i Spanien") }
+  { link: link(Slug.TRIP_SPAIN, "Sportklättring i Spanien") },
 ];
 
 const mobileNav: Navigation = [
   { link: link(Slug.HOME, "Hem") },
   {
-    link: link(Slug.COURSES, "Kurser"), subMenu: {
+    link: link(Slug.COURSES, "Kurser"),
+    subMenu: {
       nav: courseNav,
-      more: link(Slug.COURSES, "Fler kurser →")
-    }
+      more: link(Slug.COURSES, "Fler kurser →"),
+    },
   },
   { link: link(Slug.TRIPS, "Resor"), subMenu: { nav: tripNav } },
   { link: link(Slug.INSTRUCTOR_TRAINING, "Utbildning") },
