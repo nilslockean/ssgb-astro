@@ -101,13 +101,16 @@ const heroButtons: HeroButton[] = [{ label: post.data.cta, href: "#boka" }];
   <Section class="pb-16" id="boka">
     <div class="booking-card">
       <h2 class="mt-0">Så gör du</h2>
-      <div class="max-w-prose">
-        <p class="text-lg">
-          Du föreslår ett datum, så återkommer vi med bekräftelse.
-        </p>
+      <div class="max-w-prose text-lg">
+        <ol>
+          <li>Boka resupplägget och kursen med Sydsvergies Guidebyrå och få den bekräftad via mail/telefon. Därefter får du en utrustningslista och utbildningsnormer skickade till dig.</li>
+          <li>Boka boende.</li>
+          <li>Boka flyg. (Vi rekommenderar att du bokar ditt flyg i god tid).</li>
+        </ol>
       </div>
       <BookingForm
-        maxParticipants={post.data.maxParticipants}
+        maxParticipants={null}
+        includeDate={false}
         name={post.data.cta}
       />
     </div>

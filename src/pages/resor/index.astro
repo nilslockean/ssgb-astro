@@ -3,24 +3,22 @@ import PageHead from "@components/PageHead.astro";
 import Layout from "../../layouts/Layout.astro";
 import { getCourses } from "@lib/contentUtils";
 import CourseGrid from "@components/CourseGrid.astro";
-import CourseSelector from "@components/CourseSelector.astro";
 import Section from "@components/Section.astro";
-import CtaBooking from "@components/CtaBooking.astro";
 import { getCollection, type CollectionEntry } from "astro:content";
 
 const trips = await getCollection("trips");
 ---
 
 <Layout
-  metaDescription="Sydsveriges Guidebyrå erbjuder kurser för dig som vill börja klättra utomhus och för dig som redan är igång och vill bygga vidare på dina kunskaper. "
-  metaTitle="Kurser"
+  metaDescription="Resorna riktar sig till klättrare med viss erfarenhet som vill utvecklas vidare i en ny miljö, med stöd av instruktör och guide."
+  metaTitle="Resor"
 >
   <PageHead
-    content="Oavsett om du vill ta dina första steg på klippan eller bygga vidare på dina kunskaper hittar du kurser i Skåne som matchar din nivå."
-    title="Klippklättring i Skåne – kurser på alla nivåer"
+    title="Klätterresor – utveckling i ny miljö"
+    content="Oavsett om du vill bredda din erfarenhet eller fördjupa din klättring i en annan miljö erbjuder vi resor som ger dig möjlighet att utvecklas utanför den lokala klippan."
   />
-  <Section class="mt-0 max-w-prose pt-0">
-    <p>
+  <Section class="mt-0 pt-0">
+    <p class="max-w-prose mb-8">
       Sydsveriges Guidebyrå erbjuder kurser för dig som vill börja klättra
       utomhus och för dig som redan är igång och vill bygga vidare på dina
       kunskaper. Vi håller kurser alla dagar i veckan, året runt, förutsatt att
@@ -28,18 +26,6 @@ const trips = await getCollection("trips");
       på säkerhet, tydlighet och att du ska få kunskap att fatta kloka beslut på
       egen hand.
     </p>
-  </Section>
-  <Section>
-    <h2>Resor</h2>
-    <p class="intro mb-8">
-      Dessa kurser följer Svenska Klätterförbundets kursnormer. Normerna syftar
-      till att skapa en enhetlig och trygg nivå på kurser, och säkerställer att
-      utbildningen genomförs av instruktörer med rätt kompetens, i en form och
-      miljö som är anpassad för kursens nivå och syfte.
-    </p>
     <CourseGrid entries={trips} />
   </Section>
-
-  <CourseSelector />
-  <CtaBooking />
 </Layout>

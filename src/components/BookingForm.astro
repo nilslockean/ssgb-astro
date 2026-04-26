@@ -4,7 +4,8 @@ import type { HTMLAttributes } from "astro/types";
 
 interface Props extends HTMLAttributes<"form"> {
   name: string;
-  maxParticipants: number;
+  maxParticipants: number | null;
+  includeDate?: boolean;
   dateLabel?: string;
   submitLabel?: string;
   messagePlaceholder?: string;
@@ -14,6 +15,7 @@ const {
   name,
   maxParticipants,
   messagePlaceholder,
+  includeDate = true,
   dateLabel = "Önskat startdatum",
   submitLabel = "Skicka bokningsförfrågan",
   class: className,
@@ -53,27 +55,31 @@ const {
       </label>
     </p>
 
-    <p>
-      <label>
-        {dateLabel}
-        <br />
-        <input name="date" required type="date" />
-      </label>
-    </p>
+    { includeDate && (
+      <p>
+        <label>
+          {dateLabel}
+          <br />
+          <input name="date" required type="date" />
+        </label>
+      </p>
+    )}
 
-    <p>
-      <label>
-        Antal deltagare
-        <br />
-        <input
-          max={maxParticipants}
-          min="1"
-          name="participants"
-          required
-          type="number"
-        />
-      </label>
-    </p>
+    { maxParticipants !== null && (
+      <p>
+        <label>
+          Antal deltagare
+          <br />
+          <input
+            max={maxParticipants}
+            min="1"
+            name="participants"
+            required
+            type="number"
+          />
+        </label>
+      </p>
+    )}
 
     <p class="booking-form__message">
       <label>

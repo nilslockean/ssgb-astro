@@ -405,6 +405,16 @@ h1 + .intro {
   margin-top: var(--space-1);
 }
 
+ol {
+  margin-block: var(--space-4);
+  margin-left: var(--space-5);
+  list-style: number;
+
+  li {
+    margin-top: var(--space-1);
+  }
+}
+
 /* -------------------------------------------------------------------------
    Links
    ------------------------------------------------------------------------- */
