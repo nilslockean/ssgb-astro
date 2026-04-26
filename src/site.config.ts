@@ -74,7 +74,7 @@ export const Paths: Record<Slug, string> = {
   [Slug.COURSE_ROPE_SOLO_BASIC]: "/kurser/clogkurs",
   [Slug.COURSE_TRAD]: "/kurser/tradkurs",
   [Slug.COURSE_ASSISTANT]: "/kurser/hjalpinstruktorskurs",
-  [Slug.COURSE_REFRESHER]: "/kurser/uppfraschningskurs",
+  [Slug.COURSE_REFRESHER]: "/kurser/avrostning",
 
   [Slug.TRIPS]: "/resor",
   [Slug.TRIP_ITALY]: "/resor/italien",
