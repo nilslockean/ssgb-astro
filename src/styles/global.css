@@ -142,6 +142,7 @@ select {
   --space-12: 3rem;
   --space-16: 4rem;
   --space-36: 9rem;
+  --space-48: 12rem;
 
   /* Layout */
   --container-7xl: 80rem;
