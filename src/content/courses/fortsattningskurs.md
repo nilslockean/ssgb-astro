@@ -8,7 +8,7 @@ cta: Boka fortsättningskurs
 norm: klippa-2
 featured: true
 prerequisites: Du ska ha gått grundkurs klippa innan fortsättningskursen. Du kommer få ut mycket mer av kursen om du redan har rött kort och är van vid att ledklättra på bultade leder antingen inomhus eller utomhus.
-heroImage: ../../assets/images/gaurav-pikale-GWSj-0zrj_E-unsplash.jpg
+heroImage: ../../assets/images/lina-3.jpeg
 slugId: course_crag_adv
 ---
 

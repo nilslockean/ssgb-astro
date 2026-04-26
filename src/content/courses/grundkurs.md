@@ -8,7 +8,7 @@ cta: Boka grundkurs
 norm: klippa-1
 featured: true
 prerequisites: Detta är en grundkurs utan direkta krav på förkunskap, men du kommer få ut mycket mer av kursen om du redan har grönt kort. Gå gärna en topprepskurs först om du inte redan har gjort det.
-heroImage: ../../assets/images/alice-uvhallsklack-krux-1906-1024x717.jpeg
+heroImage: ../../assets/images/grundkurs-april-26-firning.webp
 slugId: course_crag_basic
 ---
 
