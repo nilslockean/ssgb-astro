@@ -8,7 +8,7 @@ cta: Boka räddningskurs
 norm: raddning-1
 featured: true
 prerequisites: Du ska ha gått grundkurs klippa eller sportklätterkurs innan du går räddning 1.
-heroImage: ../../assets/images/dolomiterna-2.jpg
+heroImage: ../../assets/images/raddning1-juni-23-1-min.jpg
 slugId: course_rescue_basic
 ---
 
