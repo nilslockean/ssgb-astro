@@ -1,8 +1,6 @@
 module.exports = {
   plugins: [
     require("autoprefixer"),
-    require("postcss-custom-media")({
-      importFrom: "src/styles/global.css",
-    }),
+    require("postcss-custom-media"),
   ],
 };
