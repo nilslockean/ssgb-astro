@@ -9,7 +9,7 @@ const isCurrentPage = href === currentPath;
 ---
 
 <a
-  class:list={["nav-link", { underline: isCurrentPage }, className]}
+  class:list={["nav-link", { "nav-link--active": isCurrentPage }, className]}
   data-current={isCurrentPage}
   href={href}
   {...rest}><slot /></a
@@ -23,15 +23,11 @@ const isCurrentPage = href === currentPath;
     text-decoration: none;
   }
 
-  .nav-link.underline {
+  .nav-link--active {
     text-decoration: underline;
   }
 
-  .nav-link.text-base {
+  .nav-link--sm {
     font-size: var(--text-base);
-  }
-
-  .nav-link.text-5xl {
-    font-size: var(--text-5xl);
   }
 </style>
