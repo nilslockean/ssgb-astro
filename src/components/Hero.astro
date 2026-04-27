@@ -39,7 +39,6 @@ const {
   ]}
   {...rest}
 >
-  <span aria-hidden="true" class="hero__overlay"></span>
   {
     video ? (
       <video
@@ -55,14 +54,16 @@ const {
       <Picture
         alt=""
         class="hero__img"
-        src={image}
         formats={["avif", "webp"]}
-        widths={[640, 1024, 1600]}
-        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 90vw, 80vw"
+        loading="eager"
         role="presentation"
+        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 90vw, 80vw"
+        src={image}
+        widths={[640, 1024, 1600]}
       />
     ) : null
   }
+  <span aria-hidden="true" class="hero__overlay"></span>
   <div class="hero__content text-white">
     <div class="hero__inner">
       <div>
@@ -118,7 +119,7 @@ const {
     --opacity: 0.9;
     position: absolute;
     inset: 0;
-    z-index: 10;
+    z-index: 1;
     background: linear-gradient(
       65deg,
       rgb(0 0 0 / var(--opacity)),
@@ -133,11 +134,9 @@ const {
   .hero__img {
     position: absolute;
     inset: 0;
-    z-index: -1;
     height: 100%;
     width: 100%;
     object-fit: cover;
-    /* filter: grayscale(100%); */
     animation: blur-on-scroll linear;
     animation-timeline: scroll();
   }
@@ -145,7 +144,6 @@ const {
   .hero__video {
     position: absolute;
     inset: 0;
-    z-index: -1;
     height: 100%;
     width: 100%;
     object-fit: cover;
@@ -155,7 +153,7 @@ const {
 
   .hero__content {
     position: relative;
-    z-index: 20;
+    z-index: 2;
     width: 100%;
   }
 
