@@ -14,7 +14,6 @@ import Link from "@components/Link.astro";
 import { FIENTA_INCLUDE_DRAFTS } from "astro:env/server";
 import Section from "@components/Section.astro";
 
-// 1. Generate a new path for every collection entry
 export async function getStaticPaths() {
   const posts = await getCollection("courses");
   return posts.map((post) => ({
@@ -22,31 +21,10 @@ export async function getStaticPaths() {
     props: { post },
   }));
 }
-// 2. For your template, you can get the entry directly from the prop
 const { post } = Astro.props;
 const { Content } = await render(post);
 const norm = post.data.norm && (await getEntry(post.data.norm));
 const gallery = post.data.gallery && (await getEntry(post.data.gallery));
-
-const events = await getCollection("events", (event) => {
-  if (event.data.past) {
-    return false;
-  }
-
-  if (event.data.draft && !FIENTA_INCLUDE_DRAFTS) {
-    return false;
-  }
-
-  const title = event.data.title.sv;
-
-  // Strip all the &shy; characters from the course name
-  const normalizedPostTile = String(
-    post.data.shortName || post.data.title,
-  ).replaceAll("&shy;", "");
-
-  return title.includes(normalizedPostTile);
-});
-
 const numDays = post.data.numDays.join("-");
 const numDaysSuffix = numDays === "1" ? "dag" : "dagar";
 const numDaysDesc = `${numDays} ${numDaysSuffix}`;
