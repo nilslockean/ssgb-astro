@@ -19,7 +19,7 @@ export enum NavArea {
   SIDEBAR_ASIDE = "aside",
   SIDEBAR_COURSE = "courses",
   FOOTER = "footer",
-  HEADER = "header_buttons",
+  // HEADER = "header_buttons",
 }
 
 // Slugs as stable identifiers
@@ -100,103 +100,67 @@ function link(slug: Slug, label: string, className?: string): NavLink {
 }
 
 // Static navigation definitions
-const courseNav: Navigation = [
-  // { link: link(Slug.COURSE_TOPROPE, "Topprepskurs") },
-  { link: link(Slug.COURSE_CRAG_BASIC, "Grundkurs klippa") },
-  { link: link(Slug.COURSE_CRAG_ADV, "Fortsättningskurs klippa") },
-  { link: link(Slug.COURSE_RESCUE_BASIC, "Räddning 1") },
-  { link: link(Slug.COURSE_RESCUE_ADV, "Räddning 2") },
-  { link: link(Slug.COURSE_SPORT, "Sportklätterkurs") },
-  { link: link(Slug.COURSE_ASSISTANT, "Hjälpinstruktörskurs") },
-  // { link: link(Slug.COURSE_TRAD, "Tradkurs") },
-  // { link: link(Slug.COURSE_ROPE_SOLO_BASIC, "Clogkurs") },
-];
-
-const tripNav: Navigation = [
-  { link: link(Slug.TRIP_ITALY, "Klättring i Dolomiterna") },
-  { link: link(Slug.TRIP_SPAIN, "Sportklättring i Spanien") },
-];
-
-const mobileNav: Navigation = [
-  { link: link(Slug.HOME, "Hem") },
-  {
-    link: link(Slug.COURSES, "Kurser"),
-    subMenu: {
-      nav: courseNav,
-      more: link(Slug.COURSES, "Fler kurser →"),
-    },
-  },
-  { link: link(Slug.TRIPS, "Resor"), subMenu: { nav: tripNav } },
-  { link: link(Slug.INSTRUCTOR_TRAINING, "Utbildning") },
-  { link: link(Slug.PRICES, "Priser") },
-  { link: link(Slug.ABOUT, "Om") },
-  { link: link(Slug.CONTACT, "Kontakt") },
-];
-
-const mainNav: Navigation = [
-  { link: link(Slug.COURSES, "Kurser") },
-  { link: link(Slug.TRIPS, "Resor") },
-  { link: link(Slug.INSTRUCTOR_TRAINING, "Utbildning") },
-  { link: link(Slug.PRICES, "Priser") },
-  { link: link(Slug.ABOUT, "Om") },
-  { link: link(Slug.CONTACT, "Kontakt") },
-];
-
-const footerNav: Navigation = [
-  { link: link(Slug.TERMS_BOOKING, "Bokningsvillkor") },
-  { link: link(Slug.TERMS_PRIVACY, "Integritetspolicy") },
-];
-
-const headerNav: Navigation = [
-  { link: link(Slug.COURSES, "Boka kurs") },
-  { link: link(Slug.CONTACT, "Ställ en fråga") },
-];
-
-export type SiteConfig = {
-  siteTitle: string;
-  siteUrl: string;
-  siteTagline: string;
-  contact: {
-    email: string;
-    phone: string;
-  };
-  defaultPrices: {
-    openBooking: number;
-    privateSingle: number;
-    privateDouble: number;
-    privateMany: number;
-  };
-  navigation: Record<NavArea, Navigation>;
+export const courseNav: Record<Locale, Navigation> = {
+  sv: [
+    { link: link(Slug.COURSE_CRAG_BASIC, "Grundkurs klippa") },
+    { link: link(Slug.COURSE_CRAG_ADV, "Fortsättningskurs klippa") },
+    { link: link(Slug.COURSE_RESCUE_BASIC, "Räddning 1") },
+    { link: link(Slug.COURSE_RESCUE_ADV, "Räddning 2") },
+    { link: link(Slug.COURSE_SPORT, "Sportklätterkurs") },
+    { link: link(Slug.COURSE_ASSISTANT, "Hjälpinstruktörskurs") },
+  ],
+  da: [],
+  en: [],
 };
 
-// Site-level config
-export const siteConfig = {
-  siteTitle: "Sydsveriges Guidebyrå",
-  siteUrl: "https://ssgb.se",
-  siteTagline: "Klätterkurser på Kullaberg, i Spanien och Itailen",
+export const mobileNav: Record<Locale, Navigation> = {
+  sv: [
+    { link: link(Slug.HOME, "Hem") },
+    {
+      link: link(Slug.COURSES, "Kurser"),
+      subMenu: {
+        nav: courseNav.sv,
+        more: link(Slug.COURSES, "Fler kurser →"),
+      },
+    },
+    {
+      link: link(Slug.TRIPS, "Resor"),
+      subMenu: {
+        nav: [
+          { link: link(Slug.TRIP_ITALY, "Klättring i Dolomiterna") },
+          { link: link(Slug.TRIP_SPAIN, "Sportklättring i Spanien") },
+        ],
+      },
+    },
+    { link: link(Slug.INSTRUCTOR_TRAINING, "Utbildning") },
+    { link: link(Slug.PRICES, "Priser") },
+    { link: link(Slug.ABOUT, "Om") },
+    { link: link(Slug.CONTACT, "Kontakt") },
+  ],
+  da: [],
+  en: [],
+};
 
-  // Contact info if you ever want it on footer pages
-  contact: {
-    email: "instruktor@ssgb.se",
-    phone: "+46 (0) 70-494 77 82",
-  },
+export const mainNav: Record<Locale, Navigation> = {
+  sv: [
+    { link: link(Slug.COURSES, "Kurser") },
+    { link: link(Slug.TRIPS, "Resor") },
+    { link: link(Slug.INSTRUCTOR_TRAINING, "Utbildning") },
+    { link: link(Slug.PRICES, "Priser") },
+    { link: link(Slug.ABOUT, "Om") },
+    { link: link(Slug.CONTACT, "Kontakt") },
+  ],
+  da: [],
+  en: [],
+};
 
-  defaultPrices: {
-    openBooking: 3600,
-    privateSingle: 4200,
-    privateDouble: 2500,
-    privateMany: 2200,
-  },
+export const footerNav: Record<Locale, Navigation> = {
+  sv: [
+    { link: link(Slug.TERMS_BOOKING, "Bokningsvillkor") },
+    { link: link(Slug.TERMS_PRIVACY, "Integritetspolicy") },
+  ],
+  da: [],
+  en: [],
+};
 
-  // Primary navigation, *excluding* dynamic course submenu
-  // Courses submenu is added at runtime by your Layout.astro
-  navigation: {
-    [NavArea.SIDEBAR_ASIDE]: mainNav,
-    [NavArea.SIDEBAR_COURSE]: courseNav,
-    [NavArea.FOOTER]: footerNav,
-    [NavArea.MOBILE]: mobileNav,
-    [NavArea.HEADER]: headerNav,
-  },
-} as const satisfies SiteConfig;
-
-export default siteConfig;
+type Locale = "sv" | "da" | "en";

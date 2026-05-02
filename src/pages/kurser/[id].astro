@@ -46,7 +46,6 @@ const events = await getCollection("events", (event) => {
 
   return title.includes(normalizedPostTile);
 });
-// console.log({ events });
 
 const numDays = post.data.numDays.join("-");
 const numDaysSuffix = numDays === "1" ? "dag" : "dagar";

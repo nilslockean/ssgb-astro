@@ -1,11 +1,12 @@
 ---
 import type { HTMLAttributes } from "astro/types";
 import { formatPrice } from "@lib/stringUtils";
-import config from "@config";
+import { getLocalizedConfig } from "@lib/contentUtils";
 
 interface Props extends HTMLAttributes<"ul"> {}
 
 const { class: className, ...rest } = Astro.props;
+const config = await getLocalizedConfig(Astro.currentLocale);
 const {
   defaultPrices: { privateSingle, privateDouble, privateMany },
 } = config;

@@ -1,42 +1,44 @@
 ---
 import Hero, { type HeroButton } from "@components/Hero.astro";
-import Layout from "../layouts/Layout.astro";
+import Layout from "../../layouts/Layout.astro";
 import CourseGrid from "@components/CourseGrid.astro";
-import { getCourses } from "@lib/contentUtils";
+import { getCourses, getLocalizedConfig } from "@lib/contentUtils";
 import Eyebrow from "@components/Eyebrow.astro";
 import { getPath, Slug } from "@config";
-import CourseSelector from "@components/CourseSelector.astro";
 import Link from "@components/Link.astro";
 import Section from "@components/Section.astro";
 import { getCollection } from "astro:content";
-import { getLocalizedConfig } from "../lib/contentUtils.ts";
+import { getRelativeLocaleUrl } from "astro:i18n";
+import { localeSchema } from "../../schemas/locale.ts";
 
 const featuredCourses = await getCourses((course) => course.data.featured);
 const featuredTrips = await getCollection("trips");
+
+const currentLocale = localeSchema.parse(Astro.currentLocale);
+const siteConfig = await getLocalizedConfig(currentLocale);
+
 const heroButtons: HeroButton[] = [
   {
-    label: "Boka en kurs",
-    href: getPath(Slug.COURSES),
+    label: "Book et kursus",
+    href: getRelativeLocaleUrl(currentLocale, getPath(Slug.COURSES)),
   },
   {
-    label: "Ställ en fråga",
+    label: "Stil et spørgsmål",
     href: getPath(Slug.CONTACT),
   },
 ];
-const currentLocale = Astro.currentLocale;
-const siteConfig = await getLocalizedConfig(currentLocale);
 ---
 
 <Layout
   metaDescription={siteConfig.siteTagline}
-  tagline="Välkommen till Sydsveriges Guidebyrå"
+  tagline="Velkommen til Sydsveriges Guidebyrå"
 >
   <Hero
     buttons={heroButtons}
     size="large"
     video="/ssgb-video-2.mp4"
-    eyebrow="Upplev ett äventyr med naturen som arena"
-    title={siteConfig.siteTagline}
+    eyebrow="Oplev et eventyr med naturen som din arena"
+    title={siteConfig.siteTagline.da}
   />
 
   <Section>
@@ -67,5 +69,4 @@ const siteConfig = await getLocalizedConfig(currentLocale);
     <Eyebrow class="mt-16 mb-4 ml-4">Våra resor</Eyebrow>
     <CourseGrid class="mb-8" entries={featuredTrips} />
   </Section>
-  <CourseSelector />
 </Layout>

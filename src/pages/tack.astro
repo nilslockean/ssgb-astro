@@ -1,7 +1,9 @@
 ---
 import Section from "@components/Section.astro";
-import config from "@config";
 import Layout from "../layouts/Layout.astro";
+import { getLocalizedConfig } from "@lib/contentUtils";
+
+const config = await getLocalizedConfig(Astro.currentLocale);
 ---
 
 <Layout metaDescription="Vi har tagit emot ditt meddelande.">

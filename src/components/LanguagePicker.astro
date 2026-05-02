@@ -1,0 +1,37 @@
+---
+import { i18n } from "astro:config/client";
+import { toPaths, getRelativeLocaleUrl, pathHasLocale } from "astro:i18n";
+
+const languages = toPaths(i18n!.locales);
+const { currentLocale } = Astro;
+---
+
+<ul>
+  {
+    languages.map((lang) => (
+      <li>
+        <a
+          href={getRelativeLocaleUrl(lang)}
+          data-current={lang === currentLocale}
+        >
+          <iconify-icon icon={`circle-flags:lang-${lang}`} width="24" />
+          <span class="sr-only">{lang}</span>
+        </a>
+      </li>
+    ))
+  }
+</ul>
+
+<style>
+  ul {
+    display: flex;
+    gap: var(--space-2);
+  }
+  a {
+    display: flex;
+    border-radius: 50%;
+  }
+  a[data-current="true"] {
+    outline: 2px solid var(--color-white);
+  }
+</style>

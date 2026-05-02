@@ -1,7 +1,8 @@
 import { defineCollection, reference } from "astro:content";
 import { file, glob } from "astro/loaders";
-import config, { Slug } from "@config";
+import { Slug } from "@config";
 import { z } from "astro/zod";
+import { configLoader } from "./loaders/config";
 
 const courses = defineCollection({
   loader: glob({ base: "./src/content/courses", pattern: "**/*.{md,mdx}" }),
@@ -12,7 +13,7 @@ const courses = defineCollection({
       numDays: z.array(z.number()),
       order: z.number().min(0),
       featured: z.boolean().optional(),
-      openBookingPrice: z.number().default(config.defaultPrices.openBooking),
+      openBookingPrice: z.number().default(3600),
       maxParticipants: z.number().min(1).default(4),
       minAge: z.number().nullable().default(null),
       shortName: z.string().optional(),
@@ -86,5 +87,17 @@ const team = defineCollection({
     }),
 });
 
+const config = defineCollection({
+  loader: configLoader(),
+});
+
 // 4. Export a single `collections` object to register your collection(s)
-export const collections = { courses, galleries, norms, team, pages, trips };
+export const collections = {
+  courses,
+  galleries,
+  norms,
+  team,
+  pages,
+  trips,
+  config,
+};

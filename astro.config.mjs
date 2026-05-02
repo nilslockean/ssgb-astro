@@ -42,6 +42,14 @@ export default defineConfig({
     domains: ["cdn.sanity.io"],
   },
 
+  i18n: {
+    locales: ["sv", "da", "en"],
+    defaultLocale: "sv",
+    // fallback: {
+    //   da: "sv",
+    // },
+  },
+
   server: {
     allowedHosts: [
       "sydsverigesguidebyra.netlify.app",

@@ -1,5 +1,7 @@
 ---
 import type { HTMLAttributes } from "astro/types";
+import { getRelativeLocaleUrl } from "astro:i18n";
+import { localeSchema } from "src/schemas/locale";
 
 const DEFAULT_HEIGHT = 64;
 const DEFAULT_WIDTH = 167;
@@ -10,9 +12,10 @@ interface Props extends HTMLAttributes<"a"> {
 
 const { height = DEFAULT_HEIGHT } = Astro.props;
 const width = Math.ceil((height / DEFAULT_HEIGHT) * DEFAULT_WIDTH);
+const currentLocale = localeSchema.parse(Astro.currentLocale);
 ---
 
-<a class="flex" href="/">
+<a class="flex" href={getRelativeLocaleUrl(currentLocale, "/")}>
   <svg
     width={width}
     height={height}

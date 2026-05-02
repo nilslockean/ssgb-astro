@@ -3,16 +3,18 @@ import "../styles/global.css";
 import CourseNav from "../components/CourseNav.astro";
 import SiteLogo from "../components/SiteLogo.astro";
 import PostHog from "../components/posthog.astro";
-import WeGlot from "../components/weglot.astro";
 import ButtonGroup from "@components/ButtonGroup.astro";
-import ButtonLink from "@components/ButtonLink.astro";
+import LanguagePicker from "@components/LanguagePicker.astro";
 import MobileHeader from "@components/MobileHeader.astro";
 import NavLink from "@components/NavLink.astro";
 import AuthorizedInstructorBanner from "@components/AuthorizedInstructorBanner.astro";
-import config, { NavArea } from "@config";
+import { NavArea } from "@config";
 import { ENABLE_POSTHOG, POSTHOG_PROJECT_API_KEY } from "astro:env/client";
 import Fienta from "@components/fienta.astro";
 import { Font } from "astro:assets";
+import { getLocalizedConfig } from "../lib/contentUtils.ts";
+
+const config = await getLocalizedConfig(Astro.currentLocale);
 
 interface Props {
   metaDescription: string;
@@ -28,7 +30,7 @@ const title = metaTitle
 ---
 
 <!doctype html>
-<html lang="sv">
+<html lang={Astro.currentLocale}>
   <head>
     <meta charset="UTF-8" />
     <meta content="width=device-width" name="viewport" />
@@ -49,7 +51,9 @@ const title = metaTitle
     <meta content={title} name="twitter:title" />
     <meta content={metaDescription} name="twitter:description" />
     <meta content="/og-default.png" name="twitter:image" />
-
+    <script
+      src="https://code.iconify.design/iconify-icon/2.1.0/iconify-icon.min.js"
+    ></script>
     <Font cssVariable="--font-barlow-condensed" preload />
     <Font cssVariable="--font-host-grotesk" preload />
 
@@ -87,18 +91,11 @@ const title = metaTitle
       </aside>
       <div class="layout__main">
         <header class="layout__header">
-          <p class="layout__tagline">{tagline || config.siteTagline}</p>
+          <p class="layout__tagline">
+            {tagline || config.siteTagline}
+          </p>
           <ButtonGroup class="layout__header-actions">
-            {
-              config.navigation[NavArea.HEADER].map((item) => (
-                <ButtonLink
-                  class="text-xs whitespace-nowrap"
-                  href={item.link.path}
-                >
-                  {item.link.label}
-                </ButtonLink>
-              ))
-            }
+            <LanguagePicker />
           </ButtonGroup>
         </header>
         <main>
