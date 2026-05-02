@@ -1,4 +1,4 @@
-import { NavArea, type Navigation } from "@config";
+import { NavArea, type Navigation } from "@lib/routeUtils";
 import { getCollection, getEntry, type CollectionEntry } from "astro:content";
 import { localeSchema } from "src/schemas/locale";
 

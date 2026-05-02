@@ -2,8 +2,8 @@
 import "../styles/global.css";
 import SiteLogo from "../components/SiteLogo.astro";
 import PostHog from "../components/posthog.astro";
-import config from "@config";
 import { ENABLE_POSTHOG, POSTHOG_PROJECT_API_KEY } from "astro:env/client";
+import { getLocalizedConfig } from "../lib/contentUtils";
 
 interface Props {
   metaDescription: string;
@@ -11,6 +11,7 @@ interface Props {
   tagline?: string;
 }
 const { metaDescription, tagline, metaTitle } = Astro.props;
+const config = await getLocalizedConfig(Astro.currentLocale);
 const url = Astro.url.toString();
 const title = metaTitle
   ? `${metaTitle} • ${config.siteTitle}`

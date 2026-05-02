@@ -1,6 +1,6 @@
 import { defineCollection, reference } from "astro:content";
 import { file, glob } from "astro/loaders";
-import { Slug } from "@config";
+import { Slug } from "@lib/routeUtils";
 import { z } from "astro/zod";
 import { configLoader } from "./loaders/config";
 

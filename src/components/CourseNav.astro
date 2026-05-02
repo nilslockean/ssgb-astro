@@ -1,7 +1,7 @@
 ---
 import type { HTMLAttributes } from "astro/types";
 import CourseNavItem from "./CourseNavItem.astro";
-import { type Navigation } from "@config";
+import { type Navigation } from "@lib/routeUtils";
 
 interface Props extends HTMLAttributes<"ul"> {
   entries: Navigation;

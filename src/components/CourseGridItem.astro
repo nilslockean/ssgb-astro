@@ -2,7 +2,7 @@
 import type { CollectionEntry } from "astro:content";
 import type { HTMLAttributes } from "astro/types";
 import ButtonLink from "./ButtonLink.astro";
-import { getPath } from "@config";
+import { getPath } from "@lib/routeUtils";
 
 interface Props extends HTMLAttributes<"li"> {
   course: CollectionEntry<"courses">;

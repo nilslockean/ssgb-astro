@@ -1,7 +1,7 @@
 import { experimental_AstroContainer as AstroContainer } from "astro/container";
 import { describe, expect, test } from "vitest";
 import Link from "./Link.astro";
-import { getPath, Slug } from "@config";
+import { getPath, Slug } from "@lib/routeUtils";
 
 describe("Link component", async () => {
   test("renders default props", async () => {

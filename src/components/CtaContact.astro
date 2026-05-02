@@ -2,7 +2,7 @@
 import type { HTMLAttributes, HTMLTag } from "astro/types";
 import Section from "./Section.astro";
 import ButtonLink from "./ButtonLink.astro";
-import { getPath, Slug } from "@config";
+import { getPath, Slug } from "@lib/routeUtils";
 
 type Props<T extends HTMLTag = "section"> = HTMLAttributes<T> & {
   as?: T;

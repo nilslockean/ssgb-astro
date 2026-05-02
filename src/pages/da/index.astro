@@ -4,7 +4,7 @@ import Layout from "../../layouts/Layout.astro";
 import CourseGrid from "@components/CourseGrid.astro";
 import { getCourses, getLocalizedConfig } from "@lib/contentUtils";
 import Eyebrow from "@components/Eyebrow.astro";
-import { getPath, Slug } from "@config";
+import { getPath, Slug } from "@lib/routeUtils";
 import Link from "@components/Link.astro";
 import Section from "@components/Section.astro";
 import { getCollection } from "astro:content";
@@ -38,7 +38,7 @@ const heroButtons: HeroButton[] = [
     size="large"
     video="/ssgb-video-2.mp4"
     eyebrow="Oplev et eventyr med naturen som din arena"
-    title={siteConfig.siteTagline.da}
+    title={siteConfig.siteTagline}
   />
 
   <Section>

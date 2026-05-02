@@ -1,15 +1,76 @@
-// 1. Import the `Loader` type and any other dependencies needed
-import {
-  courseNav,
-  footerNav,
-  headerNav,
-  mainNav,
-  mobileNav,
-  NavArea,
-} from "@config";
 import type { Loader } from "astro/loaders";
 import { z } from "astro/zod";
+import { NavArea, type NavLink, type Navigation, Paths, Slug } from "@lib/routeUtils";
 import { localeSchema } from "../schemas/locale";
+
+type Locale = z.infer<typeof localeSchema>;
+
+function link(slug: Slug, label: string, className?: string): NavLink {
+  return { label, path: Paths[slug], className };
+}
+
+const courseNav: Record<Locale, Navigation> = {
+  sv: [
+    { link: link(Slug.COURSE_CRAG_BASIC, "Grundkurs klippa") },
+    { link: link(Slug.COURSE_CRAG_ADV, "Fortsättningskurs klippa") },
+    { link: link(Slug.COURSE_RESCUE_BASIC, "Räddning 1") },
+    { link: link(Slug.COURSE_RESCUE_ADV, "Räddning 2") },
+    { link: link(Slug.COURSE_SPORT, "Sportklätterkurs") },
+    { link: link(Slug.COURSE_ASSISTANT, "Hjälpinstruktörskurs") },
+  ],
+  da: [],
+  en: [],
+};
+
+const mobileNav: Record<Locale, Navigation> = {
+  sv: [
+    { link: link(Slug.HOME, "Hem") },
+    {
+      link: link(Slug.COURSES, "Kurser"),
+      subMenu: {
+        nav: courseNav.sv,
+        more: link(Slug.COURSES, "Fler kurser →"),
+      },
+    },
+    {
+      link: link(Slug.TRIPS, "Resor"),
+      subMenu: {
+        nav: [
+          { link: link(Slug.TRIP_ITALY, "Klättring i Dolomiterna") },
+          { link: link(Slug.TRIP_SPAIN, "Sportklättring i Spanien") },
+        ],
+      },
+    },
+    { link: link(Slug.INSTRUCTOR_TRAINING, "Utbildning") },
+    { link: link(Slug.PRICES, "Priser") },
+    { link: link(Slug.ABOUT, "Om") },
+    { link: link(Slug.CONTACT, "Kontakt") },
+  ],
+  da: [],
+  en: [],
+};
+
+const mainNav: Record<Locale, Navigation> = {
+  sv: [
+    { link: link(Slug.COURSES, "Kurser") },
+    { link: link(Slug.TRIPS, "Resor") },
+    { link: link(Slug.INSTRUCTOR_TRAINING, "Utbildning") },
+    { link: link(Slug.PRICES, "Priser") },
+    { link: link(Slug.ABOUT, "Om") },
+    { link: link(Slug.CONTACT, "Kontakt") },
+  ],
+  da: [],
+  en: [],
+};
+
+const footerNav: Record<Locale, Navigation> = {
+  sv: [
+    { link: link(Slug.TERMS_BOOKING, "Bokningsvillkor") },
+    { link: link(Slug.TERMS_PRIVACY, "Integritetspolicy") },
+  ],
+  da: [],
+  en: [],
+};
 
 const navLinkSchema = z.object({
   label: z.string(),
@@ -52,9 +113,7 @@ const configSchema = z.object({
 
 export type SiteConfig = z.infer<typeof configSchema>;
 
-// 2. Define any options that your loader needs
 export function configLoader() {
-  // 3. Return a loader object
   return {
     name: "config-loader",
     load: async ({ store, parseData }) => {
@@ -97,7 +156,6 @@ export function configLoader() {
         data,
       });
     },
-    // 4. Define the schema of an entry.
     schema: configSchema,
   } satisfies Loader;
 }
