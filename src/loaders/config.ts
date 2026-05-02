@@ -1,12 +1,10 @@
 import type { Loader } from "astro/loaders";
 import { z } from "astro/zod";
-import { NavArea, type NavLink, type Navigation, Paths, Slug } from "@lib/routeUtils";
+import { NavArea, type NavLink, type Navigation, getPath, type Locale, Slug } from "@lib/routeUtils";
 import { localeSchema } from "../schemas/locale";
 
-type Locale = z.infer<typeof localeSchema>;
-
-function link(slug: Slug, label: string, className?: string): NavLink {
-  return { label, path: Paths[slug], className };
+function link(slug: Slug, label: string, locale: Locale = "sv", className?: string): NavLink {
+  return { label, path: getPath(slug, locale), className };
 }
 
 const courseNav: Record<Locale, Navigation> = {

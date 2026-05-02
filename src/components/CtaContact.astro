@@ -2,13 +2,16 @@
 import type { HTMLAttributes, HTMLTag } from "astro/types";
 import Section from "./Section.astro";
 import ButtonLink from "./ButtonLink.astro";
-import { getPath, Slug } from "@lib/routeUtils";
+import { Slug } from "@lib/routeUtils";
+import { localePath } from "@lib/i18nUtils";
+import { localeSchema } from "src/schemas/locale";
 
 type Props<T extends HTMLTag = "section"> = HTMLAttributes<T> & {
   as?: T;
 };
 
 const { as, class: className, ...rest } = Astro.props;
+const locale = localeSchema.parse(Astro.currentLocale);
 ---
 
 <Section class:list={["cta-contact", className]} as={as} {...rest}>
@@ -17,7 +20,7 @@ const { as, class: className, ...rest } = Astro.props;
     <p class="intro cta-contact__subtitle">
       Hör av dig så hjälper vi dig hitta rätt upplägg.
     </p>
-    <ButtonLink href={getPath(Slug.CONTACT)}>Kontakta oss</ButtonLink>
+    <ButtonLink href={localePath(Slug.CONTACT, locale)}>Kontakta oss</ButtonLink>
   </div>
 </Section>
 

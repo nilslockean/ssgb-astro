@@ -1,5 +1,7 @@
 ---
-import { getPath, Slug } from "@lib/routeUtils";
+import { Slug } from "@lib/routeUtils";
+import { localePath } from "@lib/i18nUtils";
+import { localeSchema } from "src/schemas/locale";
 import type { HTMLAttributes } from "astro/types";
 
 interface Props extends HTMLAttributes<"form"> {
@@ -21,11 +23,12 @@ const {
   class: className,
   ...rest
 } = Astro.props;
+const locale = localeSchema.parse(Astro.currentLocale);
 ---
 
 <form
   class:list={["booking-form", className]}
-  action={getPath(Slug.FORM_SUCCESS)}
+  action={localePath(Slug.FORM_SUCCESS, locale)}
   data-netlify="true"
   method="POST"
   name={name}

@@ -2,7 +2,8 @@
 import type { CollectionEntry } from "astro:content";
 import type { HTMLAttributes } from "astro/types";
 import ButtonLink from "./ButtonLink.astro";
-import { getPath } from "@lib/routeUtils";
+import { localePath } from "@lib/i18nUtils";
+import { localeSchema } from "src/schemas/locale";
 
 interface Props extends HTMLAttributes<"li"> {
   course: CollectionEntry<"courses">;
@@ -14,7 +15,8 @@ const {
   },
 } = Astro.props;
 
-const href = getPath(slugId);
+const locale = localeSchema.parse(Astro.currentLocale);
+const href = localePath(slugId, locale);
 const cta =
   "Läs mer om " + (shortName || title).replaceAll("&shy;", "").toLowerCase();
 ---
