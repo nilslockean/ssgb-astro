@@ -87,6 +87,21 @@ const team = defineCollection({
     }),
 });
 
+const courseSelector = defineCollection({
+  loader: file("./src/content/course-selector.json"),
+  schema: z.object({
+    title: z.string(),
+    body: z.array(
+      z.array(
+        z.object({
+          text: z.string(),
+          slug: z.enum(Slug).optional(),
+        }),
+      ),
+    ),
+  }),
+});
+
 const config = defineCollection({
   loader: configLoader(),
 });
@@ -99,5 +114,6 @@ export const collections = {
   team,
   pages,
   trips,
+  courseSelector,
   config,
 };

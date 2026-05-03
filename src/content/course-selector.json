@@ -1,0 +1,66 @@
+[
+  {
+    "id": "new-to-climbing",
+    "title": "Helt ny ute?",
+    "body": [
+      [
+        { "text": "Om du aldrig har klättrat förut, välj prova på eller " },
+        { "text": "topprepskurs", "slug": "course_toprope" },
+        { "text": "." }
+      ],
+      [
+        { "text": "Om du redan kan säkra en klättrare på topprep är det " },
+        { "text": "grundkursen", "slug": "course_toprope" },
+        { "text": " du ska gå. Där får du lära dig att lägga säkringar, bygga topprepsankare och fira." }
+      ],
+      [
+        { "text": "Om du kan ledsäkra och vet med dig att du vill hålla dig till bultade leder så är " },
+        { "text": "sportklätterkursen", "slug": "course_sport" },
+        { "text": " ett bra alternativ." }
+      ]
+    ]
+  },
+  {
+    "id": "ready-to-lead",
+    "title": "Redo att börja leda?",
+    "body": [
+      [
+        { "text": "Har du redan gått grundkurs klippa är det helt klart " },
+        { "text": "fortsättningskursen", "slug": "course_crag_adv" },
+        { "text": " du ska gå. Här får du bland annat lära dig leda på egenplacerade säkringar, bygga standplats och säkra upp en andreman." }
+      ],
+      [
+        { "text": "Om du hellre vill hålla dig till bultade leder kan du gå en " },
+        { "text": "sportklätterkurs", "slug": "course_sport" },
+        { "text": "." }
+      ]
+    ]
+  },
+  {
+    "id": "sport-climbing",
+    "title": "Redan igång med sportklättring?",
+    "body": [
+      [
+        { "text": "Under " },
+        { "text": "tradkursen", "slug": "course_trad" },
+        { "text": " får du lära dig leda på egenplacerade säkringar, bygga standplats och i mån av tid klättra multipitch." }
+      ]
+    ]
+  },
+  {
+    "id": "when-things-go-wrong",
+    "title": "Vad gör du när något går fel?",
+    "body": [
+      [
+        { "text": "Kamraträddningskurserna ger dig metoder för att hantera incidenter som kan uppstå på klippan." }
+      ],
+      [
+        { "text": "Lär dig hjälpa en andreman i nöd på " },
+        { "text": "Räddningskurs 1", "slug": "course_rescue_basic" },
+        { "text": " och ta metoderna vidare till att rädda en utsatt försteman under " },
+        { "text": "Räddningskurs 2", "slug": "course_rescue_adv" },
+        { "text": "." }
+      ]
+    ]
+  }
+]
