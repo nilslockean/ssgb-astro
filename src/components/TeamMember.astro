@@ -3,6 +3,7 @@ import type { CollectionEntry } from "astro:content";
 import type { HTMLAttributes } from "astro/types";
 import { getImage } from "astro:assets";
 import { Image } from "astro:assets";
+import { localeSchema } from "src/schemas/locale";
 
 interface Props extends HTMLAttributes<"li"> {
   person: CollectionEntry<"team">;
@@ -12,6 +13,10 @@ const {
     data: { name, description, image, alt, featured },
   },
 } = Astro.props;
+const locale = localeSchema.parse(Astro.currentLocale);
+const bio =
+  description.find((d) => d._key === locale)?.value ??
+  description.find((d) => d._key === "sv")!.value;
 
 const imageData = await getImage({
   src: image,
@@ -38,7 +43,7 @@ const imageData = await getImage({
 
   <div class="team-member__content">
     <h3 class="team-member__name font-heading mt-0 normal-case">{name}</h3>
-    <p>{description}</p>
+    <p>{bio}</p>
   </div>
 </li>
 

@@ -3,6 +3,7 @@ import { file, glob } from "astro/loaders";
 import { Slug } from "@lib/routeUtils";
 import { z } from "astro/zod";
 import { configLoader } from "./loaders/config";
+import { localeSchema } from "./schemas/locale";
 
 const courses = defineCollection({
   loader: glob({ base: "./src/content/courses", pattern: "**/*.{md,mdx}" }),
@@ -80,7 +81,7 @@ const team = defineCollection({
   schema: ({ image }) =>
     z.object({
       name: z.string(),
-      description: z.string(),
+      description: z.array(z.object({ _key: localeSchema, value: z.string() })),
       image: image(),
       alt: z.string(),
       featured: z.boolean().default(false),

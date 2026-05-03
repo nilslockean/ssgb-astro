@@ -2,7 +2,20 @@
   {
     "id": "christian",
     "name": "Christian Persson",
-    "description": "Jag (Christian Persson) är auktoriserad instruktör och examinator i klippklättring enligt Svenska Klätterförbundet och UIAA. Hela mitt yrkesliv (35 år) har jag arbetat med aktiviteter, ledarskap, grupptveckling och friluftssäkerhet. Numera vill jag vara på berget, ge kurser, utveckla andra i den vertikala sporten och få klättra mycket själv. I bagaget har jag en MSc i Outdoor Education, erfarenhet som universitetsadjunkt på Linnéuniversitetet och har skapat ett flertal utbildningar och kurser på universitets- och gymnasienivå.",
+    "description": [
+      {
+        "_key": "sv",
+        "value": "Jag (Christian Persson) är auktoriserad instruktör och examinator i klippklättring enligt Svenska Klätterförbundet och UIAA. Hela mitt yrkesliv (35 år) har jag arbetat med aktiviteter, ledarskap, grupptveckling och friluftssäkerhet. Numera vill jag vara på berget, ge kurser, utveckla andra i den vertikala sporten och få klättra mycket själv. I bagaget har jag en MSc i Outdoor Education, erfarenhet som universitetsadjunkt på Linnéuniversitetet och har skapat ett flertal utbildningar och kurser på universitets- och gymnasienivå."
+      },
+      {
+        "_key": "da",
+        "value": "Jeg (Christian Persson) er autoriseret instruktør og eksaminator i klatring på klippe ifølge Svenska Klätterförbundet og UIAA. Hele mit arbejdsliv (35 år) har jeg arbejdet med aktiviteter, lederskab, gruppeudvikling og friluftssikkerhed. Nu vil jeg være på bjerget, give kurser, udvikle andre i den vertikale sport og selv få lov til at klatre meget. I bagagen har jeg en MSc in Outdoor Education, erfaring som universitetslektor på Linnéuniversitetet og har skabt flere uddannelser og kurser på universitets- og gymnasieniveau."
+      },
+      {
+        "_key": "en",
+        "value": "I (Christian Persson) am an authorised instructor and examiner in rock climbing according to the Swedish Climbing Federation and UIAA. My entire career (35 years) has been spent working with activities, leadership, group development, and outdoor safety. These days I want to be on the rock, teaching courses, developing others in the vertical sport, and doing plenty of climbing myself. My background includes an MSc in Outdoor Education, experience as a university lecturer at Linnaeus University, and the creation of multiple educational programmes at university and upper secondary level."
+      }
+    ],
     "image": "../assets/images/christian-persson-500.jpg",
     "alt": "Christian Persson profilbild",
     "featured": true
@@ -10,7 +23,20 @@
   {
     "id": "nils",
     "name": "Nils Lockean",
-    "description": "Nils är ledklätterinstruktör inomhus och hjälpinstruktör klippa. Han är på god väg mot att bli auktoriserad klippklätterinstruktör och har därför gått de normerade kurser som krävs enligt Svenska Klätterförbundet, klättrat i höga berg, praktiserat hos flera företag inom branschen och genomgått examination i egen färdighet. Nils har samlat på sig gedigen praktik och erfarenhet för att utveckla sin kunskap samt öka förståelsen för ledarskap och upplevelser i bland klipporna.",
+    "description": [
+      {
+        "_key": "sv",
+        "value": "Nils är ledklätterinstruktör inomhus och hjälpinstruktör klippa. Han är på god väg mot att bli auktoriserad klippklätterinstruktör och har därför gått de normerade kurser som krävs enligt Svenska Klätterförbundet, klättrat i höga berg, praktiserat hos flera företag inom branschen och genomgått examination i egen färdighet. Nils har samlat på sig gedigen praktik och erfarenhet för att utveckla sin kunskap samt öka förståelsen för ledarskap och upplevelser i bland klipporna."
+      },
+      {
+        "_key": "da",
+        "value": "Nils er ledklatreinstruktør indendørs og hjælpeinstruktør på klippe. Han er godt på vej mod at blive autoriseret klatrerinstruktør på klippe og har med det formål gennemgået de normerede kurser krævet af Svenska Klätterförbundet, klatret i høje bjerge, praktiseret hos flere virksomheder i branchen og gennemgået eksamen i egen færdighed. Nils har opbygget solid praktisk erfaring for at udvikle sin viden og øge forståelsen for lederskab og oplevelser blandt klipperne."
+      },
+      {
+        "_key": "en",
+        "value": "Nils is a lead climbing instructor indoors and an assistant rock climbing instructor. He is well on his way to becoming an authorised rock climbing instructor and has completed the accredited courses required by the Swedish Climbing Federation, climbed in high mountains, gained experience at several companies in the industry, and undergone examination in his own skills. Nils has built up solid practical experience to develop his knowledge and deepen his understanding of leadership and experiences among the rocks."
+      }
+    ],
     "image": "../assets/images/nils.jpg",
     "alt": "Nils vid Stanage Edge i England"
   }
