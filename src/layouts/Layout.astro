@@ -9,6 +9,7 @@ import MobileHeader from "@components/MobileHeader.astro";
 import NavLink from "@components/NavLink.astro";
 import AuthorizedInstructorBanner from "@components/AuthorizedInstructorBanner.astro";
 import { NavArea } from "@lib/routeUtils";
+import { getRelativeLocaleUrl } from "astro:i18n";
 import { ENABLE_POSTHOG, POSTHOG_PROJECT_API_KEY } from "astro:env/client";
 import Fienta from "@components/fienta.astro";
 import { Font } from "astro:assets";
@@ -84,7 +85,7 @@ const title = metaTitle
         <nav class="layout__sidebar-nav">
           {
             config.navigation[NavArea.SIDEBAR_ASIDE].map((item) => (
-              <NavLink href={item.link.path}>{item.link.label}</NavLink>
+              <NavLink href={getRelativeLocaleUrl(item.link.locale, item.link.path)}>{item.link.label}</NavLink>
             ))
           }
         </nav>
@@ -106,7 +107,7 @@ const title = metaTitle
           <nav class="layout__footer-nav-mobile">
             {
               config.navigation[NavArea.SIDEBAR_ASIDE].map((item) => (
-                <NavLink href={item.link.path}>{item.link.label}</NavLink>
+                <NavLink href={getRelativeLocaleUrl(item.link.locale, item.link.path)}>{item.link.label}</NavLink>
               ))
             }
           </nav>
@@ -116,7 +117,7 @@ const title = metaTitle
           <nav class="layout__footer-nav">
             {
               config.navigation[NavArea.FOOTER].map((item) => (
-                <NavLink class="text-sm" href={item.link.path}>
+                <NavLink class="text-sm" href={getRelativeLocaleUrl(item.link.locale, item.link.path)}>
                   {item.link.label}
                 </NavLink>
               ))

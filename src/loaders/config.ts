@@ -1,10 +1,11 @@
 import type { Loader } from "astro/loaders";
 import { z } from "astro/zod";
-import { NavArea, type NavLink, type Navigation, getPath, type Locale, Slug } from "@lib/routeUtils";
+import { NavArea, type NavLink, type Navigation, resolveSlug, type Locale, Slug } from "@lib/routeUtils";
 import { localeSchema } from "../schemas/locale";
 
 function link(slug: Slug, label: string, locale: Locale = "sv", className?: string): NavLink {
-  return { label, path: getPath(slug, locale), className };
+  const resolved = resolveSlug(slug, locale);
+  return { label, path: resolved.path, locale: resolved.locale, className };
 }
 
 const courseNav: Record<Locale, Navigation> = {
@@ -57,7 +58,9 @@ const mainNav: Record<Locale, Navigation> = {
     { link: link(Slug.ABOUT, "Om") },
     { link: link(Slug.CONTACT, "Kontakt") },
   ],
-  da: [],
+  da: [
+    { link: link(Slug.ABOUT, "Om", "da") },
+  ],
   en: [],
 };
 
@@ -73,6 +76,7 @@ const footerNav: Record<Locale, Navigation> = {
 const navLinkSchema = z.object({
   label: z.string(),
   path: z.string(),
+  locale: localeSchema,
   className: z.string().optional(),
 });
 

@@ -3,6 +3,7 @@ export type Locale = "sv" | "da" | "en";
 export type NavLink = {
   label: string;
   path: string;
+  locale: Locale;
   className?: string;
 };
 
@@ -92,6 +93,7 @@ export const Paths: {
   da: {
     [Slug.HOME]: "/",
     [Slug.COURSES]: "/kurser",
+    [Slug.ABOUT]: "/om",
   },
   en: {
     [Slug.HOME]: "/",
