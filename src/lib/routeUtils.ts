@@ -98,6 +98,7 @@ export const Paths: {
   en: {
     [Slug.HOME]: "/",
     [Slug.COURSES]: "/courses",
+    [Slug.ABOUT]: "/about",
   },
 };
 

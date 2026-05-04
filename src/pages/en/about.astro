@@ -1,0 +1,32 @@
+---
+import Section from "@components/Section.astro";
+import Layout from "../../layouts/Layout.astro";
+import Team from "@components/Team.astro";
+import { getCollection } from "astro:content";
+
+const teamMembers = await getCollection("team");
+---
+
+<Layout
+  metaDescription="Sydsveriges Guidebyrå was founded in 2022 out of a desire to make the crags of Scania accessible to as many people as possible."
+  metaTitle="About Sydsveriges Guidebyrå"
+  tagline="About Sydsveriges Guidebyrå"
+>
+  <Section class="pb-0">
+    <h1 class="mb-6">Experience an adventure with nature as your arena</h1>
+    <p class="intro">
+      Sydsveriges Guidebyrå offers accredited climbing courses, longer instructor
+      programmes, and talks on leadership in exposed environments.
+    </p>
+  </Section>
+
+  <Section>
+    <h2>Our team</h2>
+    <p class="intro mb-8">
+      The company is run by Christian Persson, MSc in Outdoor Education,
+      authorised rock climbing instructor and examiner, but you will also meet
+      other authorised instructors under the Sydsveriges Guidebyrå umbrella.
+    </p>
+    <Team entries={teamMembers} />
+  </Section>
+</Layout>
