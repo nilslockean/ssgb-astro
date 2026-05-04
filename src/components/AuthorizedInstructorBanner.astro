@@ -2,6 +2,7 @@
 import Section from "./Section.astro";
 import { Image } from "astro:assets";
 import badge from "../assets/images/forbundet.png";
+import badgeEn from "../assets/images/forbundet-en.png";
 import { localeSchema } from "src/schemas/locale";
 
 const locale = localeSchema.parse(Astro.currentLocale);
@@ -19,14 +20,14 @@ const content = {
     lead: "Brug altid en autoriseret instruktør.",
     body: "At være klatrerinstruktør på klippe indebærer, at instruktøren har gennemgået flere års uddannelse, er eksamineret af Svenska Klätterförbundet og holder sin licens opdateret gennem løbende efteruddannelse. 'Rock Climbing Instructor' er en international standard under UIAA (den internationale organisation for klatring og bjergbestigning \"Union Internationale des Associations d'Alpinisme\"), som kvalitetssikrer instruktørers erfaring og kompetencer.",
     alt: "Autoriseret instruktør",
-    image: badge,
+    image: badgeEn,
   },
   en: {
     heading: "Authorised instructor",
     lead: "Always use an authorised instructor.",
     body: "Being a rock climbing instructor means the instructor has completed several years of training, has been examined by the Swedish Climbing Federation, and keeps their licence current through continuous education. 'Rock Climbing Instructor' is an international standard under the UIAA (the international organisation for climbing and mountaineering, \"Union Internationale des Associations d'Alpinisme\") that assures the quality of instructors' experience and competence.",
     alt: "Authorised instructor",
-    image: badge,
+    image: badgeEn,
   },
 } as const;
 
@@ -60,11 +61,11 @@ const { heading, lead, body, image, alt } = content[locale];
 
   .card img {
     width: 160px;
-    height: 177px;
+    height: fit-content;
   }
 
   .h3 {
     margin-top: 0;
-    line-height: 1.8rem;
+    line-height: 2.3rem;
   }
 </style>
