@@ -5,7 +5,10 @@ import { localeSchema } from "src/schemas/locale";
 export async function getCourses(
   filter?: (entry: CollectionEntry<"courses">) => unknown | undefined,
 ) {
-  const courses = await getCollection("courses", filter);
+  const courses = await getCollection(
+    "courses",
+    (course) => course.data.language === "sv" && (!filter || filter(course)),
+  );
 
   return courses.sort((a, b) => a.data.order - b.data.order);
 }

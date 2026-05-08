@@ -1,9 +1,21 @@
 import type { Loader } from "astro/loaders";
 import { z } from "astro/zod";
-import { NavArea, type NavLink, type Navigation, resolveSlug, type Locale, Slug } from "@lib/routeUtils";
+import {
+  NavArea,
+  type NavLink,
+  type Navigation,
+  resolveSlug,
+  type Locale,
+  Slug,
+} from "@lib/routeUtils";
 import { localeSchema } from "../schemas/locale";
 
-function link(slug: Slug, label: string, locale: Locale = "sv", className?: string): NavLink {
+function link(
+  slug: Slug,
+  label: string,
+  locale: Locale = "sv",
+  className?: string,
+): NavLink {
   const resolved = resolveSlug(slug, locale);
   return { label, path: resolved.path, locale: resolved.locale, className };
 }
@@ -18,7 +30,14 @@ const courseNav: Record<Locale, Navigation> = {
     { link: link(Slug.COURSE_ASSISTANT, "Hjälpinstruktörskurs") },
   ],
   da: [],
-  en: [],
+  en: [
+    {
+      link: link(Slug.COURSE_CRAG_BASIC, "Basic rock climbing course", "en"),
+    },
+    {
+      link: link(Slug.COURSE_CRAG_ADV, "Advanced rock climbing course", "en"),
+    },
+  ],
 };
 
 const mobileNav: Record<Locale, Navigation> = {
@@ -47,6 +66,8 @@ const mobileNav: Record<Locale, Navigation> = {
   ],
   da: [],
   en: [
+    { link: link(Slug.HOME, "Home", "en") },
+    { link: link(Slug.COURSES, "Courses", "en") },
     { link: link(Slug.ABOUT, "About", "en") },
   ],
 };
@@ -60,10 +81,9 @@ const mainNav: Record<Locale, Navigation> = {
     { link: link(Slug.ABOUT, "Om") },
     { link: link(Slug.CONTACT, "Kontakt") },
   ],
-  da: [
-    { link: link(Slug.ABOUT, "Om", "da") },
-  ],
+  da: [{ link: link(Slug.ABOUT, "Om", "da") }],
   en: [
+    { link: link(Slug.COURSES, "Courses", "en") },
     { link: link(Slug.ABOUT, "About", "en") },
   ],
 };

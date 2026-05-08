@@ -99,6 +99,8 @@ export const Paths: {
     [Slug.HOME]: "/",
     [Slug.COURSES]: "/courses",
     [Slug.ABOUT]: "/about",
+    [Slug.COURSE_CRAG_BASIC]: "/courses/basic-rock-climbing-course",
+    [Slug.COURSE_CRAG_ADV]: "/courses/advanced-rock-climbing-course",
   },
 };
 

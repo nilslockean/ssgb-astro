@@ -5,6 +5,7 @@ import SiteLogo from "../components/SiteLogo.astro";
 import PostHog from "../components/posthog.astro";
 import ButtonGroup from "@components/ButtonGroup.astro";
 import LanguagePicker from "@components/LanguagePicker.astro";
+import LanguageList from "@components/LanguageList.astro";
 import MobileHeader from "@components/MobileHeader.astro";
 import NavLink from "@components/NavLink.astro";
 import AuthorizedInstructorBanner from "@components/AuthorizedInstructorBanner.astro";
@@ -110,6 +111,7 @@ const title = metaTitle
                 <NavLink href={getRelativeLocaleUrl(item.link.locale, item.link.path)}>{item.link.label}</NavLink>
               ))
             }
+            <LanguageList />
           </nav>
           <p class="layout__copyright">
             &copy; {new Date().getFullYear()}&nbsp;{config.siteTitle}

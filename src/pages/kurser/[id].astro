@@ -15,7 +15,10 @@ import { FIENTA_INCLUDE_DRAFTS } from "astro:env/server";
 import Section from "@components/Section.astro";
 
 export async function getStaticPaths() {
-  const posts = await getCollection("courses");
+  const posts = await getCollection(
+    "courses",
+    (course) => course.data.language === "sv",
+  );
   return posts.map((post) => ({
     params: { id: post.id },
     props: { post },

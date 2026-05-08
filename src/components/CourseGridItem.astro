@@ -1,33 +1,20 @@
 ---
-import type { CollectionEntry } from "astro:content";
 import type { HTMLAttributes } from "astro/types";
 import ButtonLink from "./ButtonLink.astro";
-import { localePath } from "@lib/i18nUtils";
-import { localeSchema } from "src/schemas/locale";
 
 interface Props extends HTMLAttributes<"li"> {
-  course: CollectionEntry<"courses">;
+  title: string;
+  excerpt: string;
+  href: string;
+  cta: string;
 }
 
-const {
-  course: {
-    data: { title, shortName, excerpt, slugId },
-  },
-} = Astro.props;
-
-const locale = localeSchema.parse(Astro.currentLocale);
-const href = localePath(slugId, locale);
-const cta =
-  "Läs mer om " + (shortName || title).replaceAll("&shy;", "").toLowerCase();
+const { title, excerpt, href, cta, class: className, ...rest } = Astro.props;
 ---
 
-<li class="course-grid-item">
+<li class:list={["course-grid-item", className]} {...rest}>
   <h3 class="course-grid-item__title font-heading mt-0 normal-case">
-    <a
-      class="course-grid-item__link"
-      href={href}
-      set:html={shortName || title}
-    />
+    <a class="course-grid-item__link" href={href} set:html={title} />
   </h3>
   <p class="course-grid-item__excerpt">{excerpt}</p>
   <p class="course-grid-item__action">

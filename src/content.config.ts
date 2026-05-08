@@ -11,6 +11,9 @@ const courses = defineCollection({
     z.object({
       title: z.string(),
       excerpt: z.string(),
+      language: localeSchema.default("sv"),
+      slug: z.string().optional(),
+      translationKey: z.enum(Slug).optional(),
       numDays: z.array(z.number()),
       order: z.number().min(0),
       featured: z.boolean().optional(),

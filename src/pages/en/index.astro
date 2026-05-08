@@ -1,15 +1,23 @@
 ---
 import Hero, { type HeroButton } from "@components/Hero.astro";
+import CourseGridItem from "@components/CourseGridItem.astro";
 import Layout from "../../layouts/Layout.astro";
 import Link from "@components/Link.astro";
 import Section from "@components/Section.astro";
 import { getLocalizedConfig } from "@lib/contentUtils";
+import { getCollection } from "astro:content";
 
 const siteConfig = await getLocalizedConfig(Astro.currentLocale);
+const featuredCourses = (
+  await getCollection(
+    "courses",
+    (course) => course.data.language === "en" && course.data.featured,
+  )
+).sort((a, b) => a.data.order - b.data.order);
 const heroButtons: HeroButton[] = [
   {
-    label: "View courses in Swedish",
-    href: "/kurser",
+    label: "View courses",
+    href: "/en/courses",
   },
   {
     label: "Email us",
@@ -41,11 +49,22 @@ const heroButtons: HeroButton[] = [
     </p>
     <p>
       We are currently translating the main course information into English,
-      starting with our core rock climbing and rescue courses. Until then, you
-      are welcome to read the Swedish course pages or contact us directly.
+      starting with our core rock climbing and rescue courses.
     </p>
+    <div class="english-course-grid">
+      {
+        featuredCourses.map((course) => (
+          <CourseGridItem
+            cta="Read about the course"
+            excerpt={course.data.excerpt}
+            href={`/en/courses/${course.data.slug || course.id}`}
+            title={course.data.title}
+          />
+        ))
+      }
+    </div>
     <p>
-      <Link href="/kurser">View current courses in Swedish &rarr;</Link>
+      <Link href="/en/courses">View English course overview &rarr;</Link>
     </p>
   </Section>
 
@@ -60,3 +79,18 @@ const heroButtons: HeroButton[] = [
     </p>
   </Section>
 </Layout>
+
+<style>
+  .english-course-grid {
+    display: grid;
+    gap: var(--space-8);
+    grid-template-columns: 1fr;
+    margin-block: var(--space-8);
+  }
+
+  @media (min-width: 64rem) {
+    .english-course-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+</style>
