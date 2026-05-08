@@ -98,7 +98,9 @@ export const Paths: {
   en: {
     [Slug.HOME]: "/",
     [Slug.COURSES]: "/courses",
+    [Slug.PRICES]: "/prices",
     [Slug.ABOUT]: "/about",
+    [Slug.CONTACT]: "/contact",
     [Slug.COURSE_CRAG_BASIC]: "/courses/basic-rock-climbing-course",
     [Slug.COURSE_CRAG_ADV]: "/courses/advanced-rock-climbing-course",
     [Slug.COURSE_RESCUE_BASIC]: "/courses/self-rescue-1",

@@ -70,7 +70,9 @@ const mobileNav: Record<Locale, Navigation> = {
   en: [
     { link: link(Slug.HOME, "Home", "en") },
     { link: link(Slug.COURSES, "Courses", "en") },
+    { link: link(Slug.PRICES, "Prices", "en") },
     { link: link(Slug.ABOUT, "About", "en") },
+    { link: link(Slug.CONTACT, "Contact", "en") },
   ],
 };
 
@@ -86,7 +88,9 @@ const mainNav: Record<Locale, Navigation> = {
   da: [{ link: link(Slug.ABOUT, "Om", "da") }],
   en: [
     { link: link(Slug.COURSES, "Courses", "en") },
+    { link: link(Slug.PRICES, "Prices", "en") },
     { link: link(Slug.ABOUT, "About", "en") },
+    { link: link(Slug.CONTACT, "Contact", "en") },
   ],
 };
 

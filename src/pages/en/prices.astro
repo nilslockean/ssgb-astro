@@ -1,0 +1,66 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import Link from "@components/Link.astro";
+import PageHead from "@components/PageHead.astro";
+import Section from "@components/Section.astro";
+import { formatPrice } from "@lib/stringUtils";
+import { getLocalizedConfig } from "@lib/contentUtils";
+
+const config = await getLocalizedConfig(Astro.currentLocale);
+const {
+  defaultPrices: { single, double, many, openBooking },
+} = config;
+---
+
+<Layout
+  metaDescription="Prices for private and open climbing course bookings with Sydsveriges Guidebyrå."
+  metaTitle="Prices"
+  tagline="Prices"
+>
+  <PageHead eyebrow="All prices are in SEK and include VAT" title="Prices">
+    <p>
+      High-quality climbing courses require qualified instructors, appropriate
+      equipment, and time to plan each activity properly. Our prices are based
+      on a daily instructor fee and work well for small private groups.
+    </p>
+  </PageHead>
+
+  <Section class="max-w-prose pt-0 pb-16">
+    <h2>Private booking</h2>
+    <p class="intro">
+      The most common option for private groups who want to book specific dates
+      or adapt the course format to their experience.
+    </p>
+    <p>
+      These prices apply to all courses. Most courses are held over two days.
+    </p>
+    <ul class="my-4">
+      <li>
+        <strong>1 person:</strong>
+        {formatPrice([single])} per person and day
+      </li>
+      <li>
+        <strong>2 people:</strong>
+        {formatPrice([double])} per person and day
+      </li>
+      <li>
+        <strong>3-4 people:</strong>
+        {formatPrice([many])} per person and day
+      </li>
+    </ul>
+
+    <h2>Open booking</h2>
+    <p class="intro">
+      For participants who are happy to join a course with other climbers. The
+      price varies depending on the course length.
+    </p>
+    <p>
+      Open courses are announced on selected dates. The price is usually
+      <strong>{formatPrice([openBooking])}</strong> per person and course, but may
+      be lower for one-day courses.
+    </p>
+    <p>
+      <Link href="/en/contact">Ask us about prices or availability &rarr;</Link>
+    </p>
+  </Section>
+</Layout>
