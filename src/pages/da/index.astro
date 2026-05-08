@@ -1,72 +1,173 @@
 ---
 import Hero, { type HeroButton } from "@components/Hero.astro";
 import Layout from "../../layouts/Layout.astro";
-import CourseGrid from "@components/CourseGrid.astro";
-import { getCourses, getLocalizedConfig } from "@lib/contentUtils";
-import Eyebrow from "@components/Eyebrow.astro";
-import { Slug } from "@lib/routeUtils";
-import { localePath } from "@lib/i18nUtils";
 import Link from "@components/Link.astro";
 import Section from "@components/Section.astro";
-import { getCollection } from "astro:content";
-import { localeSchema } from "../../schemas/locale.ts";
-
-const featuredCourses = await getCourses((course) => course.data.featured);
-const featuredTrips = await getCollection("trips");
+import ButtonGroup from "@components/ButtonGroup.astro";
+import ButtonLink from "@components/ButtonLink.astro";
+import { Slug } from "@lib/routeUtils";
+import { localePath } from "@lib/i18nUtils";
+import { localeSchema } from "../../schemas/locale";
+import { getLocalizedConfig } from "@lib/contentUtils";
 
 const locale = localeSchema.parse(Astro.currentLocale);
 const siteConfig = await getLocalizedConfig(locale);
+const contactPath = localePath(Slug.CONTACT, "da");
 
 const heroButtons: HeroButton[] = [
   {
-    label: "Book et kursus",
-    href: localePath(Slug.COURSES, locale),
+    label: "Kontakt os",
+    href: contactPath,
   },
   {
-    label: "Stil et spørgsmål",
-    href: localePath(Slug.CONTACT, locale),
+    label: "Læs om kurserne",
+    href: "#kurser",
   },
 ];
 ---
 
 <Layout
-  metaDescription={siteConfig.siteTagline}
   tagline="Velkommen til Sydsveriges Guidebyrå"
+  metaDescription="Klatrekursus på Kullen og klatring på Kullaberg med Sydsveriges Guidebyrå. Kurser for begyndere, tradklatring og kammeratredning tæt på Danmark."
 >
   <Hero
     buttons={heroButtons}
+    content="Sydsveriges Guidebyrå tilbyder klatrekurser på og omkring Kullen for danske klatrere, der vil lære at klatre sikkert på rigtig klippe."
+    eyebrow="Klatring Kullen"
     size="large"
-    video="/ssgb-video-2.mp4"
-    eyebrow="Oplev et eventyr med naturen som din arena"
     title={siteConfig.siteTagline}
+    video="/ssgb-video-2.mp4"
   />
 
   <Section>
-    <h2>Kurser</h2>
+    <h2>Klatring på Kullen med instruktør</h2>
     <p class="intro">
-      För dig som vill gå en klätterkurs inom klippklättring. Passar nybörjare
-      och dig som kommit en bit på vägen och vill utveckla din klättring. Vi
-      erbjuder våra kurser samtliga dagar i veckan, du bokar själv när det
-      passar och hur många ni vill vara.
+      Kullen og Kullaberg er et af de mest oplagte steder for danske klatrere,
+      der vil tage skridtet fra hal til klippe. Her får du klippeklatring tæt på
+      København, men i et miljø hvor sikkerhed, metode og gode beslutninger
+      betyder noget.
     </p>
-    <Eyebrow class="mt-16 mb-4 ml-4">Populära kurser</Eyebrow>
-    <CourseGrid class="mb-8" entries={featuredCourses}>
-      <p class="flex items-end">
-        <Link slug={Slug.COURSES}>Fler kurser &rarr;</Link>
-      </p>
-    </CourseGrid>
+    <p class="max-w-prose">
+      Vores klatrekurser henvender sig både til begyndere og til klatrere, der
+      allerede har erfaring og vil videre med traditionel klatring,
+      egenplacerede sikringer eller kammeratredning. Kurserne kan som regel
+      bookes privat på datoer, der passer jeres gruppe.
+    </p>
+  </Section>
+
+  <Section id="kurser">
+    <h2>Klatrekurser på Kullen</h2>
+    <div class="course-summary-grid">
+      <article class="course-summary">
+        <h3>Grundkursus i klippeklatring</h3>
+        <p>
+          For dig, der vil begynde at klatre udendørs. På kurset arbejder vi med
+          at placere egne sikringer, bygge topanker på faste og naturlige
+          punkter samt fire eller rappelle på en struktureret måde.
+        </p>
+        <p>
+          Kurset passer både til helt nye klatrere og til dig, der har klatret
+          indendørs og vil lære, hvordan klatring på klippe fungerer i praksis.
+        </p>
+      </article>
+
+      <article class="course-summary">
+        <h3>Fortsættelseskursus i klippeklatring</h3>
+        <p>
+          For dig, der allerede kan klatre på top-reb udendørs og vil begynde at
+          føre lettere traditionelle ruter på egne sikringer.
+        </p>
+        <p>
+          Du træner placering af kiler og kamkiler, vurdering af klippekvalitet,
+          opbygning af standplads og sikring af både førstemand og andremand.
+        </p>
+      </article>
+
+      <article class="course-summary">
+        <h3>Kammeratredning 1</h3>
+        <p>
+          Et kursus for klatrere, der vil kunne håndtere almindelige hændelser
+          på klippen, når en normal nedfiring ikke længere er nok.
+        </p>
+        <p>
+          Du lærer blandt andet at aflaste systemer, hejse og fire en skadet
+          klatrer, prusikke på reb, passere en knude under nedfiring og arbejde
+          metodisk under pres.
+        </p>
+      </article>
+
+      <article class="course-summary">
+        <h3>Kammeratredning 2</h3>
+        <p>
+          Det videre kursus for klatrere med erfaring fra ledklatring og
+          kammeratredning, som vil kunne håndtere mere komplekse situationer på
+          længere ruter.
+        </p>
+        <p>
+          Fokus ligger på planlægning, vurdering, evakuering og effektive
+          rutiner, også når situationen involverer en udsat førstemand.
+        </p>
+      </article>
+    </div>
   </Section>
 
   <Section>
-    <h2>Resor</h2>
+    <h2>Klatrekursus tæt på Danmark</h2>
     <p class="intro">
-      För dig som vill uppleva klättring och bergsmiljöer utanför Sverige.
-      Resorna riktar sig till klättrare med viss erfarenhet som vill utvecklas
-      vidare i en ny miljö, med stöd av instruktör och guide. Fokus ligger på
-      säkerhet, metodik och att ge dig förutsättningar att ta tillvara på
-      möjligheterna som platsen erbjuder.
+      Kullen ligger tæt på Danmark og er derfor et naturligt valg for
+      klatrekurser i Sverige tæt på København. Her får du klatring på Kullaberg
+      i et område med mange muligheder for både begyndere og mere erfarne
+      klatrere.
     </p>
-    <Eyebrow class="mt-16 mb-4 ml-4">Våra resor</Eyebrow>
-    <CourseGrid class="mb-8" entries={featuredTrips} />
+    <p>
+      Sydsveriges Guidebyrå drives af autoriserede instruktører med fokus på
+      trygge rammer, tydelig metodik og praktisk læring på klippen. Hvis du er i
+      tvivl om, hvilket kursus der passer til dit niveau, hjælper vi gerne.
+    </p>
+    <ButtonGroup class="mt-8">
+      <ButtonLink href={contactPath} variant="primary">Kontakt os</ButtonLink>
+      <ButtonLink href="mailto:instruktor@ssgb.se">Send en e-mail</ButtonLink>
+    </ButtonGroup>
+  </Section>
+
+  <Section>
+    <h2>Praktisk</h2>
+    <ul class="max-w-prose">
+      <li>Kurser kan normalt bookes privat for små grupper.</li>
+      <li>Alt nødvendigt kursusudstyr kan lånes, medmindre andet aftales.</li>
+      <li>Kurser gennemføres kun, når vejr og forhold tillader det.</li>
+      <li>
+        Du er velkommen til at kontakte os på det sprog, der passer dig bedst.
+        Vi taler svensk og engelsk.
+      </li>
+    </ul>
+    <p>
+      <Link href={contactPath}>Spørg om klatrekursus på Kullen &rarr;</Link>
+    </p>
   </Section>
 </Layout>
+
+<style>
+  .course-summary-grid {
+    display: grid;
+    gap: var(--space-8);
+    grid-template-columns: 1fr;
+  }
+
+  .course-summary {
+    background-color: var(--color-surface-light);
+    border-radius: var(--border-radius-xl);
+    border: 1px solid var(--color-surface-dark);
+    padding: var(--space-8);
+  }
+
+  .course-summary h3 {
+    margin-top: 0;
+  }
+
+  @media (min-width: 64rem) {
+    .course-summary-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+</style>
