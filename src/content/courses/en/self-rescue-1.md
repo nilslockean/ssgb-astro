@@ -7,7 +7,6 @@ translationKey: course_rescue_basic
 slugId: course_rescue_basic
 numDays: [2]
 order: 50
-featured: true
 cta: Ask about this course
 prerequisites: You should have completed a basic outdoor rock climbing course or a sport climbing course before taking Self-Rescue 1.
 norm: raddning-1
