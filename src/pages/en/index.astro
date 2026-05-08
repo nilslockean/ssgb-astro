@@ -1,0 +1,62 @@
+---
+import Hero, { type HeroButton } from "@components/Hero.astro";
+import Layout from "../../layouts/Layout.astro";
+import Link from "@components/Link.astro";
+import Section from "@components/Section.astro";
+import { getLocalizedConfig } from "@lib/contentUtils";
+
+const siteConfig = await getLocalizedConfig(Astro.currentLocale);
+const heroButtons: HeroButton[] = [
+  {
+    label: "View courses in Swedish",
+    href: "/kurser",
+  },
+  {
+    label: "Email us",
+    href: `mailto:${siteConfig.contact.email}`,
+  },
+];
+---
+
+<Layout
+  metaDescription="Sydsveriges Guidebyrå offers rock climbing courses, guiding, and climbing trips in southern Sweden, Spain, and Italy."
+  tagline="Welcome to Sydsveriges Guidebyrå"
+>
+  <Hero
+    buttons={heroButtons}
+    content="We help climbers build sound judgement, safer routines, and practical skills for real rock."
+    eyebrow="Climbing courses and guided experiences"
+    size="large"
+    title={siteConfig.siteTagline}
+    video="/ssgb-video-2.mp4"
+  />
+
+  <Section>
+    <h2>Courses</h2>
+    <p class="intro">
+      Sydsveriges Guidebyrå offers outdoor climbing courses for beginners and
+      experienced climbers who want to develop their skills on real rock. Our
+      courses can be booked on dates that suit your group, with a strong focus
+      on safety, clear methods, and practical experience.
+    </p>
+    <p>
+      We are currently translating the main course information into English,
+      starting with our core rock climbing and rescue courses. Until then, you
+      are welcome to read the Swedish course pages or contact us directly.
+    </p>
+    <p>
+      <Link href="/kurser">View current courses in Swedish &rarr;</Link>
+    </p>
+  </Section>
+
+  <Section>
+    <h2>Questions?</h2>
+    <p class="intro">
+      If you are not sure which course fits your level, send us a short message.
+      We are happy to help you choose the right next step.
+    </p>
+    <p>
+      <Link href={`mailto:${siteConfig.contact.email}`}>Contact us &rarr;</Link>
+    </p>
+  </Section>
+</Layout>
