@@ -37,6 +37,8 @@ const courseNav: Record<Locale, Navigation> = {
     {
       link: link(Slug.COURSE_CRAG_ADV, "Advanced rock climbing course", "en"),
     },
+    { link: link(Slug.COURSE_RESCUE_BASIC, "Self-Rescue 1", "en") },
+    { link: link(Slug.COURSE_RESCUE_ADV, "Self-Rescue 2", "en") },
   ],
 };
 

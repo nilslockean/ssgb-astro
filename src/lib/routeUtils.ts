@@ -101,6 +101,8 @@ export const Paths: {
     [Slug.ABOUT]: "/about",
     [Slug.COURSE_CRAG_BASIC]: "/courses/basic-rock-climbing-course",
     [Slug.COURSE_CRAG_ADV]: "/courses/advanced-rock-climbing-course",
+    [Slug.COURSE_RESCUE_BASIC]: "/courses/self-rescue-1",
+    [Slug.COURSE_RESCUE_ADV]: "/courses/self-rescue-2",
   },
 };
 
