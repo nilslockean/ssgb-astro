@@ -27,7 +27,7 @@ const heroButtons: HeroButton[] = [
 ---
 
 <Layout
-  metaDescription="Sydsveriges Guidebyrå offers rock climbing courses, guiding, and climbing trips in southern Sweden, Spain, and Italy."
+  metaDescription="Sydsveriges Guidebyrå offers rock climbing courses in southern Sweden, with a focus on safety, clear methods, and practical outdoor skills."
   tagline="Welcome to Sydsveriges Guidebyrå"
 >
   <Hero
@@ -47,10 +47,6 @@ const heroButtons: HeroButton[] = [
       courses can be booked on dates that suit your group, with a strong focus
       on safety, clear methods, and practical experience.
     </p>
-    <p>
-      We are currently translating the main course information into English,
-      starting with our core rock climbing and rescue courses.
-    </p>
     <div class="english-course-grid">
       {
         featuredCourses.map((course) => (
@@ -64,18 +60,18 @@ const heroButtons: HeroButton[] = [
       }
     </div>
     <p>
-      <Link href="/en/courses">View English course overview &rarr;</Link>
+      <Link href="/en/courses">View all courses &rarr;</Link>
     </p>
   </Section>
 
   <Section>
-    <h2>Questions?</h2>
+    <h2>Plan your course</h2>
     <p class="intro">
-      If you are not sure which course fits your level, send us a short message.
-      We are happy to help you choose the right next step.
+      Most courses can be booked privately on dates that suit your group. Prices
+      are based on group size and course format.
     </p>
     <p>
-      <Link href="/en/contact">Contact us &rarr;</Link>
+      <Link href="/en/prices">View prices &rarr;</Link>
     </p>
   </Section>
 </Layout>
