@@ -1,18 +1,21 @@
 ---
-import { i18n } from "astro:config/client";
-import { toPaths, getRelativeLocaleUrl } from "astro:i18n";
+import { getRelativeLocaleUrl } from "astro:i18n";
+import { LOCALES, languages } from "@lib/i18nUtils";
+import { localeSchema } from "../schemas/locale";
 
-const languages = toPaths(i18n!.locales);
-const { currentLocale } = Astro;
+const currentLocale = localeSchema.parse(Astro.currentLocale);
 ---
 
 <ul>
   {
     languages.map((lang) => (
       <li>
-        <a href={getRelativeLocaleUrl(lang)} data-current={lang === currentLocale}>
+        <a
+          href={getRelativeLocaleUrl(lang)}
+          data-current={lang === currentLocale}
+        >
           <iconify-icon icon={`circle-flags:lang-${lang}`} width="24" />
-          <span class="sr-only">{lang}</span>
+          <span class="sr-only">{LOCALES[lang]}</span>
         </a>
       </li>
     ))

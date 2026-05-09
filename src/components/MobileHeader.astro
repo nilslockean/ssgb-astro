@@ -4,48 +4,62 @@ import NavLink from "./NavLink.astro";
 import SiteLogo from "./SiteLogo.astro";
 import { type Navigation } from "@lib/routeUtils";
 import { getRelativeLocaleUrl } from "astro:i18n";
+import LanguageList from "./LanguageList.astro";
+import { LOCALES } from "@lib/i18nUtils";
+import { localeSchema } from "../schemas/locale";
 
 interface Props {
   links: Navigation;
 }
 const { links } = Astro.props;
+const currentLocale = localeSchema.parse(Astro.currentLocale);
 ---
 
 <header class="flex justify-between md:hidden">
   <SiteLogo />
-  <button aria-haspopup="dialog" aria-label="Toggle menu" id="menu-toggle">
-    <span class="sr-only">Öppna eller stäng huvudmenyn</span>
-    <svg
-      aria-hidden="true"
-      class="mobile-menu__icon--open"
-      focusable="false"
-      height="24"
-      viewBox="0 0 48 24"
-      width="48"
-      xmlns="http://www.w3.org/2000/svg"
+  <div class="header-actions">
+    <button
+      aria-haspopup="true"
+      aria-label={`Byt språk / Change language. Current language: ${LOCALES[currentLocale]}`}
+      id="lang-toggle"
+      popovertarget="lang-menu"
     >
-      <rect height="1.5" width="42" x="4" y="7.5"></rect>
-      <rect height="1.5" width="42" x="4" y="15"></rect>
-    </svg>
-    <svg
-      aria-hidden="true"
-      class="mobile-menu__icon--close hidden"
-      focusable="false"
-      height="24"
-      viewBox="0 0 48 24"
-      width="48"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <path
-        d="M31.2479 3.69151L15.6915 19.2479L16.7522 20.3085L32.3085 4.75217L31.2479 3.69151Z"
-      ></path>
-      <path
-        d="M32.3085 19.2479L16.7522 3.69153L15.6915 4.75219L31.2479 20.3085L32.3085 19.2479Z"
-      ></path>
-    </svg>
+      <iconify-icon icon={`circle-flags:lang-${currentLocale}`} width="28"
+      ></iconify-icon>
+    </button>
+    <button aria-haspopup="dialog" aria-label="Toggle menu" id="menu-toggle">
+      <span class="sr-only">Öppna eller stäng huvudmenyn</span>
+      <svg
+        aria-hidden="true"
+        class="mobile-menu__icon--open"
+        focusable="false"
+        height="24"
+        viewBox="0 0 48 24"
+        width="48"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <rect height="1.5" width="42" x="4" y="7.5"></rect>
+        <rect height="1.5" width="42" x="4" y="15"></rect>
+      </svg>
+      <svg
+        aria-hidden="true"
+        class="mobile-menu__icon--close hidden"
+        focusable="false"
+        height="24"
+        viewBox="0 0 48 24"
+        width="48"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M31.2479 3.69151L15.6915 19.2479L16.7522 20.3085L32.3085 4.75217L31.2479 3.69151Z"
+        ></path>
+        <path
+          d="M32.3085 19.2479L16.7522 3.69153L15.6915 4.75219L31.2479 20.3085L32.3085 19.2479Z"
+        ></path>
+      </svg>
 
-    <!-- Close button (mobile only) -->
-    <!-- <div class="flex justify-end items-center mb-8">
+      <!-- Close button (mobile only) -->
+      <!-- <div class="flex justify-end items-center mb-8">
 			<button id="menu-close" class="p-2 rounded focus:outline-none focus:ring">
 				<span class="sr-only">Stäng huvudmenyn</span>
 				<svg
@@ -60,8 +74,13 @@ const { links } = Astro.props;
 				</svg>
 			</button>
 		</div> -->
-  </button>
+    </button>
+  </div>
 </header>
+
+<div id="lang-menu" popover>
+  <LanguageList />
+</div>
 
 <!-- Navigation -->
 <nav
@@ -73,17 +92,37 @@ const { links } = Astro.props;
     {
       links.map((item) => (
         <li>
-          <a class="font-heading text-5xl" href={getRelativeLocaleUrl(item.link.locale, item.link.path)}>
+          <a
+            class="font-heading text-5xl"
+            href={getRelativeLocaleUrl(item.link.locale, item.link.path)}
+          >
             {item.link.label}
           </a>
           {item.subMenu && (
             <ul class="mt-6 ml-4 flex flex-col gap-2">
               {item.subMenu.nav.map((entry) => (
                 <li>
-                  <NavLink href={getRelativeLocaleUrl(entry.link.locale, entry.link.path)} set:html={entry.link.label} />
+                  <NavLink
+                    href={getRelativeLocaleUrl(
+                      entry.link.locale,
+                      entry.link.path,
+                    )}
+                    set:html={entry.link.label}
+                  />
                 </li>
               ))}
-              {item.subMenu.more && <li><NavLink href={getRelativeLocaleUrl(item.subMenu.more.locale, item.subMenu.more.path)}>{item.subMenu.more.label}</NavLink></li>}
+              {item.subMenu.more && (
+                <li>
+                  <NavLink
+                    href={getRelativeLocaleUrl(
+                      item.subMenu.more.locale,
+                      item.subMenu.more.path,
+                    )}
+                  >
+                    {item.subMenu.more.label}
+                  </NavLink>
+                </li>
+              )}
             </ul>
           )}
         </li>
@@ -107,14 +146,56 @@ const { links } = Astro.props;
     padding: var(--space-4);
   }
 
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+  }
+
   button {
     appearance: none;
     border: none;
     background: transparent;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
   }
 
   svg {
     fill: white;
+  }
+
+  #lang-toggle {
+    anchor-name: --lang-toggle;
+    border-radius: 50%;
+    padding: 2px;
+  }
+
+  #lang-toggle:focus-visible {
+    outline: 2px solid var(--color-white);
+    outline-offset: 2px;
+  }
+
+  #lang-menu {
+    inset: unset;
+    position: fixed;
+    position-anchor: --lang-toggle;
+    top: anchor(--lang-toggle bottom);
+    right: anchor(--lang-toggle right);
+    margin-block-start: var(--space-2);
+    padding: var(--space-2);
+    background-color: var(--color-surface-dark);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-md, 6px);
+    min-width: 9rem;
+  }
+
+  #lang-menu::backdrop {
+    background: transparent;
+  }
+
+  #lang-menu :global(a:hover) {
+    background-color: var(--color-surface-darker);
   }
 
   nav {

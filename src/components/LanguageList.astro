@@ -1,0 +1,52 @@
+---
+import { getRelativeLocaleUrl } from "astro:i18n";
+import { LOCALES, languages } from "@lib/i18nUtils";
+import { localeSchema } from "../schemas/locale";
+
+const currentLocale = localenSchema.parse(Astro.currentLocale);
+---
+
+<ul class="lang-list">
+  {
+    languages.map((lang) => (
+      <li>
+        <a
+          aria-current={lang === currentLocale ? "page" : undefined}
+          href={getRelativeLocaleUrl(lang)}
+          hreflang={lang}
+        >
+          <iconify-icon icon={`circle-flags:lang-${lang}`} width="22" />
+          <span>{LOCALES[lang]}</span>
+        </a>
+      </li>
+    ))
+  }
+</ul>
+
+<style>
+  .lang-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .lang-list a {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-2) var(--space-3);
+    border-radius: var(--radius-sm, 4px);
+    color: var(--color-default);
+    text-decoration: none;
+    font-size: 0.9375rem;
+  }
+
+  .lang-list a[aria-current="page"] {
+    font-weight: 600;
+  }
+
+  .lang-list a[aria-current="page"] iconify-icon {
+    outline: 2px solid var(--color-white);
+    border-radius: 50%;
+  }
+</style>
