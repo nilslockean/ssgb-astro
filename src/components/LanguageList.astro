@@ -3,7 +3,7 @@ import { getRelativeLocaleUrl } from "astro:i18n";
 import { LOCALES, languages } from "@lib/i18nUtils";
 import { localeSchema } from "../schemas/locale";
 
-const currentLocale = localenSchema.parse(Astro.currentLocale);
+const currentLocale = localeSchema.parse(Astro.currentLocale);
 ---
 
 <ul class="lang-list">
