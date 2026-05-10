@@ -18,7 +18,7 @@ import { getLocalizedConfig } from "../lib/contentUtils.ts";
 
 const config = await getLocalizedConfig(Astro.currentLocale);
 
-interface Props {
+export interface Props {
   metaDescription: string;
   metaTitle?: string;
   tagline?: string;
@@ -91,6 +91,7 @@ const title = metaTitle
             ))
           }
         </nav>
+        <slot name="sidebar-bottom" />
       </aside>
       <div class="layout__main">
         <header class="layout__header">
