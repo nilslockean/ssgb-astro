@@ -1,6 +1,6 @@
 ---
-title: Self-Rescue 1
-excerpt: Self-Rescue 1 gives you the foundations for helping and rescuing a second climber on rock.
+title: Self-rescue 1
+excerpt: Self-rescue course 1 gives you the foundations for helping and rescuing a second climber on rock.
 language: en
 slug: self-rescue-1
 translationKey: course_rescue_basic

@@ -32,13 +32,13 @@ const courseNav: Record<Locale, Navigation> = {
   da: [],
   en: [
     {
-      link: link(Slug.COURSE_CRAG_BASIC, "Basic rock climbing course", "en"),
+      link: link(Slug.COURSE_CRAG_BASIC, "Rock climbing fundamentals", "en"),
     },
     {
-      link: link(Slug.COURSE_CRAG_ADV, "Advanced rock climbing course", "en"),
+      link: link(Slug.COURSE_CRAG_ADV, "Rock climbing continued", "en"),
     },
-    { link: link(Slug.COURSE_RESCUE_BASIC, "Self-Rescue 1", "en") },
-    { link: link(Slug.COURSE_RESCUE_ADV, "Self-Rescue 2", "en") },
+    { link: link(Slug.COURSE_RESCUE_BASIC, "Self-rescue 1", "en") },
+    { link: link(Slug.COURSE_RESCUE_ADV, "Self-rescue 2", "en") },
   ],
 };
 

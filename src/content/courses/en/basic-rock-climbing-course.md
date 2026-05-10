@@ -1,5 +1,5 @@
 ---
-title: Basic Rock Climbing Course
+title: Rock climbing fundamentals
 excerpt: For anyone who wants to start climbing outdoors, whether you are completely new to climbing or have spent some time climbing indoors.
 language: en
 slug: basic-rock-climbing-course

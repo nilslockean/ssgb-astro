@@ -1,5 +1,5 @@
 ---
-title: Advanced Rock Climbing Course
+title: Rock climbing continued
 excerpt: For climbers who already have some outdoor experience and want to start leading on traditional protection.
 language: en
 slug: advanced-rock-climbing-course

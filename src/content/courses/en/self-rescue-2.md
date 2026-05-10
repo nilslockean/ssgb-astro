@@ -1,6 +1,6 @@
 ---
-title: Self-Rescue 2
-excerpt: Self-Rescue 2 gives you tools for rescuing a lead climber and handling complex situations on longer routes.
+title: Self-rescue 2
+excerpt: Self-rescue course 2 gives you tools for rescuing a lead climber and handling complex situations on longer routes.
 language: en
 slug: self-rescue-2
 translationKey: course_rescue_adv
