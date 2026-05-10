@@ -1,0 +1,23 @@
+---
+import type { Locale } from "@lib/routeUtils";
+import SwedishFlag from "./SwedishFlag.astro";
+import EnglishFlag from "./EnglishFlag.astro";
+import DanishFlag from "./DanishFlag.astro";
+
+interface Props {
+  locale: Locale;
+  size?: number | string;
+}
+
+const { locale, size } = Astro.props;
+---
+
+{
+  locale === "sv" ? (
+    <SwedishFlag {size} />
+  ) : locale === "en" ? (
+    <EnglishFlag {size} />
+  ) : (
+    <DanishFlag {size} />
+  )
+}

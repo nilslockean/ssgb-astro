@@ -53,9 +53,6 @@ const title = metaTitle
     <meta content={title} name="twitter:title" />
     <meta content={metaDescription} name="twitter:description" />
     <meta content="/og-default.png" name="twitter:image" />
-    <script
-      src="https://code.iconify.design/iconify-icon/2.1.0/iconify-icon.min.js"
-    ></script>
     <Font cssVariable="--font-barlow-condensed" preload />
     <Font cssVariable="--font-host-grotesk" preload />
 
@@ -86,7 +83,11 @@ const title = metaTitle
         <nav class="layout__sidebar-nav">
           {
             config.navigation[NavArea.SIDEBAR_ASIDE].map((item) => (
-              <NavLink href={getRelativeLocaleUrl(item.link.locale, item.link.path)}>{item.link.label}</NavLink>
+              <NavLink
+                href={getRelativeLocaleUrl(item.link.locale, item.link.path)}
+              >
+                {item.link.label}
+              </NavLink>
             ))
           }
         </nav>
@@ -105,21 +106,33 @@ const title = metaTitle
           <AuthorizedInstructorBanner />
         </main>
         <footer class="layout__footer">
-          <nav class="layout__footer-nav-mobile">
-            {
-              config.navigation[NavArea.SIDEBAR_ASIDE].map((item) => (
-                <NavLink href={getRelativeLocaleUrl(item.link.locale, item.link.path)}>{item.link.label}</NavLink>
-              ))
-            }
+          <div class="layout__footer-nav-mobile">
+            <nav>
+              {
+                config.navigation[NavArea.SIDEBAR_ASIDE].map((item) => (
+                  <NavLink
+                    href={getRelativeLocaleUrl(
+                      item.link.locale,
+                      item.link.path,
+                    )}
+                  >
+                    {item.link.label}
+                  </NavLink>
+                ))
+              }
+            </nav>
             <LanguageList />
-          </nav>
+          </div>
           <p class="layout__copyright">
             &copy; {new Date().getFullYear()}&nbsp;{config.siteTitle}
           </p>
           <nav class="layout__footer-nav">
             {
               config.navigation[NavArea.FOOTER].map((item) => (
-                <NavLink class="text-sm" href={getRelativeLocaleUrl(item.link.locale, item.link.path)}>
+                <NavLink
+                  class="text-sm"
+                  href={getRelativeLocaleUrl(item.link.locale, item.link.path)}
+                >
                   {item.link.label}
                 </NavLink>
               ))
@@ -130,3 +143,9 @@ const title = metaTitle
     </div>
   </body>
 </html>
+
+<style>
+  .layout__footer-nav-mobile :global(.lang-list) {
+    margin-left: calc(var(--space-3) * -1);
+  }
+</style>

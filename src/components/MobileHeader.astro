@@ -7,6 +7,7 @@ import { getRelativeLocaleUrl } from "astro:i18n";
 import LanguageList from "./LanguageList.astro";
 import { LOCALES } from "@lib/i18nUtils";
 import { localeSchema } from "../schemas/locale";
+import LocaleFlag from "./flags/LocaleFlag.astro";
 
 interface Props {
   links: Navigation;
@@ -24,8 +25,7 @@ const currentLocale = localeSchema.parse(Astro.currentLocale);
       id="lang-toggle"
       popovertarget="lang-menu"
     >
-      <iconify-icon icon={`circle-flags:lang-${currentLocale}`} width="28"
-      ></iconify-icon>
+      <LocaleFlag locale={currentLocale} size={28} />
     </button>
     <button aria-haspopup="dialog" aria-label="Toggle menu" id="menu-toggle">
       <span class="sr-only">Öppna eller stäng huvudmenyn</span>
@@ -174,6 +174,10 @@ const currentLocale = localeSchema.parse(Astro.currentLocale);
   #lang-toggle:focus-visible {
     outline: 2px solid var(--color-white);
     outline-offset: 2px;
+  }
+
+  #lang-toggle :global(.flag-icon) {
+    outline: 2px solid white;
   }
 
   #lang-menu {

@@ -51,6 +51,15 @@
   }
 }
 
+@layer components {
+  .flag-icon {
+    border-radius: 50%;
+    display: block;
+    flex: 0 0 auto;
+    overflow: hidden;
+  }
+}
+
 /* -------------------------------------------------------------------------
    Tokens
    ------------------------------------------------------------------------- */
@@ -399,7 +408,7 @@
     gap: var(--space-6);
   }
 
-  .layout__footer-nav-mobile {
+  .layout__footer-nav-mobile nav {
     display: flex;
     flex-direction: column;
     gap: var(--space-2);

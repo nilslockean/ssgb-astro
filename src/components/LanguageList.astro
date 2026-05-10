@@ -2,6 +2,7 @@
 import { getRelativeLocaleUrl } from "astro:i18n";
 import { LOCALES, languages } from "@lib/i18nUtils";
 import { localeSchema } from "../schemas/locale";
+import LocaleFlag from "./flags/LocaleFlag.astro";
 
 const currentLocale = localeSchema.parse(Astro.currentLocale);
 ---
@@ -15,7 +16,7 @@ const currentLocale = localeSchema.parse(Astro.currentLocale);
           href={getRelativeLocaleUrl(lang)}
           hreflang={lang}
         >
-          <iconify-icon icon={`circle-flags:lang-${lang}`} width="22" />
+          <LocaleFlag locale={lang} size={22} />
           <span>{LOCALES[lang]}</span>
         </a>
       </li>
@@ -45,7 +46,7 @@ const currentLocale = localeSchema.parse(Astro.currentLocale);
     font-weight: 600;
   }
 
-  .lang-list a[aria-current="page"] iconify-icon {
+  .lang-list a[aria-current="page"] :global(.flag-icon) {
     outline: 2px solid var(--color-white);
     border-radius: 50%;
   }
