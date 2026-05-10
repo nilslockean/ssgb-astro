@@ -525,7 +525,8 @@
     margin-top: var(--space-4);
   }
 
-  .collection-entry ul {
+  .collection-entry ul,
+  ul.list {
     margin-block: var(--space-4);
     margin-left: var(--space-5);
     list-style: disc;
