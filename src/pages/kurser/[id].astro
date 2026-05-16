@@ -1,5 +1,6 @@
 ---
-import { getCollection, getEntry, render } from "astro:content";
+import { getCollection, getEntry } from "astro:content";
+import { PortableText } from "astro-portabletext";
 import Accordion from "@components/Accordion.astro";
 import ButtonGroup from "@components/ButtonGroup.astro";
 import ButtonLink from "@components/ButtonLink.astro";
@@ -25,17 +26,15 @@ export async function getStaticPaths() {
   }));
 }
 const { post } = Astro.props;
-const { Content } = await render(post);
-const norm = post.data.norm && (await getEntry(post.data.norm));
-const gallery = post.data.gallery && (await getEntry(post.data.gallery));
+const { norm } = post.data;
 const numDays = post.data.numDays.join("-");
 const numDaysSuffix = numDays === "1" ? "dag" : "dagar";
 const numDaysDesc = `${numDays} ${numDaysSuffix}`;
 const heroButtons: HeroButton[] = [{ label: post.data.cta, href: "#boka" }];
-if (norm) {
+if (norm?.url) {
   heroButtons.push({
     label: "Läs kursnormen",
-    href: norm.data.url,
+    href: norm.url,
     target: "_blank",
   });
 }
@@ -77,20 +76,13 @@ if (norm) {
   }
   <Section>
     <div class="collection-entry">
-      <Content />
+      {post.data.body && <PortableText value={post.data.body} />}
       <p>
         <strong>Tidsåtgång:</strong>
         {numDaysDesc}.
       </p>
     </div>
   </Section>
-  {
-    gallery && (
-      <Section>
-        <Gallery entry={gallery} />
-      </Section>
-    )
-  }
 
   <Section>
     {
@@ -113,14 +105,14 @@ if (norm) {
       )
     }
     {
-      norm && (
+      norm?.url && (
         <Accordion title="Kursnorm">
           <>
             <p>
               Denna kurs uppfyller{" "}
-              <Link href={norm.data.url} target="_blank">
+              <Link href={norm.url} target="_blank">
                 Svenska Klätterförbundets norm för
-                {norm.data.title}.
+                {norm.title}.
               </Link>
             </p>
             <p>

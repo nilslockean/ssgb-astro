@@ -3,6 +3,7 @@ import type { CollectionEntry } from "astro:content";
 import type { HTMLAttributes } from "astro/types";
 import CourseGridItem from "./CourseGridItem.astro";
 import { localePath } from "@lib/i18nUtils";
+import { Slug } from "@lib/routeUtils";
 import { localeSchema } from "src/schemas/locale";
 
 interface Props extends HTMLAttributes<"ul"> {
@@ -26,7 +27,7 @@ const locale = localeSchema.parse(Astro.currentLocale);
   {
     entries.map((course) => {
       const title = course.data.shortName || course.data.title;
-      const href = localePath(course.data.slugId, locale);
+      const href = localePath(Slug.COURSES, locale) + course.id;
       const cta = `Läs mer om ${title.replaceAll("&shy;", "").toLowerCase()}`;
 
       return (

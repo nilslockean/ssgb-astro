@@ -1,114 +1,9 @@
 import type { Loader } from "astro/loaders";
 import { z } from "astro/zod";
-import {
-  NavArea,
-  type NavLink,
-  type Navigation,
-  resolveSlug,
-  type Locale,
-  Slug,
-} from "@lib/routeUtils";
+import { NavArea, type Locale } from "@lib/routeUtils";
 import { localeSchema } from "../schemas/locale";
-
-function link(
-  slug: Slug,
-  label: string,
-  locale: Locale = "sv",
-  className?: string,
-): NavLink {
-  const resolved = resolveSlug(slug, locale);
-  return { label, path: resolved.path, locale: resolved.locale, className };
-}
-
-const courseNav: Record<Locale, Navigation> = {
-  sv: [
-    { link: link(Slug.COURSE_CRAG_BASIC, "Grundkurs klippa") },
-    { link: link(Slug.COURSE_CRAG_ADV, "Fortsättningskurs klippa") },
-    { link: link(Slug.COURSE_RESCUE_BASIC, "Räddning 1") },
-    { link: link(Slug.COURSE_RESCUE_ADV, "Räddning 2") },
-    { link: link(Slug.COURSE_SPORT, "Sportklätterkurs") },
-    { link: link(Slug.COURSE_ASSISTANT, "Hjälpinstruktörskurs") },
-  ],
-  da: [],
-  en: [
-    {
-      link: link(Slug.COURSE_CRAG_BASIC, "Rock climbing fundamentals", "en"),
-    },
-    {
-      link: link(Slug.COURSE_CRAG_ADV, "Rock climbing continued", "en"),
-    },
-    { link: link(Slug.COURSE_RESCUE_BASIC, "Self-rescue 1", "en") },
-    { link: link(Slug.COURSE_RESCUE_ADV, "Self-rescue 2", "en") },
-  ],
-};
-
-const mobileNav: Record<Locale, Navigation> = {
-  sv: [
-    { link: link(Slug.HOME, "Hem") },
-    {
-      link: link(Slug.COURSES, "Kurser"),
-      subMenu: {
-        nav: courseNav.sv,
-        more: link(Slug.COURSES, "Fler kurser →"),
-      },
-    },
-    {
-      link: link(Slug.TRIPS, "Resor"),
-      subMenu: {
-        nav: [
-          { link: link(Slug.TRIP_ITALY, "Klättring i Dolomiterna") },
-          { link: link(Slug.TRIP_SPAIN, "Sportklättring i Spanien") },
-        ],
-      },
-    },
-    { link: link(Slug.INSTRUCTOR_TRAINING, "Utbildning") },
-    { link: link(Slug.PRICES, "Priser") },
-    { link: link(Slug.ABOUT, "Om") },
-    { link: link(Slug.CONTACT, "Kontakt") },
-  ],
-  da: [
-    { link: link(Slug.HOME, "Forside", "da") },
-    { link: link(Slug.ABOUT, "Om", "da") },
-    { link: link(Slug.CONTACT, "Kontakt", "da") },
-  ],
-  en: [
-    { link: link(Slug.HOME, "Home", "en") },
-    { link: link(Slug.COURSES, "Courses", "en") },
-    { link: link(Slug.PRICES, "Prices", "en") },
-    { link: link(Slug.ABOUT, "About", "en") },
-    { link: link(Slug.CONTACT, "Contact", "en") },
-  ],
-};
-
-const mainNav: Record<Locale, Navigation> = {
-  sv: [
-    { link: link(Slug.COURSES, "Kurser") },
-    { link: link(Slug.TRIPS, "Resor") },
-    { link: link(Slug.INSTRUCTOR_TRAINING, "Utbildning") },
-    { link: link(Slug.PRICES, "Priser") },
-    { link: link(Slug.ABOUT, "Om") },
-    { link: link(Slug.CONTACT, "Kontakt") },
-  ],
-  da: [
-    { link: link(Slug.ABOUT, "Om", "da") },
-    { link: link(Slug.CONTACT, "Kontakt", "da") },
-  ],
-  en: [
-    { link: link(Slug.COURSES, "Courses", "en") },
-    { link: link(Slug.PRICES, "Prices", "en") },
-    { link: link(Slug.ABOUT, "About", "en") },
-    { link: link(Slug.CONTACT, "Contact", "en") },
-  ],
-};
-
-const footerNav: Record<Locale, Navigation> = {
-  sv: [
-    { link: link(Slug.TERMS_BOOKING, "Bokningsvillkor") },
-    { link: link(Slug.TERMS_PRIVACY, "Integritetspolicy") },
-  ],
-  da: [],
-  en: [],
-};
+import { sanityClient } from "@lib/sanity";
+import { CONFIG_QUERY } from "@lib/queries";
 
 const navLinkSchema = z.object({
   label: z.string(),
@@ -152,49 +47,73 @@ const configSchema = z.object({
 
 export type SiteConfig = z.infer<typeof configSchema>;
 
-export function configLoader() {
+const LOCALES: Locale[] = ["sv", "da", "en"];
+
+function withLocale(navItems: unknown[], locale: Locale): unknown[] {
+  if (!Array.isArray(navItems)) return [];
+  return navItems.map((item: any) => ({
+    link: { ...item.link, locale },
+    subMenu: item.subMenu
+      ? {
+          nav: (item.subMenu.nav ?? []).map((sub: any) => ({
+            link: { ...sub.link, locale },
+          })),
+          more: item.subMenu.more
+            ? { ...item.subMenu.more, locale }
+            : undefined,
+        }
+      : undefined,
+  }));
+}
+
+export function configLoader(): Loader {
   return {
     name: "config-loader",
     load: async ({ store, parseData }) => {
       store.clear();
 
+      const raw = await sanityClient.fetch(CONFIG_QUERY);
+      if (!raw) {
+        throw new Error(
+          "No config document found in Sanity — create one in the Studio first",
+        );
+      }
+
+      // internationalizedArrayString → Record<Locale, string>
+      const siteTagline: Record<string, string> = {};
+      for (const locale of LOCALES) {
+        const entry = (raw.siteTagline ?? []).find(
+          (t: any) => t._key === locale,
+        );
+        siteTagline[locale] = entry?.value ?? "";
+      }
+
+      // NavArea enum values ("aside", "courses", "footer", "mobile") match Sanity field names
+      const navigation: Record<string, Record<string, unknown[]>> = {};
+      for (const area of Object.values(NavArea)) {
+        navigation[area] = {};
+        for (const locale of LOCALES) {
+          navigation[area][locale] = withLocale(
+            raw.navigation?.[area]?.[locale] ?? [],
+            locale,
+          );
+        }
+      }
+
       const data = await parseData({
         id: "index",
         data: {
-          siteTitle: "Sydsveriges Guidebyrå",
-          siteUrl: "https://ssgb.se",
-          siteTagline: {
-            sv: "Klätterkurser på Kullaberg, i Spanien och Itailen",
-            da: "Klatrekurser på Kullen, i Spanien og Italien",
-            en: "Climbing courses in the south of Sweden, in Spain and in Italy",
-          },
-
-          contact: {
-            email: "instruktor@ssgb.se",
-            phone: "+46704947782",
-          },
-
-          defaultPrices: {
-            openBooking: 3600,
-            single: 4200,
-            double: 2500,
-            many: 2200,
-          },
-
-          navigation: {
-            [NavArea.SIDEBAR_ASIDE]: mainNav,
-            [NavArea.SIDEBAR_COURSE]: courseNav,
-            [NavArea.FOOTER]: footerNav,
-            [NavArea.MOBILE]: mobileNav,
-          },
+          siteTitle: raw.siteTitle ?? "Sydsveriges Guidebyrå",
+          siteUrl: raw.siteUrl ?? "https://ssgb.se",
+          siteTagline,
+          contact: raw.contact,
+          defaultPrices: raw.defaultPrices,
+          navigation,
         },
       });
 
-      store.set({
-        id: "index",
-        data,
-      });
+      store.set({ id: "index", data });
     },
     schema: configSchema,
-  } satisfies Loader;
+  };
 }

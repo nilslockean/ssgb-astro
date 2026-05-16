@@ -5,11 +5,12 @@ import type { HTMLAttributes } from "astro/types";
 import ButtonGroup from "./ButtonGroup.astro";
 import ButtonLink from "./ButtonLink.astro";
 import Eyebrow from "./Eyebrow.astro";
+import type { SanityImage } from "../schemas/sanity";
 
 export type HeroButton = { label: string; href: string; target?: string };
 
 interface Props extends HTMLAttributes<"section"> {
-  image?: ImageMetadata;
+  image?: ImageMetadata | SanityImage;
   video?: string;
   title: string;
   content: string;
@@ -59,7 +60,9 @@ const {
         loading="eager"
         role="presentation"
         sizes="(max-width: 640px) 100vw, (max-width: 1024px) 90vw, 80vw"
-        src={image}
+        src={"format" in image ? image : image.src}
+        width={"format" in image ? undefined : image.width}
+        height={"format" in image ? undefined : image.height}
         widths={[640, 1024, 1600]}
       />
     ) : null

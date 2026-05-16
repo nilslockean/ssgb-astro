@@ -94,6 +94,17 @@ export default defineConfig({
         optional: true,
         default: false,
       }),
+      SANITY_TOKEN: envField.string({
+        context: "server",
+        access: "secret",
+        optional: true,
+      }),
+      SANITY_DATASET: envField.string({
+        context: "server",
+        access: "public",
+        optional: true,
+        default: "production",
+      }),
     },
   },
 });

@@ -2,13 +2,14 @@ import { defineCollection, reference } from "astro:content";
 import { file, glob } from "astro/loaders";
 import { Slug } from "@lib/routeUtils";
 import { z } from "astro/zod";
+import { sanityImageSchema, sanityNormSchema } from "./schemas/sanity";
 import { configLoader } from "./loaders/config";
+import { sanityCoursesLoader } from "./loaders/courses";
 import { localeSchema } from "./schemas/locale";
 
 const courses = defineCollection({
-  loader: glob({ base: "./src/content/courses", pattern: "**/*.{md,mdx}" }),
-  schema: ({ image }) =>
-    z.object({
+  loader: sanityCoursesLoader(),
+  schema: z.object({
       title: z.string(),
       excerpt: z.string(),
       language: localeSchema.default("sv"),
@@ -22,12 +23,12 @@ const courses = defineCollection({
       minAge: z.number().nullable().default(null),
       shortName: z.string().optional(),
       prerequisites: z.string().optional(),
-      heroImage: image().optional(),
+      heroImage: sanityImageSchema.optional(),
       cta: z.string(),
-      norm: reference("norms").optional(),
+      norm: sanityNormSchema.optional(),
       aka: z.string().optional(),
       gallery: reference("galleries").optional(),
-      slugId: z.enum(Slug),
+      body: z.array(z.any()).optional(),
     }),
 });
 

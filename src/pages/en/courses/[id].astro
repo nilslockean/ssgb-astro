@@ -1,5 +1,6 @@
 ---
-import { getCollection, getEntry, render } from "astro:content";
+import { getCollection } from "astro:content";
+import { PortableText } from "astro-portabletext";
 import Accordion from "@components/Accordion.astro";
 import ButtonGroup from "@components/ButtonGroup.astro";
 import ButtonLink from "@components/ButtonLink.astro";
@@ -22,8 +23,7 @@ export async function getStaticPaths() {
 }
 
 const { post } = Astro.props;
-const { Content } = await render(post);
-const norm = post.data.norm && (await getEntry(post.data.norm));
+const { norm } = post.data;
 const siteConfig = await getLocalizedConfig(Astro.currentLocale);
 const numDays = post.data.numDays.join("-");
 const numDaysSuffix = numDays === "1" ? "day" : "days";
@@ -65,7 +65,7 @@ const heroButtons: HeroButton[] = [
 
   <Section>
     <div class="collection-entry">
-      <Content />
+      {post.data.body && <PortableText value={post.data.body} />}
       <p>
         <strong>Duration:</strong>
         {numDaysDesc}.
@@ -82,12 +82,12 @@ const heroButtons: HeroButton[] = [
       )
     }
     {
-      norm && (
+      norm?.url && (
         <Accordion title="Course standard">
           <p>
             This course follows the Swedish Climbing Federation standard for{" "}
-            <Link href={norm.data.url} target="_blank">
-              {norm.data.title}
+            <Link href={norm.url} target="_blank">
+              {norm.title}
             </Link>
             .
           </p>
