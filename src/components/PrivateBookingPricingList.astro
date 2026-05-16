@@ -8,13 +8,13 @@ interface Props extends HTMLAttributes<"ul"> {}
 const { class: className, ...rest } = Astro.props;
 const config = await getLocalizedConfig(Astro.currentLocale);
 const {
-  defaultPrices: { privateSingle, privateDouble, privateMany },
+  defaultPrices: { single, double, many },
 } = config;
 
 const list = [
-  ["1 person", privateSingle],
-  ["2 personer", privateDouble],
-  ["3-4 personer", privateMany],
+  ["1 person", single],
+  ["2 personer", double],
+  ["3-4 personer", many],
 ] as const satisfies [string, number][];
 ---
 
