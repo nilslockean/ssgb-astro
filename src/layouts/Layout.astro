@@ -1,7 +1,7 @@
 ---
 import "../styles/global.css";
-import CourseNav from "../components/CourseNav.astro";
 import SiteLogo from "../components/SiteLogo.astro";
+import SidebarNav from "../components/SidebarNav.astro";
 import PostHog from "../components/posthog.astro";
 import ButtonGroup from "@components/ButtonGroup.astro";
 import LanguagePicker from "@components/LanguagePicker.astro";
@@ -78,13 +78,14 @@ const title = metaTitle
       <aside class="layout__sidebar">
         <div class="layout__sidebar-top">
           <SiteLogo height={80} />
-          <CourseNav entries={config.navigation[NavArea.SIDEBAR_COURSE]} />
         </div>
-        <nav class="layout__sidebar-nav">
+        <SidebarNav entries={config.navigation[NavArea.SIDEBAR_ASIDE]} />
+        <nav class="layout__sidebar-secondary-nav">
           {
-            config.navigation[NavArea.SIDEBAR_ASIDE].map((item) => (
+            config.navigation[NavArea.FOOTER].map((item) => (
               <NavLink
                 href={getRelativeLocaleUrl(item.link.locale, item.link.path)}
+                small
               >
                 {item.link.label}
               </NavLink>
@@ -131,8 +132,8 @@ const title = metaTitle
             {
               config.navigation[NavArea.FOOTER].map((item) => (
                 <NavLink
-                  class="text-sm"
                   href={getRelativeLocaleUrl(item.link.locale, item.link.path)}
+                  small
                 >
                   {item.link.label}
                 </NavLink>
@@ -148,5 +149,11 @@ const title = metaTitle
 <style>
   .layout__footer-nav-mobile :global(.lang-list) {
     margin-left: calc(var(--space-3) * -1);
+  }
+
+  .layout__sidebar-secondary-nav {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
   }
 </style>

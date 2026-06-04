@@ -28,8 +28,6 @@ export async function getLocalizedConfig(locale = "sv") {
     [NavArea.SIDEBAR_ASIDE]:
       data.navigation[NavArea.SIDEBAR_ASIDE][currentLocale],
     [NavArea.MOBILE]: data.navigation[NavArea.MOBILE][currentLocale],
-    [NavArea.SIDEBAR_COURSE]:
-      data.navigation[NavArea.SIDEBAR_COURSE][currentLocale],
   };
 
   return {

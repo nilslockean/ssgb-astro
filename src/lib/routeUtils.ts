@@ -18,7 +18,6 @@ export type Navigation = Array<{
 export enum NavArea {
   MOBILE = "mobile",
   SIDEBAR_ASIDE = "aside",
-  SIDEBAR_COURSE = "courses",
   FOOTER = "footer",
 }
 

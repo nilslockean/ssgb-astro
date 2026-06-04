@@ -1,0 +1,80 @@
+---
+import NavLink from "./NavLink.astro";
+import CourseNavItem from "./CourseNavItem.astro";
+import type { Navigation } from "@lib/routeUtils";
+import { getRelativeLocaleUrl } from "astro:i18n";
+
+interface Props {
+  entries: Navigation;
+}
+
+const { entries } = Astro.props;
+---
+
+<nav class="sidebar-nav">
+  {
+    entries.map((item, i) => {
+      const hasSubmenu = Boolean(item.subMenu?.nav?.length);
+      const href = getRelativeLocaleUrl(item.link.locale, item.link.path);
+      const anchorName = `--sidebar-item-${i}`;
+
+      return hasSubmenu ? (
+        <div class="sidebar-nav__item">
+          <NavLink
+            href={href}
+            set:html={item.link.label}
+            style={`anchor-name: ${anchorName}`}
+          />
+          <ul
+            class="sidebar-nav__sub"
+            style={`position-anchor: ${anchorName}`}
+          >
+            {item.subMenu!.nav.map((sub) => (
+              <CourseNavItem entry={sub.link} />
+            ))}
+            {item.subMenu!.more && <CourseNavItem entry={item.subMenu!.more} />}
+          </ul>
+        </div>
+      ) : (
+        <NavLink href={href} set:html={item.link.label} />
+      );
+    })
+  }
+</nav>
+
+<style>
+  .sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  .sidebar-nav__sub {
+    /* Hidden by default */
+    display: none;
+
+    /* Float without affecting layout */
+    position: fixed;
+    inset: unset;
+    z-index: 100;
+    top: anchor(top);
+    left: anchor(right);
+    margin-left: var(--space-2);
+
+    /* Match language switcher */
+    padding: var(--space-2);
+    background-color: var(--color-surface-light);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-md, 6px);
+
+    /* Layout */
+    flex-direction: column;
+    gap: var(--space-2);
+    list-style: none;
+  }
+
+  .sidebar-nav__item:hover .sidebar-nav__sub,
+  .sidebar-nav__item:focus-within .sidebar-nav__sub {
+    display: flex;
+  }
+</style>

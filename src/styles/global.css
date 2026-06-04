@@ -329,6 +329,7 @@
     border-right: 1px solid var(--color-line);
     position: sticky;
     top: 0;
+    z-index: 10;
     height: 100dvh;
     flex-grow: 0;
     flex-shrink: 0;
