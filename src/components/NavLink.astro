@@ -1,15 +1,21 @@
 ---
 import type { HTMLAttributes } from "astro/types";
 
-interface Props extends HTMLAttributes<"a"> {}
+interface Props extends HTMLAttributes<"a"> {
+  small?: boolean;
+}
 
-const { href, class: className, ...rest } = Astro.props;
+const { small, href, class: className, ...rest } = Astro.props;
 const currentPath = Astro.url.pathname.replace(/\/$/, "");
 const isCurrentPage = href === currentPath;
 ---
 
 <a
-  class:list={["nav-link", { "nav-link--active": isCurrentPage }, className]}
+  class:list={[
+    "nav-link",
+    { "nav-link--active": isCurrentPage, "nav-link--small": small },
+    className,
+  ]}
   data-current={isCurrentPage}
   href={href}
   {...rest}><slot /></a
@@ -27,7 +33,7 @@ const isCurrentPage = href === currentPath;
     text-decoration: underline;
   }
 
-  .nav-link--sm {
-    font-size: var(--text-base);
+  .nav-link--small {
+    font-size: var(--text-sm);
   }
 </style>
