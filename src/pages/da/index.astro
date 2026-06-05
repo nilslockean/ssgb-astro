@@ -1,7 +1,6 @@
 ---
 import Hero, { type HeroButton } from "@components/Hero.astro";
-import Layout from "../../layouts/DaLayout.astro";
-import Link from "@components/Link.astro";
+import Layout from "../../layouts/Layout.astro";
 import Section from "@components/Section.astro";
 import ButtonGroup from "@components/ButtonGroup.astro";
 import ButtonLink from "@components/ButtonLink.astro";
@@ -125,13 +124,12 @@ const heroButtons: HeroButton[] = [
       tvivl om, hvilket kursus der passer til dit niveau, hjælper vi gerne.
     </p>
     <ButtonGroup class="mt-8">
-      <ButtonLink href={contactPath} variant="primary">Kontakt os</ButtonLink>
-      <ButtonLink href="mailto:instruktor@ssgb.se">Send en e-mail</ButtonLink>
+      <ButtonLink href={contactPath}>Kontakt os</ButtonLink>
     </ButtonGroup>
   </Section>
 
   <Section>
-    <h2>Praktisk</h2>
+    <h2>Praktisk info</h2>
     <ul class="list max-w-prose">
       <li>Kurser kan normalt bookes privat for små grupper.</li>
       <li>Alt nødvendigt kursusudstyr kan lånes, medmindre andet aftales.</li>
@@ -142,7 +140,9 @@ const heroButtons: HeroButton[] = [
       </li>
     </ul>
     <p>
-      <Link href={contactPath}>Spørg om klatrekursus på Kullen &rarr;</Link>
+      <ButtonLink href={contactPath}
+        >Spørg om klatrekursus på Kullen &rarr;</ButtonLink
+      >
     </p>
   </Section>
 </Layout>
