@@ -3,13 +3,10 @@ export const prerender = false;
 
 import { getLiveEntry } from "astro:content";
 import { PortableText } from "astro-portabletext";
-import Layout from "../layouts/Layout.astro";
+import Layout from "../../layouts/Layout.astro";
 import Section from "@components/Section.astro";
 
-const { entry: post, error } = await getLiveEntry("pages", {
-  id: Astro.params.page || "",
-  language: "sv",
-});
+const { entry: post, error } = await getLiveEntry("pages", { id: Astro.params.page || "", language: "en" });
 
 if (error || !post) {
   return Astro.rewrite("/404");

@@ -3,20 +3,17 @@ export const prerender = false;
 
 import { getLiveEntry } from "astro:content";
 import { PortableText } from "astro-portabletext";
-import Layout from "../layouts/Layout.astro";
+import DaLayout from "../../layouts/DaLayout.astro";
 import Section from "@components/Section.astro";
 
-const { entry: post, error } = await getLiveEntry("pages", {
-  id: Astro.params.page || "",
-  language: "sv",
-});
+const { entry: post, error } = await getLiveEntry("pages", { id: Astro.params.page || "", language: "da" });
 
 if (error || !post) {
   return Astro.rewrite("/404");
 }
 ---
 
-<Layout metaDescription={post.data.excerpt} metaTitle={post.data.title}>
+<DaLayout metaDescription={post.data.excerpt} metaTitle={post.data.title}>
   <Section class="pb-0">
     <h1 class="mb-6">{post.data.title}</h1>
     <p class="intro">{post.data.excerpt}</p>
@@ -24,4 +21,4 @@ if (error || !post) {
   <div class="collection-entry p-8">
     {post.data.body && <PortableText value={post.data.body} />}
   </div>
-</Layout>
+</DaLayout>

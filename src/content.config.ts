@@ -48,16 +48,6 @@ const trips = defineCollection({
     }),
 });
 
-const pages = defineCollection({
-  loader: glob({ base: "./src/content/pages", pattern: "**/*.{md,mdx}" }),
-  schema: () =>
-    z.object({
-      title: z.string(),
-      excerpt: z.string(),
-      slugId: z.enum(Slug),
-    }),
-});
-
 const galleries = defineCollection({
   loader: file("./src/content/galleries.json"),
   schema: ({ image }) =>
@@ -117,7 +107,6 @@ export const collections = {
   galleries,
   norms,
   team,
-  pages,
   trips,
   courseSelector,
   config,
