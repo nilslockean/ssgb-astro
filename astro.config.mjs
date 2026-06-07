@@ -21,6 +21,7 @@ dotenv.config();
 // https://astro.build/config
 export default defineConfig({
   site: "https://ssgb.se",
+  trailingSlash: "never",
 
   integrations: [
     // sanity({
