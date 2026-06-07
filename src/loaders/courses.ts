@@ -1,6 +1,29 @@
 import type { Loader } from "astro/loaders";
+import { z } from "astro/zod";
 import { sanityClient } from "@lib/sanity";
 import { COURSES_QUERY } from "@lib/queries";
+import { sanityImageSchema, sanityNormSchema } from "src/schemas/sanity";
+import { localeSchema } from "src/schemas/locale";
+
+export const courseSchema = z.object({
+  title: z.string(),
+  excerpt: z.string(),
+  language: localeSchema.default("sv"),
+  slug: z.string().optional(),
+  numDays: z.array(z.number()),
+  order: z.number().min(0),
+  featured: z.boolean().optional(),
+  openBookingPrice: z.number().default(3600),
+  maxParticipants: z.number().min(1).default(4),
+  minAge: z.number().nullable().default(null),
+  shortName: z.string().optional(),
+  prerequisites: z.string().optional(),
+  heroImage: sanityImageSchema.optional(),
+  cta: z.string(),
+  norm: sanityNormSchema.optional(),
+  aka: z.string().optional(),
+  body: z.array(z.any()).optional(),
+});
 
 export function sanityCoursesLoader(): Loader {
   return {

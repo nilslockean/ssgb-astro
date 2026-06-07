@@ -2,34 +2,19 @@ import { defineCollection, reference } from "astro:content";
 import { file, glob } from "astro/loaders";
 import { Slug } from "@lib/routeUtils";
 import { z } from "astro/zod";
-import { sanityImageSchema, sanityNormSchema } from "./schemas/sanity";
 import { configLoader } from "./loaders/config";
-import { sanityCoursesLoader } from "./loaders/courses";
 import { localeSchema } from "./schemas/locale";
+import { sanityCoursesLoader, courseSchema } from "./loaders/courses";
+import { sanityPagesLoader, pageSchema } from "./loaders/pages";
 
 const courses = defineCollection({
   loader: sanityCoursesLoader(),
-  schema: z.object({
-      title: z.string(),
-      excerpt: z.string(),
-      language: localeSchema.default("sv"),
-      slug: z.string().optional(),
-      translationKey: z.enum(Slug).optional(),
-      numDays: z.array(z.number()),
-      order: z.number().min(0),
-      featured: z.boolean().optional(),
-      openBookingPrice: z.number().default(3600),
-      maxParticipants: z.number().min(1).default(4),
-      minAge: z.number().nullable().default(null),
-      shortName: z.string().optional(),
-      prerequisites: z.string().optional(),
-      heroImage: sanityImageSchema.optional(),
-      cta: z.string(),
-      norm: sanityNormSchema.optional(),
-      aka: z.string().optional(),
-      gallery: reference("galleries").optional(),
-      body: z.array(z.any()).optional(),
-    }),
+  schema: courseSchema,
+});
+
+const pages = defineCollection({
+  loader: sanityPagesLoader(),
+  schema: pageSchema,
 });
 
 const trips = defineCollection({
@@ -101,9 +86,9 @@ const config = defineCollection({
   loader: configLoader(),
 });
 
-// 4. Export a single `collections` object to register your collection(s)
 export const collections = {
   courses,
+  pages,
   galleries,
   norms,
   team,

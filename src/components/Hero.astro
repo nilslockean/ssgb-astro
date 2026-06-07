@@ -42,13 +42,7 @@ const {
 >
   {
     video ? (
-      <video
-        autoplay
-        class="hero__video"
-        loop
-        muted
-        playsinline
-      >
+      <video autoplay class="hero__video" loop muted playsinline>
         <source src={video} type="video/mp4" />
       </video>
     ) : image ? (
@@ -113,6 +107,7 @@ const {
   .hero {
     position: relative;
     padding: var(--space-8);
+    overflow: clip;
   }
 
   .hero--large .hero__inner {

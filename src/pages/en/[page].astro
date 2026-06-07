@@ -1,16 +1,21 @@
 ---
-export const prerender = false;
-
-import { getLiveEntry } from "astro:content";
+import { getCollection } from "astro:content";
 import { PortableText } from "astro-portabletext";
 import Layout from "../../layouts/Layout.astro";
 import Section from "@components/Section.astro";
 
-const { entry: post, error } = await getLiveEntry("pages", { id: Astro.params.page || "", language: "en" });
-
-if (error || !post) {
-  return Astro.rewrite("/404");
+export async function getStaticPaths() {
+  const posts = await getCollection(
+    "pages",
+    (page) => page.data.language === "en",
+  );
+  return posts.map((post) => ({
+    params: { page: post.id },
+    props: { post },
+  }));
 }
+
+const { post } = Astro.props;
 ---
 
 <Layout metaDescription={post.data.excerpt} metaTitle={post.data.title}>

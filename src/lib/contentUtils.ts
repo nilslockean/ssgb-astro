@@ -3,13 +3,12 @@ import { getCollection, getEntry, type CollectionEntry } from "astro:content";
 import { localeSchema } from "src/schemas/locale";
 
 export async function getCourses(
-  filter?: (entry: CollectionEntry<"courses">) => unknown | undefined,
+  filter?: (entry: CollectionEntry<"courses">) => unknown,
 ) {
   const courses = await getCollection(
     "courses",
     (course) => course.data.language === "sv" && (!filter || filter(course)),
   );
-
   return courses.sort((a, b) => a.data.order - b.data.order);
 }
 

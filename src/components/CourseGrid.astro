@@ -7,7 +7,7 @@ import { Slug } from "@lib/routeUtils";
 import { localeSchema } from "src/schemas/locale";
 
 interface Props extends HTMLAttributes<"ul"> {
-  entries: CollectionEntry<"courses">[];
+  entries: CollectionEntry<"courses">[] | CollectionEntry<"trips">[];
 }
 
 const { entries, class: className, ...rest } = Astro.props;
