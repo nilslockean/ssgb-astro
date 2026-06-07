@@ -1,6 +1,42 @@
 {
   "version": 1,
   "skills": {
+    "datocms-cda": {
+      "source": "datocms/agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/datocms-cda/SKILL.md",
+      "computedHash": "c249c8163de4ea896310e7fdeeaad8c9db777791530f99ad717d38497098b30a"
+    },
+    "datocms-cli": {
+      "source": "datocms/agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/datocms-cli/SKILL.md",
+      "computedHash": "2aa954865fb4202c071067dd72dbcc60c66a8b5e5aa69a4dba3933f383b04b36"
+    },
+    "datocms-cma": {
+      "source": "datocms/agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/datocms-cma/SKILL.md",
+      "computedHash": "333d9205ba9a080f4ba892958f5d93e13f7f60be05154ab4b3d2c56d42097b3c"
+    },
+    "datocms-content-modeling": {
+      "source": "datocms/agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/datocms-content-modeling/SKILL.md",
+      "computedHash": "24a1679d77044a7cc1a0b50e1accef2927add78f0916e3f261206885603a959b"
+    },
+    "datocms-frontend-integrations": {
+      "source": "datocms/agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/datocms-frontend-integrations/SKILL.md",
+      "computedHash": "e0346b0f77692f96d44636b89e0c06d37576bd0aed73a9ffe5cb75f4b9ba243f"
+    },
+    "datocms-setup": {
+      "source": "datocms/agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/datocms-setup/SKILL.md",
+      "computedHash": "69636d9c57e0811fd69dcfd4f1780a87986e96fd57847cb66501cbae02e36be7"
+    },
     "playwright-best-practices": {
       "source": "currents-dev/playwright-best-practices-skill",
       "sourceType": "github",
