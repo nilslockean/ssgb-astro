@@ -8,8 +8,6 @@ interface Props extends HTMLAttributes<"form"> {
   name: string;
   maxParticipants: number | null;
   includeDate?: boolean;
-  dateLabel?: string;
-  submitLabel?: string;
   messagePlaceholder?: string;
 }
 
@@ -18,12 +16,13 @@ const {
   maxParticipants,
   messagePlaceholder,
   includeDate = true,
-  dateLabel = "Önskat startdatum",
-  submitLabel = "Skicka bokningsförfrågan",
   class: className,
   ...rest
 } = Astro.props;
-const locale = localeSchema.parse(Astro.currentLocale);
+const locale = localeSchema.catch("sv").parse(Astro.currentLocale);
+const isEnglish = locale === "en";
+const dateLabel = isEnglish ? "Preferred start date" : "Önskat startdatum";
+const submitLabel = isEnglish ? "Send booking request" : "Skicka bokningsförfrågan";
 ---
 
 <form
@@ -44,7 +43,7 @@ const locale = localeSchema.parse(Astro.currentLocale);
   <div class="booking-form__grid">
     <p>
       <label>
-        E-post
+        {isEnglish ? "Email" : "E-post"}
         <br />
         <input name="email" required type="email" />
       </label>
@@ -52,7 +51,7 @@ const locale = localeSchema.parse(Astro.currentLocale);
 
     <p>
       <label>
-        Telefonnummer
+        {isEnglish ? "Phone number" : "Telefonnummer"}
         <br />
         <input name="phone" required type="tel" />
       </label>
@@ -71,7 +70,7 @@ const locale = localeSchema.parse(Astro.currentLocale);
     { maxParticipants !== null && (
       <p>
         <label>
-          Antal deltagare
+          {isEnglish ? "Number of participants" : "Antal deltagare"}
           <br />
           <input
             max={maxParticipants}
@@ -86,7 +85,7 @@ const locale = localeSchema.parse(Astro.currentLocale);
 
     <p class="booking-form__message">
       <label>
-        Meddelande (valfritt)
+        {isEnglish ? "Message (optional)" : "Meddelande (valfritt)"}
         <br />
         <textarea name="message" placeholder={messagePlaceholder}></textarea>
       </label>

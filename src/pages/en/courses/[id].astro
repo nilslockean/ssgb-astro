@@ -2,13 +2,11 @@
 import { getCollection } from "astro:content";
 import { render as renderStructuredText } from "datocms-structured-text-to-html-string";
 import Accordion from "@components/Accordion.astro";
-import ButtonGroup from "@components/ButtonGroup.astro";
-import ButtonLink from "@components/ButtonLink.astro";
+import BookingForm from "@components/BookingForm.astro";
 import Hero, { type HeroButton } from "@components/Hero.astro";
 import Layout from "../../../layouts/Layout.astro";
 import Link from "@components/Link.astro";
 import Section from "@components/Section.astro";
-import { getLocalizedConfig } from "@lib/contentUtils";
 
 export async function getStaticPaths() {
   const posts = await getCollection(
@@ -25,15 +23,13 @@ const { post } = Astro.props;
 const { norm } = post.data;
 const h1 = norm?.title ?? post.data.title;
 const cta = `Book ${post.data.title.toLowerCase()}`;
-const siteConfig = await getLocalizedConfig(Astro.currentLocale);
 const numDays = post.data.numDays.join("-");
 const numDaysSuffix = numDays === "1" ? "day" : "days";
 const numDaysDesc = `${numDays} ${numDaysSuffix}`;
-const emailSubject = encodeURIComponent(post.data.title);
 const heroButtons: HeroButton[] = [
   {
     label: cta,
-    href: `mailto:${siteConfig.contact.email}?subject=${emailSubject}`,
+    href: "#booking",
   },
   {
     label: "View all courses",
@@ -95,19 +91,34 @@ const heroButtons: HeroButton[] = [
         </Accordion>
       )
     }
-    <Accordion title="Booking">
-      <p>
-        Courses are usually booked privately for your group on dates that suit
-        you, subject to instructor availability and suitable weather.
-      </p>
-      <ButtonGroup class="mt-6">
-        <ButtonLink
-          href={`mailto:${siteConfig.contact.email}?subject=${emailSubject}`}
-          variant="primary"
-        >
-          {cta}
-        </ButtonLink>
-      </ButtonGroup>
-    </Accordion>
+  </Section>
+  <Section class="pb-16" id="booking">
+    <div class="booking-card">
+      <h2 class="mt-0">{cta}</h2>
+      <div class="max-w-prose">
+        <p class="text-lg">
+          Courses are booked privately for your group on dates that suit you,
+          subject to instructor availability and suitable weather.
+        </p>
+      </div>
+      <BookingForm maxParticipants={post.data.maxParticipants} name={cta} />
+    </div>
   </Section>
 </Layout>
+
+<style>
+  @import "../../../styles/breakpoints.css";
+
+  .booking-card {
+    background-color: var(--color-surface-light);
+    border-radius: var(--border-radius-xl);
+    padding: var(--space-6) var(--space-8);
+    max-width: 56rem;
+  }
+
+  @media (--breakpoint-md) {
+    .booking-card {
+      padding: var(--space-8) var(--space-12);
+    }
+  }
+</style>

@@ -122,3 +122,10 @@ export function resolveSlug(
 export function getPath(slug: Slug, locale: Locale = "sv"): string {
   return resolveSlug(slug, locale).path;
 }
+
+const LOCALE_PREFIX: Record<Locale, string> = { sv: "", da: "/da", en: "/en" };
+
+export function courseUrl(slug: string, locale: Locale = "sv"): string {
+  const base = Paths[locale]?.[Slug.COURSES] ?? Paths.sv[Slug.COURSES];
+  return `${LOCALE_PREFIX[locale]}${base}/${slug}`;
+}
