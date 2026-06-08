@@ -21,7 +21,7 @@ export async function getStaticPaths() {
 
 const { post } = Astro.props;
 const { norm } = post.data;
-const h1 = norm?.title ?? post.data.title;
+const h1 = post.data.title;
 const cta = `Book ${post.data.title.toLowerCase()}`;
 const numDays = post.data.numDays.join("-");
 const numDaysSuffix = numDays === "1" ? "day" : "days";
