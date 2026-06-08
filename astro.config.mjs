@@ -40,7 +40,7 @@ export default defineConfig({
   adapter: netlify(),
 
   image: {
-    domains: ["cdn.sanity.io"],
+    domains: ["cdn.sanity.io", "www.datocms-assets.com"],
   },
 
   i18n: {
@@ -94,6 +94,11 @@ export default defineConfig({
         access: "public",
         optional: true,
         default: false,
+      }),
+      DATOCMS_CDA_TOKEN: envField.string({
+        context: "server",
+        access: "secret",
+        optional: false,
       }),
       SANITY_TOKEN: envField.string({
         context: "server",

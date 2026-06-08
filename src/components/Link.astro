@@ -9,7 +9,7 @@ export interface Props extends HTMLAttributes<"a"> {
 }
 
 const { slug, href, class: className, ...rest } = Astro.props;
-const locale = localeSchema.parse(Astro.currentLocale);
+const locale = localeSchema.catch("sv").parse(Astro.currentLocale);
 const to = slug ? localePath(slug, locale) : href;
 ---
 

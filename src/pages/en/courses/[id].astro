@@ -1,6 +1,6 @@
 ---
 import { getCollection } from "astro:content";
-import { PortableText } from "astro-portabletext";
+import { render as renderStructuredText } from "datocms-structured-text-to-html-string";
 import Accordion from "@components/Accordion.astro";
 import ButtonGroup from "@components/ButtonGroup.astro";
 import ButtonLink from "@components/ButtonLink.astro";
@@ -15,15 +15,16 @@ export async function getStaticPaths() {
     "courses",
     (course) => course.data.language === "en",
   );
-
   return posts.map((post) => ({
-    params: { id: post.data.slug || post.id },
+    params: { id: post.data.slug },
     props: { post },
   }));
 }
 
 const { post } = Astro.props;
 const { norm } = post.data;
+const h1 = norm?.title ?? post.data.title;
+const cta = `Book ${post.data.title.toLowerCase()}`;
 const siteConfig = await getLocalizedConfig(Astro.currentLocale);
 const numDays = post.data.numDays.join("-");
 const numDaysSuffix = numDays === "1" ? "day" : "days";
@@ -31,7 +32,7 @@ const numDaysDesc = `${numDays} ${numDaysSuffix}`;
 const emailSubject = encodeURIComponent(post.data.title);
 const heroButtons: HeroButton[] = [
   {
-    label: post.data.cta,
+    label: cta,
     href: `mailto:${siteConfig.contact.email}?subject=${emailSubject}`,
   },
   {
@@ -52,20 +53,20 @@ const heroButtons: HeroButton[] = [
         buttons={heroButtons}
         content={post.data.excerpt}
         image={post.data.heroImage}
-        title={post.data.title}
+        title={h1}
       />
     ) : (
-      <Hero
-        buttons={heroButtons}
-        content={post.data.excerpt}
-        title={post.data.title}
-      />
+      <Hero buttons={heroButtons} content={post.data.excerpt} title={h1} />
     )
   }
 
   <Section>
     <div class="collection-entry">
-      {post.data.body && <PortableText value={post.data.body} />}
+      {
+        post.data.body && (
+          <div set:html={renderStructuredText(post.data.body)} />
+        )
+      }
       <p>
         <strong>Duration:</strong>
         {numDaysDesc}.
@@ -104,7 +105,7 @@ const heroButtons: HeroButton[] = [
           href={`mailto:${siteConfig.contact.email}?subject=${emailSubject}`}
           variant="primary"
         >
-          {post.data.cta}
+          {cta}
         </ButtonLink>
       </ButtonGroup>
     </Accordion>

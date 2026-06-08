@@ -1,18 +1,15 @@
 ---
 import { getCollection } from "astro:content";
-import { PortableText } from "astro-portabletext";
+import { render as renderStructuredText } from "datocms-structured-text-to-html-string";
 import Accordion from "@components/Accordion.astro";
 import ButtonGroup from "@components/ButtonGroup.astro";
 import ButtonLink from "@components/ButtonLink.astro";
 import Hero, { type HeroButton } from "@components/Hero.astro";
 import Layout from "../../layouts/Layout.astro";
-import Gallery from "@components/Gallery.astro";
 import PageHead from "@components/PageHead.astro";
 import BookingForm from "@components/BookingForm.astro";
 import PrivateBookingPricingList from "@components/PrivateBookingPricingList.astro";
-import { formatPrice } from "@lib/stringUtils";
 import Link from "@components/Link.astro";
-import { FIENTA_INCLUDE_DRAFTS } from "astro:env/server";
 import Section from "@components/Section.astro";
 
 export async function getStaticPaths() {
@@ -21,16 +18,19 @@ export async function getStaticPaths() {
     (course) => course.data.language === "sv",
   );
   return posts.map((post) => ({
-    params: { id: post.id },
+    params: { id: post.data.slug },
     props: { post },
   }));
 }
+
 const { post } = Astro.props;
 const { norm } = post.data;
+const h1 = norm?.title ?? post.data.title;
+const cta = `Boka ${post.data.title.toLowerCase()}`;
 const numDays = post.data.numDays.join("-");
 const numDaysSuffix = numDays === "1" ? "dag" : "dagar";
 const numDaysDesc = `${numDays} ${numDaysSuffix}`;
-const heroButtons: HeroButton[] = [{ label: post.data.cta, href: "#boka" }];
+const heroButtons: HeroButton[] = [{ label: cta, href: "#boka" }];
 if (norm?.url) {
   heroButtons.push({
     label: "Läs kursnormen",
@@ -43,23 +43,18 @@ if (norm?.url) {
 <Layout
   fientaEmbed
   metaDescription={post.data.excerpt}
-  metaTitle={post.data.shortName || post.data.title}
+  metaTitle={post.data.title}
 >
   {
     post.data.heroImage ? (
       <Hero
         buttons={heroButtons}
         content={post.data.excerpt}
-        eyebrow={post.data.aka}
         image={post.data.heroImage}
-        title={post.data.title}
+        title={h1}
       />
     ) : (
-      <PageHead
-        content={post.data.excerpt}
-        eyebrow={post.data.aka}
-        title={post.data.title}
-      >
+      <PageHead content={post.data.excerpt} title={h1}>
         <ButtonGroup slot="buttons">
           {heroButtons.map(({ href, label, target }, i) => (
             <ButtonLink
@@ -76,7 +71,11 @@ if (norm?.url) {
   }
   <Section>
     <div class="collection-entry">
-      {post.data.body && <PortableText value={post.data.body} />}
+      {
+        post.data.body && (
+          <div set:html={renderStructuredText(post.data.body)} />
+        )
+      }
       <p>
         <strong>Tidsåtgång:</strong>
         {numDaysDesc}.
@@ -88,7 +87,7 @@ if (norm?.url) {
     {
       post.data.prerequisites && (
         <Accordion title="Förkunskapskrav">
-          <p>{post.data.prerequisites}</p>
+          <div set:html={post.data.prerequisites} />
         </Accordion>
       )
     }
@@ -111,8 +110,7 @@ if (norm?.url) {
             <p>
               Denna kurs uppfyller{" "}
               <Link href={norm.url} target="_blank">
-                Svenska Klätterförbundets norm för
-                {norm.title}.
+                Svenska Klätterförbundets norm för {norm.title}.
               </Link>
             </p>
             <p>
@@ -129,16 +127,13 @@ if (norm?.url) {
   </Section>
   <Section class="pb-16" id="boka">
     <div class="booking-card">
-      <h2 class="mt-0">{post.data.cta}</h2>
+      <h2 class="mt-0">{cta}</h2>
       <div class="max-w-prose">
         <p class="text-lg">
           Du föreslår ett datum, så återkommer vi med bekräftelse.
         </p>
       </div>
-      <BookingForm
-        maxParticipants={post.data.maxParticipants}
-        name={post.data.cta}
-      />
+      <BookingForm maxParticipants={post.data.maxParticipants} name={cta} />
     </div>
   </Section>
 </Layout>
