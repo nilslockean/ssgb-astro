@@ -5,12 +5,12 @@ import type { HTMLAttributes } from "astro/types";
 import ButtonGroup from "./ButtonGroup.astro";
 import ButtonLink from "./ButtonLink.astro";
 import Eyebrow from "./Eyebrow.astro";
-import type { SanityImage } from "../schemas/sanity";
+import type { DatoImage } from "../schemas/dato";
 
 export type HeroButton = { label: string; href: string; target?: string };
 
 interface Props extends HTMLAttributes<"section"> {
-  image?: ImageMetadata | SanityImage;
+  image?: ImageMetadata | DatoImage;
   video?: string;
   title: string;
   content: string;

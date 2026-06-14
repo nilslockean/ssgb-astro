@@ -1,6 +1,6 @@
 ---
 import { getCollection } from "astro:content";
-import { render as renderStructuredText } from "datocms-structured-text-to-html-string";
+import { StructuredText } from "@datocms/astro";
 import Accordion from "@components/Accordion.astro";
 import BookingForm from "@components/BookingForm.astro";
 import Hero, { type HeroButton } from "@components/Hero.astro";
@@ -60,7 +60,7 @@ const heroButtons: HeroButton[] = [
     <div class="collection-entry">
       {
         post.data.body && (
-          <div set:html={renderStructuredText(post.data.body)} />
+          <StructuredText data={post.data.body} />
         )
       }
       <p>

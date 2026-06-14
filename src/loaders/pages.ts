@@ -1,43 +1,62 @@
 import type { Loader } from "astro/loaders";
+import type { CdaStructuredTextValue } from "@datocms/astro/StructuredText";
 import { z } from "astro/zod";
-import { sanityClient } from "@lib/sanity";
-import { PAGES_QUERY } from "@lib/queries";
+import { executeQuery } from "@lib/datocms";
+import { PAGES_QUERY } from "@lib/datoQueries";
 import { localeSchema } from "src/schemas/locale";
+import type { Locale } from "@lib/routeUtils";
+
+const LOCALES: Locale[] = ["sv", "en", "da"];
 
 export const pageSchema = z.object({
   language: localeSchema.default("sv"),
   title: z.string(),
+  slug: z.string(),
   excerpt: z.string(),
-  body: z.array(z.any()).optional(),
+  body: z.custom<CdaStructuredTextValue>().optional(),
 });
 
-export function sanityPagesLoader(): Loader {
+type DatoPage = {
+  id: string;
+  title: string;
+  excerpt: string;
+  slug: string;
+  structuredText: CdaStructuredTextValue | null;
+};
+
+export function datoPagesLoader(): Loader {
   return {
-    name: "sanity-pages-loader",
+    name: "dato-pages-loader",
     load: async ({ store, parseData, logger }) => {
       store.clear();
 
-      const pages = await sanityClient.fetch(PAGES_QUERY);
-      logger.info(`Loaded ${pages.length} pages from Sanity`);
+      for (const locale of LOCALES) {
+        const { allPages } = await executeQuery<{ allPages: DatoPage[] }>(
+          PAGES_QUERY,
+          { locale },
+        );
 
-      for (const page of pages) {
-        const id = page.slug as string | undefined;
-        if (!id) {
-          logger.warn(`Page "${page.title}" has no slug — skipping`);
-          continue;
+        logger.info(`Loaded ${allPages.length} ${locale} pages from DatoCMS`);
+
+        for (const page of allPages) {
+          if (!page.slug) {
+            logger.warn(`Page ${page.id} (${locale}) has no slug — skipping`);
+            continue;
+          }
+
+          const data = await parseData({
+            id: `${locale}-${page.slug}`,
+            data: {
+              language: locale,
+              title: page.title,
+              slug: page.slug,
+              excerpt: page.excerpt,
+              body: page.structuredText ?? undefined,
+            },
+          });
+
+          store.set({ id: `${locale}-${page.slug}`, data });
         }
-
-        const data = await parseData({
-          id,
-          data: {
-            language: page.language ?? "sv",
-            title: page.title,
-            excerpt: page.excerpt,
-            body: page.body ?? [],
-          },
-        });
-
-        store.set({ id, data });
       }
     },
   };

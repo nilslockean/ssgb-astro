@@ -4,16 +4,16 @@ import { Slug } from "@lib/routeUtils";
 import { z } from "astro/zod";
 import { configLoader, configSchema } from "./loaders/config";
 import { localeSchema } from "./schemas/locale";
-import { sanityCoursesLoader, courseSchema } from "./loaders/courses";
-import { sanityPagesLoader, pageSchema } from "./loaders/pages";
+import { datoCoursesLoader, courseSchema } from "./loaders/courses";
+import { datoPagesLoader, pageSchema } from "./loaders/pages";
 
 const courses = defineCollection({
-  loader: sanityCoursesLoader(),
+  loader: datoCoursesLoader(),
   schema: courseSchema,
 });
 
 const pages = defineCollection({
-  loader: sanityPagesLoader(),
+  loader: datoPagesLoader(),
   schema: pageSchema,
 });
 

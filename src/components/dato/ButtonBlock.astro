@@ -1,0 +1,20 @@
+---
+interface Props {
+  block: {
+    variant?: string;
+    label: string;
+    url: string;
+  };
+}
+
+const { block } = Astro.props;
+---
+
+<p>
+  <a
+    class:list={["btn", block.variant === "primary" ? "btn--primary" : ""]}
+    href={block.url}
+  >
+    {block.label}
+  </a>
+</p>

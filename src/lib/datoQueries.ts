@@ -33,6 +33,29 @@ export const SITE_CONFIG_QUERY = `
   }
 `;
 
+export const PAGES_QUERY = `
+  query AllPages($locale: SiteLocale!) {
+    allPages(locale: $locale) {
+      id
+      title(locale: $locale)
+      excerpt(locale: $locale)
+      slug(locale: $locale)
+      structuredText(locale: $locale) {
+        value
+        blocks {
+          ... on ButtonRecord {
+            id
+            __typename
+            variant
+            label
+            url
+          }
+        }
+      }
+    }
+  }
+`;
+
 export const COURSES_QUERY = `
   query AllCourses($locale: SiteLocale!) {
     allCourses(locale: $locale, orderBy: position_ASC) {

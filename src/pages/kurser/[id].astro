@@ -1,6 +1,6 @@
 ---
 import { getCollection } from "astro:content";
-import { render as renderStructuredText } from "datocms-structured-text-to-html-string";
+import { StructuredText } from "@datocms/astro";
 import Accordion from "@components/Accordion.astro";
 import ButtonGroup from "@components/ButtonGroup.astro";
 import ButtonLink from "@components/ButtonLink.astro";
@@ -73,7 +73,7 @@ if (norm?.url) {
     <div class="collection-entry">
       {
         post.data.body && (
-          <div set:html={renderStructuredText(post.data.body)} />
+          <StructuredText data={post.data.body} />
         )
       }
       <p>

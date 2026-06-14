@@ -20,11 +20,32 @@ npm run watch        # Vitest watch mode
 
 ### Content model
 
-Content lives in `src/content/` and is defined by `src/content.config.ts`. Three MDX-based collections (courses, trips, pages) use glob loaders; three JSON collections (galleries, norms, team) use file loaders. Courses and trips each reference a `slugId` enum — this enum is the stable identifier used in routing and must stay in sync with `src/site.config.ts`.
+All content is fetched from DatoCMS at build time via custom loaders in `src/loaders/`. Collections are defined in `src/content.config.ts`. Each loader queries DatoCMS over GraphQL using `@datocms/cda-client` and stores entries via Astro's Content Layer API.
+
+| Collection     | Loader              | Source       |
+| :------------- | :------------------ | :----------- |
+| `courses`      | `datoCoursesLoader` | DatoCMS      |
+| `pages`        | `datoPagesLoader`   | DatoCMS      |
+| `config`       | `configLoader`      | DatoCMS      |
+| `trips`        | glob (MDX)          | `src/content/trips/` |
+| `galleries`    | file (JSON)         | `src/content/galleries.json` |
+| `norms`        | file (JSON)         | `src/content/norms.json` |
+| `team`         | file (JSON)         | `src/content/team.json` |
+| `courseSelector` | file (JSON)       | `src/content/course-selector.json` |
+
+Loaders for DatoCMS collections use a `${locale}-${slug}` entry ID strategy to prevent cross-locale slug collisions. The `slug` is always stored in `data` for use in routing.
+
+GraphQL queries live in `src/lib/datoQueries.ts`. DatoCMS schema types are in `datoschema.ts` (root).
 
 ### Routing and navigation
 
-Navigation, slugs, paths, pricing, and contact details are centralised in `src/site.config.ts`. The `Paths` record maps slug IDs to canonical URLs. Dynamic routes (`kurser/[id].astro`, `resor/[id].astro`) use `getStaticPaths()` to pre-render at build time; the catch-all `[page].astro` handles content-collection pages.
+Paths are centralised in `src/lib/routeUtils.ts` via the `Paths` record and `Slug` enum. Use `courseUrl(slug, locale)` to build locale-aware course URLs. Dynamic routes use `getStaticPaths()` with `params` derived from `post.data.slug`.
+
+Navigation is fetched from DatoCMS `SiteConfig` via `getLocalizedConfig(locale)` in `src/lib/contentUtils.ts`, which returns three named nav trees: `primary` (sidebar + mobile), `secondary` (sidebar bottom), `footer` (desktop footer).
+
+### Structured text
+
+DatoCMS structured text fields are rendered with `<StructuredText>` from `@datocms/astro`. Block components live in `src/components/dato/`. Use `CdaStructuredTextValue` from `@datocms/astro/StructuredText` for type annotations in `.ts` files.
 
 ### CSS
 
@@ -43,22 +64,32 @@ No utility framework — plain CSS in `src/styles/global.css` with PostCSS (`aut
 ### Integrations
 
 - **Netlify adapter** — SSR + pre-rendering target
-- **Sanity CMS** — scaffolded but commented out in `astro.config.mjs` (env vars: `SANITY_TOKEN`, `SANITY_DATASET`)
+- **DatoCMS** — all CMS content; client in `src/lib/datocms.ts`; queries in `src/lib/datoQueries.ts`
 - **Fienta** — booking API in `src/lib/fientaUtils.ts`; `FIENTA_INCLUDE_DRAFTS` env var controls draft event visibility
 - **PostHog** — analytics; controlled by `ENABLE_POSTHOG` and `POSTHOG_PROJECT_API_KEY` env vars
 
 ### Environment variables
 
-Declare new env vars in the `env.schema` block in `astro.config.mjs` (Astro's typed env system). `dotenv` loads `.env` at config time before Astro initialises, needed for Sanity/other secrets accessed at config level.
+Declare new env vars in the `env.schema` block in `astro.config.mjs` (Astro's typed env system). `dotenv` loads `.env` at config time before Astro initialises.
+
+| Variable                  | Required | Description                                      |
+| :------------------------ | :------- | :----------------------------------------------- |
+| `DATOCMS_CDA_TOKEN`       | ✅       | DatoCMS Content Delivery API token                |
+| `FIENTA_INCLUDE_DRAFTS`   |          | Show draft Fienta events (default: `false`)       |
+| `ENABLE_POSTHOG`          |          | Toggle analytics (default: `true`)                |
+| `POSTHOG_PROJECT_API_KEY` |          | PostHog project API key                           |
 
 ### Testing
 
-Unit tests use Vitest + `AstroContainer` for component rendering. E2E tests use Playwright (Chromium + WebKit) and run against the live dev server (`localhost:4321`). Accessibility assertions use `@axe-core/playwright`.
+**Always write tests first (TDD).** Unit tests use Vitest + `AstroContainer` for component rendering. E2E tests use Playwright (Chromium + WebKit) against the live dev server (`localhost:4321`). Accessibility assertions use `@axe-core/playwright`.
+
+Always run `npm run test:unit` after making changes and verify output before reporting work complete.
 
 ## Conventions
 
 - **No Tailwind** — use plain CSS only
 - **Keep dependencies minimal** — justify every new package
-- Images in `src/assets/` are processed by Astro's image optimisation; always use the `<Image>` or `<Picture>` component, not raw `<img>` tags
+- **TDD** — write failing tests before implementing
+- Images from DatoCMS are served via `www.datocms-assets.com` and processed by Astro's image pipeline; always use `<Image>` or `<Picture>`, not raw `<img>` tags
 - The sitemap automatically excludes `/partials/` routes — keep partials under that path
 - CI runs lint → unit tests → E2E on PRs to `main`

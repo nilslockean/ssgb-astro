@@ -1,5 +1,5 @@
 import type { Loader } from "astro/loaders";
-import type { StructuredText } from "datocms-structured-text-utils";
+import type { CdaStructuredTextValue } from "@datocms/astro/StructuredText";
 import { z } from "astro/zod";
 import { executeQuery } from "@lib/datocms";
 import { COURSES_QUERY } from "@lib/datoQueries";
@@ -21,7 +21,7 @@ export const courseSchema = z.object({
   maxParticipants: z.number().min(1).default(4),
   minAge: z.number().nullable().default(null),
   norm: datoNormSchema.optional(),
-  body: z.custom<StructuredText>().optional(),
+  body: z.custom<CdaStructuredTextValue>().optional(),
 });
 
 type DatoCourse = {
@@ -29,7 +29,7 @@ type DatoCourse = {
   title: string;
   slug: string;
   excerpt: string;
-  content: StructuredText | null;
+  content: CdaStructuredTextValue | null;
   featuredImage: { url: string; width: number; height: number; alt: string | null } | null;
   numDaysMin: number;
   numDaysMax: number | null;
@@ -40,7 +40,7 @@ type DatoCourse = {
   norm: { title: string; url: string | null } | null;
 };
 
-export function sanityCoursesLoader(): Loader {
+export function datoCoursesLoader(): Loader {
   return {
     name: "dato-courses-loader",
     load: async ({ store, parseData, logger }) => {
