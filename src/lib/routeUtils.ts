@@ -15,11 +15,6 @@ export type Navigation = Array<{
   };
 }>;
 
-export enum NavArea {
-  MOBILE = "mobile",
-  SIDEBAR_ASIDE = "aside",
-  FOOTER = "footer",
-}
 
 export enum Slug {
   HOME = "home",

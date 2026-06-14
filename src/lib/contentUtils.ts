@@ -1,4 +1,3 @@
-import { NavArea, type Navigation } from "@lib/routeUtils";
 import { getCollection, getEntry, type CollectionEntry } from "astro:content";
 import { localeSchema } from "src/schemas/locale";
 
@@ -18,20 +17,16 @@ export async function getLocalizedConfig(locale = "sv") {
     throw new Error("No config entry with id index found");
   }
 
-  const currentLocale = localeSchema.parse(locale);
+  const currentLocale = localeSchema.catch("sv").parse(locale);
   const { data } = configEntry;
 
-  const siteTagline = data.siteTagline[currentLocale];
-  const navigation: Record<NavArea, Navigation> = {
-    [NavArea.FOOTER]: data.navigation[NavArea.FOOTER][currentLocale],
-    [NavArea.SIDEBAR_ASIDE]:
-      data.navigation[NavArea.SIDEBAR_ASIDE][currentLocale],
-    [NavArea.MOBILE]: data.navigation[NavArea.MOBILE][currentLocale],
-  };
-
   return {
-    ...configEntry.data,
-    siteTagline,
-    navigation,
+    ...data,
+    siteTagline: data.siteTagline[currentLocale],
+    navigation: {
+      primary: data.navigation.primary[currentLocale] ?? [],
+      secondary: data.navigation.secondary[currentLocale] ?? [],
+      footer: data.navigation.footer[currentLocale] ?? [],
+    },
   };
 }

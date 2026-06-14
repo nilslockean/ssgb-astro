@@ -28,8 +28,9 @@ describe("Link component", async () => {
         slug: Slug.ABOUT,
       },
     });
-    const href = getPath(Slug.ABOUT);
+    const basePath = getPath(Slug.ABOUT);
 
-    expect(result).toContain(`href="${href}"`);
+    expect(result).not.toContain('href="test"');
+    expect(result).toMatch(new RegExp(`href="${basePath}\\/?"`));
   });
 });

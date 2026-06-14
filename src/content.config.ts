@@ -2,7 +2,7 @@ import { defineCollection, reference } from "astro:content";
 import { file, glob } from "astro/loaders";
 import { Slug } from "@lib/routeUtils";
 import { z } from "astro/zod";
-import { configLoader } from "./loaders/config";
+import { configLoader, configSchema } from "./loaders/config";
 import { localeSchema } from "./schemas/locale";
 import { sanityCoursesLoader, courseSchema } from "./loaders/courses";
 import { sanityPagesLoader, pageSchema } from "./loaders/pages";
@@ -84,6 +84,7 @@ const courseSelector = defineCollection({
 
 const config = defineCollection({
   loader: configLoader(),
+  schema: configSchema,
 });
 
 export const collections = {
