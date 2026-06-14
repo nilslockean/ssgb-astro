@@ -112,4 +112,7 @@ export default defineConfig({
       }),
     },
   },
+  redirects: {
+    "/admin": "https://ssgb.admin.datocms.com/",
+  },
 });
