@@ -4,8 +4,11 @@ import { executeQuery } from "@lib/datocms";
 import { SITE_CONFIG_QUERY } from "@lib/datoQueries";
 import { localeSchema } from "../schemas/locale";
 import type { Locale } from "@lib/routeUtils";
+import type { CdaStructuredTextValue } from "@datocms/astro/StructuredText";
 
 const LOCALES: Locale[] = ["sv", "en", "da"];
+
+// ── Stored nav schemas ────────────────────────────────────────────────────────
 
 const navLinkSchema = z.object({
   label: z.string(),
@@ -13,67 +16,124 @@ const navLinkSchema = z.object({
   locale: localeSchema,
 });
 
-const navLeafSchema = z.object({
-  link: navLinkSchema,
-});
-
 const navItemSchema = z.object({
   link: navLinkSchema,
-  subMenu: z.object({ nav: z.array(navLeafSchema) }).optional(),
+  subMenu: z
+    .object({ nav: z.array(z.object({ link: navLinkSchema })) })
+    .optional(),
 });
 
 export const navSchema = z.array(navItemSchema);
+
+// ── Raw DatoCMS API response schemas ─────────────────────────────────────────
+
+const datoMenuItemSchema = z.object({
+  label: z.string(),
+  url: z.string(),
+  subMenu: z
+    .object({
+      items: z.array(z.object({ label: z.string(), url: z.string() })),
+    })
+    .nullable()
+    .optional(),
+});
+
+const datoNavSchema = z
+  .object({ items: z.array(datoMenuItemSchema) })
+  .nullable();
+
+const datoSiteConfigSchema = z.object({
+  title: z.string(),
+  tagline: z.string(),
+  email: z.string(),
+  phone: z.string(),
+  pricesSingle: z.number(),
+  pricesDouble: z.number(),
+  pricesMany: z.number(),
+  pricesOpenBooking: z.number(),
+  navPrimary: datoNavSchema,
+  navSecondary: datoNavSchema,
+  navFooter: datoNavSchema,
+  authorizedInstructorTitle: z.string(),
+  authorizedInstructorContent: z.string(),
+  authorizedInstructorImage: z.object({
+    url: z.string(),
+    width: z.number(),
+    height: z.number(),
+    alt: z.string(),
+  }),
+});
+
+// ── Shared sub-schemas ────────────────────────────────────────────────────────
+
+const authorizedInstructorSchema = z.object({
+  title: z.string(),
+  content: z.string(),
+  image: z.object({
+    url: z.string(),
+    width: z.number(),
+    height: z.number(),
+    alt: z.string(),
+  }),
+});
+
+const contactSchema = z.object({ email: z.email(), phone: z.string() });
+
+const defaultPricesSchema = z.object({
+  single: z.number(),
+  double: z.number(),
+  many: z.number(),
+  openBooking: z.number(),
+});
+
+// ── Stored config schema (content collection) ─────────────────────────────────
 
 export const configSchema = z.object({
   siteTitle: z.literal("Sydsveriges Guidebyrå"),
   siteUrl: z.url(),
   siteTagline: z.record(localeSchema, z.string()),
-  contact: z.object({
-    email: z.email(),
-    phone: z.string(),
-  }),
-  defaultPrices: z.object({
-    single: z.number(),
-    double: z.number(),
-    many: z.number(),
-    openBooking: z.number(),
-  }),
+  contact: contactSchema,
+  defaultPrices: defaultPricesSchema,
   navigation: z.object({
     primary: z.record(localeSchema, navSchema),
     secondary: z.record(localeSchema, navSchema),
     footer: z.record(localeSchema, navSchema),
   }),
+  authorizedInstructor: z.record(localeSchema, authorizedInstructorSchema),
 });
 
 export type SiteConfig = z.infer<typeof configSchema>;
 
-type DatoMenuItem = {
-  label: string;
-  url: string;
-  subMenu?: { items: DatoMenuItem[] } | null;
-};
+// ── Localized (single-locale) schema ─────────────────────────────────────────
 
-type DatoSiteConfig = {
-  title: string;
-  tagline: string;
-  email: string;
-  phone: string;
-  pricesSingle: number;
-  pricesDouble: number;
-  pricesMany: number;
-  pricesOpenBooking: number;
-  navPrimary: { items: DatoMenuItem[] } | null;
-  navSecondary: { items: DatoMenuItem[] } | null;
-  navFooter: { items: DatoMenuItem[] } | null;
-};
+export const localizedConfigSchema = z.object({
+  siteTitle: z.literal("Sydsveriges Guidebyrå"),
+  siteUrl: z.url(),
+  siteTagline: z.string(),
+  contact: contactSchema,
+  defaultPrices: defaultPricesSchema,
+  navigation: z.object({
+    primary: navSchema,
+    secondary: navSchema,
+    footer: navSchema,
+  }),
+  authorizedInstructor: authorizedInstructorSchema,
+});
 
-type NavItem = z.infer<typeof navItemSchema>;
+// ── Loader ────────────────────────────────────────────────────────────────────
 
-function toNavItems(items: DatoMenuItem[], locale: Locale): NavItem[] {
+function toNavItems(
+  items: z.infer<typeof datoMenuItemSchema>[],
+  locale: Locale,
+): z.infer<typeof navSchema> {
   return items.map((item) => ({
     link: { label: item.label, path: item.url, locale },
     subMenu: item.subMenu?.items.length
-      ? { nav: toNavItems(item.subMenu.items, locale) }
+      ? {
+          nav: item.subMenu.items.map((sub) => ({
+            link: { label: sub.label, path: sub.url, locale },
+          })),
+        }
       : undefined,
   }));
 }
@@ -84,33 +144,49 @@ export function configLoader(): Loader {
     load: async ({ store, parseData, logger }) => {
       store.clear();
 
-      const results: Array<{ locale: Locale; config: DatoSiteConfig }> = [];
+      const results: Array<{
+        locale: Locale;
+        config: z.infer<typeof datoSiteConfigSchema>;
+      }> = [];
 
       for (const locale of LOCALES) {
-        const { siteConfig } = await executeQuery<{
-          siteConfig: DatoSiteConfig;
-        }>(SITE_CONFIG_QUERY, { locale });
+        const { siteConfig } = await executeQuery<{ siteConfig: unknown }>(
+          SITE_CONFIG_QUERY,
+          { locale },
+        );
         if (!siteConfig)
           throw new Error("No siteConfig record found in DatoCMS");
-        results.push({ locale, config: siteConfig });
+        results.push({
+          locale,
+          config: datoSiteConfigSchema.parse(siteConfig),
+        });
         logger.info(`Loaded ${locale} site config from DatoCMS`);
       }
 
       const svConfig = results.find((r) => r.locale === "sv")!.config;
 
-      const tagline: Record<string, string> = {};
-      const primary: Record<string, NavItem[]> = {};
-      const secondary: Record<string, NavItem[]> = {};
-      const footer: Record<string, NavItem[]> = {};
+      const siteTagline: Record<string, string> = {};
+      const primary: Record<string, z.infer<typeof navSchema>> = {};
+      const secondary: Record<string, z.infer<typeof navSchema>> = {};
+      const footer: Record<string, z.infer<typeof navSchema>> = {};
+      const authorizedInstructor: Record<
+        string,
+        z.infer<typeof authorizedInstructorSchema>
+      > = {};
 
       for (const { locale, config } of results) {
-        tagline[locale] = config.tagline ?? "";
+        siteTagline[locale] = config.tagline ?? "";
         primary[locale] = toNavItems(config.navPrimary?.items ?? [], locale);
         secondary[locale] = toNavItems(
           config.navSecondary?.items ?? [],
           locale,
         );
         footer[locale] = toNavItems(config.navFooter?.items ?? [], locale);
+        authorizedInstructor[locale] = {
+          title: config.authorizedInstructorTitle,
+          content: config.authorizedInstructorContent,
+          image: config.authorizedInstructorImage,
+        };
       }
 
       const data = await parseData({
@@ -118,11 +194,8 @@ export function configLoader(): Loader {
         data: {
           siteTitle: "Sydsveriges Guidebyrå",
           siteUrl: "https://ssgb.se",
-          siteTagline: tagline,
-          contact: {
-            email: svConfig.email,
-            phone: svConfig.phone,
-          },
+          siteTagline,
+          contact: { email: svConfig.email, phone: svConfig.phone },
           defaultPrices: {
             single: svConfig.pricesSingle,
             double: svConfig.pricesDouble,
@@ -130,6 +203,7 @@ export function configLoader(): Loader {
             openBooking: svConfig.pricesOpenBooking,
           },
           navigation: { primary, secondary, footer },
+          authorizedInstructor,
         },
       });
 

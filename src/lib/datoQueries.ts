@@ -29,6 +29,9 @@ export const SITE_CONFIG_QUERY = `
       navPrimary { ${NAV_MENU_ITEMS} }
       navSecondary { ${NAV_MENU_ITEMS} }
       navFooter { ${NAV_MENU_ITEMS} }
+      authorizedInstructorTitle(locale: $locale)
+      authorizedInstructorContent(locale: $locale)
+      authorizedInstructorImage(locale: $locale) { url width height alt }
     }
   }
 `;
@@ -49,6 +52,23 @@ export const PAGES_QUERY = `
             variant
             label
             url
+          }
+        }
+        links {
+          ... on CourseRecord {
+            id
+            __typename
+            slug
+          }
+          ... on PageRecord {
+            id
+            __typename
+            slug(locale: $locale)
+          }
+          ... on TripRecord {
+            id
+            __typename
+            slug
           }
         }
       }

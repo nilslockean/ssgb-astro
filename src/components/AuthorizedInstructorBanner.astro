@@ -1,48 +1,25 @@
 ---
-import Section from "./Section.astro";
 import { Image } from "astro:assets";
-import badge from "../assets/images/forbundet.png";
-import badgeEn from "../assets/images/forbundet-en.png";
-import { localeSchema } from "src/schemas/locale";
+import { getLocalizedConfig } from "@lib/contentUtils";
+import Section from "./Section.astro";
 
-const locale = localeSchema.parse(Astro.currentLocale);
-
-const content = {
-  sv: {
-    heading: "Auktoriserad instruktör",
-    lead: "Använd alltid en auktoriserad instruktör.",
-    body: "Att vara klippklätterinstruktör innebär att instruktören genomgått flera års utbildning, är examinerad av Svenska klätterförbundet och håller sin licens uppdaterad genom kontinuerlig utbildning. 'Rock Climbing Instructor' är en internationell standard under UIAA (den internationella organisationen för klättring och bergsbestigning \"Union Internationale des Associations d'Alpinisme\") som kvalitetssäkrar instruktörers erfarenhet och kompetens.",
-    alt: "Auktoriserad instruktör",
-    image: badge,
-  },
-  da: {
-    heading: "Autoriseret instruktør",
-    lead: "Brug altid en autoriseret instruktør.",
-    body: "At være klatrerinstruktør på klippe indebærer, at instruktøren har gennemgået flere års uddannelse, er eksamineret af Svenska Klätterförbundet og holder sin licens opdateret gennem løbende efteruddannelse. 'Rock Climbing Instructor' er en international standard under UIAA (den internationale organisation for klatring og bjergbestigning \"Union Internationale des Associations d'Alpinisme\"), som kvalitetssikrer instruktørers erfaring og kompetencer.",
-    alt: "Autoriseret instruktør",
-    image: badgeEn,
-  },
-  en: {
-    heading: "Authorised instructor",
-    lead: "Always use an authorised instructor.",
-    body: "Being a rock climbing instructor means the instructor has completed several years of training, has been examined by the Swedish Climbing Federation, and keeps their licence current through continuous education. 'Rock Climbing Instructor' is an international standard under the UIAA (the international organisation for climbing and mountaineering, \"Union Internationale des Associations d'Alpinisme\") that assures the quality of instructors' experience and competence.",
-    alt: "Authorised instructor",
-    image: badgeEn,
-  },
-} as const;
-
-const { heading, lead, body, image, alt } = content[locale];
+const config = await getLocalizedConfig(Astro.currentLocale);
+const { title, content, image } = config.authorizedInstructor;
 ---
 
 <Section>
   <div class="card">
-    <Image width={320} src={image} alt={alt} />
+    <Image
+      src={{
+        src: image.url,
+        width: image.width,
+        height: image.height,
+      }}
+      alt={image.alt}
+    />
     <div class="card__inner">
-      <h2 class="h3">{heading}</h2>
-      <p>
-        <strong>{lead}</strong>
-        {body}
-      </p>
+      <h2 class="h3">{title}</h2>
+      <div set:html={content} />
     </div>
   </div>
 </Section>

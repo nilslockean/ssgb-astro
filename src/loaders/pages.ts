@@ -40,7 +40,7 @@ export function datoPagesLoader(): Loader {
 
         for (const page of allPages) {
           if (!page.slug) {
-            logger.warn(`Page ${page.id} (${locale}) has no slug — skipping`);
+            // logger.warn(`Page ${page.id} (${locale}) has no slug — skipping`);
             continue;
           }
 

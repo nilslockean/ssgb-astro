@@ -1,0 +1,27 @@
+---
+import { courseUrl, type Locale } from "@lib/routeUtils";
+
+interface Props {
+  record: { __typename: string; id: string; slug: string };
+  attrs: Record<string, string>;
+}
+
+const { record, attrs } = Astro.props;
+const locale = (Astro.currentLocale ?? "sv") as Locale;
+
+const LOCALE_PREFIX: Record<Locale, string> = { sv: "", da: "/da", en: "/en" };
+
+let href: string;
+switch (record.__typename) {
+  case "CourseRecord":
+    href = courseUrl(record.slug, locale);
+    break;
+  case "TripRecord":
+    href = `/resor/${record.slug}`;
+    break;
+  default:
+    href = `${LOCALE_PREFIX[locale]}/${record.slug}`;
+}
+---
+
+<a href={href} {...attrs}><slot /></a>

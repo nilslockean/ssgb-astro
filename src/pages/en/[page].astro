@@ -4,6 +4,7 @@ import { StructuredText } from "@datocms/astro";
 import Layout from "../../layouts/Layout.astro";
 import Section from "@components/Section.astro";
 import ButtonBlock from "@components/dato/ButtonBlock.astro";
+import PageInternalLink from "@components/dato/PageInternalLink.astro";
 
 export async function getStaticPaths() {
   const posts = await getCollection(
@@ -30,6 +31,7 @@ const { post } = Astro.props;
         <StructuredText
           data={post.data.body}
           blockComponents={{ ButtonRecord: ButtonBlock }}
+          linkToRecordComponents={{ CourseRecord: PageInternalLink, PageRecord: PageInternalLink, TripRecord: PageInternalLink }}
         />
       )
     }
