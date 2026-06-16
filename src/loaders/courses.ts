@@ -23,26 +23,33 @@ export const courseSchema = z.object({
   body: z.custom<CdaStructuredTextValue>().optional(),
 });
 
-type DatoCourse = {
-  id: string;
-  title: string;
-  slug: string;
-  excerpt: string;
-  content: CdaStructuredTextValue | null;
-  featuredImage: {
-    url: string;
-    width: number;
-    height: number;
-    alt: string | null;
-  } | null;
-  numDaysMin: number;
-  numDaysMax: number | null;
-  featured: boolean;
-  prerequisites: string | null;
-  maxParticipants: number | null;
-  minAge: number | null;
-  norm: { title: string; url: string | null } | null;
-};
+const datoCourseSchema = z.object({
+  id: z.string(),
+  title: z.string(),
+  slug: z.string().nullable(),
+  excerpt: z.string(),
+  content: z.custom<CdaStructuredTextValue>().nullable(),
+  featuredImage: z
+    .object({
+      url: z.string(),
+      width: z.number(),
+      height: z.number(),
+      alt: z.string().nullable(),
+    })
+    .nullable(),
+  numDaysMin: z.number(),
+  numDaysMax: z.number().nullable(),
+  featured: z.boolean(),
+  prerequisites: z.string().nullable(),
+  maxParticipants: z.number().nullable(),
+  minAge: z.number().nullable(),
+  norm: z
+    .object({
+      title: z.string(),
+      url: z.string().nullable(),
+    })
+    .nullable(),
+});
 
 export function datoCoursesLoader(): Loader {
   return {
@@ -51,8 +58,9 @@ export function datoCoursesLoader(): Loader {
       store.clear();
 
       for (const locale of LOCALE_CODES) {
-        const { allCourses } = await executeQuery<{ allCourses: DatoCourse[] }>(
+        const { allCourses } = await executeQuery(
           COURSES_QUERY,
+          z.object({ allCourses: z.array(datoCourseSchema) }),
           { locale },
         );
 

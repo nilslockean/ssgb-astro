@@ -1,12 +1,15 @@
 import { executeQuery as libExecuteQuery } from "@datocms/cda-client";
 import { DATOCMS_CDA_TOKEN } from "astro:env/server";
+import { z } from "astro/zod";
 
-export async function executeQuery<T = unknown>(
+export async function executeQuery<S extends z.ZodTypeAny>(
   query: string,
+  schema: S,
   variables?: Record<string, unknown>,
-): Promise<T> {
-  return libExecuteQuery(query, {
+): Promise<z.infer<S>> {
+  const raw: unknown = await libExecuteQuery(query, {
     variables,
     token: DATOCMS_CDA_TOKEN,
-  }) as Promise<T>;
+  });
+  return schema.parse(raw);
 }

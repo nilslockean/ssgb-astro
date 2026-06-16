@@ -14,13 +14,13 @@ export const pageSchema = z.object({
   body: z.custom<CdaStructuredTextValue>().optional(),
 });
 
-type DatoPage = {
-  id: string;
-  title: string;
-  excerpt: string;
-  slug: string;
-  structuredText: CdaStructuredTextValue | null;
-};
+const datoPageSchema = z.object({
+  id: z.string(),
+  title: z.string(),
+  excerpt: z.string(),
+  slug: z.string().nullable(),
+  structuredText: z.custom<CdaStructuredTextValue>().nullable(),
+});
 
 export function datoPagesLoader(): Loader {
   return {
@@ -29,8 +29,9 @@ export function datoPagesLoader(): Loader {
       store.clear();
 
       for (const locale of LOCALE_CODES) {
-        const { allPages } = await executeQuery<{ allPages: DatoPage[] }>(
+        const { allPages } = await executeQuery(
           PAGES_QUERY,
+          z.object({ allPages: z.array(datoPageSchema) }),
           { locale },
         );
 

@@ -32,8 +32,6 @@ const datoTeamMemberSchema = z.object({
   position: z.number(),
 });
 
-type DatoTeamMember = z.infer<typeof datoTeamMemberSchema>;
-
 export function datoTeamLoader(): Loader {
   return {
     name: "dato-team-loader",
@@ -41,15 +39,16 @@ export function datoTeamLoader(): Loader {
       store.clear();
 
       for (const locale of LOCALE_CODES) {
-        const { allTeams } = await executeQuery<{ allTeams: DatoTeamMember[] }>(
+        const result = await executeQuery(
           TEAMS_QUERY,
+          z.object({ allTeams: z.array(datoTeamMemberSchema) }),
           { locale },
         );
 
-        const parsed = z.array(datoTeamMemberSchema).parse(allTeams);
+        const parsed = result.allTeams;
 
         logger.info(
-          `Loaded ${allTeams.length} ${locale} team members from DatoCMS`,
+          `Loaded ${parsed.length} ${locale} team members from DatoCMS`,
         );
 
         for (const person of parsed) {

@@ -148,16 +148,14 @@ export function configLoader(): Loader {
       }> = [];
 
       for (const locale of LOCALE_CODES) {
-        const { siteConfig } = await executeQuery<{ siteConfig: unknown }>(
+        const { siteConfig } = await executeQuery(
           SITE_CONFIG_QUERY,
+          z.object({ siteConfig: datoSiteConfigSchema }),
           { locale },
         );
         if (!siteConfig)
           throw new Error("No siteConfig record found in DatoCMS");
-        results.push({
-          locale,
-          config: datoSiteConfigSchema.parse(siteConfig),
-        });
+        results.push({ locale, config: siteConfig });
         logger.info(`Loaded ${locale} site config from DatoCMS`);
       }
 
