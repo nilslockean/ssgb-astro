@@ -95,3 +95,16 @@ export const COURSES_QUERY = `
     }
   }
 `;
+
+export const TEAMS_QUERY = `
+  query AllTeams($locale: SiteLocale!) {
+    allTeams(locale: $locale, orderBy: position_ASC) {
+      id
+      name
+      title(locale: $locale)
+      bio(locale: $locale)
+      image { url width height alt }
+      position
+    }
+  }
+`;

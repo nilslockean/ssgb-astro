@@ -1,5 +1,11 @@
 export type Locale = "sv" | "da" | "en";
 
+export const LOCALE_CODES = [
+  "sv",
+  "da",
+  "en",
+] as const satisfies readonly Locale[];
+
 export type NavLink = {
   label: string;
   path: string;
@@ -14,7 +20,6 @@ export type Navigation = Array<{
     more?: NavLink;
   };
 }>;
-
 
 export enum Slug {
   HOME = "home",

@@ -3,9 +3,9 @@ import { file, glob } from "astro/loaders";
 import { Slug } from "@lib/routeUtils";
 import { z } from "astro/zod";
 import { configLoader, configSchema } from "./loaders/config";
-import { localeSchema } from "./schemas/locale";
 import { datoCoursesLoader, courseSchema } from "./loaders/courses";
 import { datoPagesLoader, pageSchema } from "./loaders/pages";
+import { datoTeamLoader, teamSchema } from "./loaders/team";
 
 const courses = defineCollection({
   loader: datoCoursesLoader(),
@@ -56,15 +56,8 @@ const norms = defineCollection({
 });
 
 const team = defineCollection({
-  loader: file("./src/content/team.json"),
-  schema: ({ image }) =>
-    z.object({
-      name: z.string(),
-      description: z.array(z.object({ _key: localeSchema, value: z.string() })),
-      image: image(),
-      alt: z.string(),
-      featured: z.boolean().default(false),
-    }),
+  loader: datoTeamLoader(),
+  schema: teamSchema,
 });
 
 const courseSelector = defineCollection({

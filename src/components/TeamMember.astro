@@ -1,48 +1,35 @@
 ---
 import type { CollectionEntry } from "astro:content";
 import type { HTMLAttributes } from "astro/types";
-import { getImage } from "astro:assets";
 import { Image } from "astro:assets";
-import { localeSchema } from "src/schemas/locale";
 
 interface Props extends HTMLAttributes<"li"> {
   person: CollectionEntry<"team">;
 }
 const {
   person: {
-    data: { name, description, image, alt, featured },
+    data: { name, bio, image, alt, title },
   },
 } = Astro.props;
-const locale = localeSchema.parse(Astro.currentLocale);
-const bio =
-  description.find((d) => d._key === locale)?.value ??
-  description.find((d) => d._key === "sv")!.value;
-
-const imageData = await getImage({
-  src: image,
-  format: "webp",
-  width: 600,
-  height: 800,
-});
 ---
 
-<li class:list={["team-member", { "team-member--featured": featured }]}>
+<li class="team-member">
   <figure class="team-member__figure">
     <div class="team-member__image-wrapper">
       <Image
-        alt={alt}
+        alt={alt ?? ""}
         class="team-member__image"
-        height={800}
-        layout="constrained"
+        height={image?.height ?? 800}
         loading="lazy"
-        src={imageData.src}
-        width={600}
+        src={image?.src ?? ""}
+        width={image?.width ?? 600}
       />
     </div>
   </figure>
 
   <div class="team-member__content">
     <h3 class="team-member__name font-heading mt-0 normal-case">{name}</h3>
+    {title && <p class="team-member__title">{title}</p>}
     <p>{bio}</p>
   </div>
 </li>
@@ -54,10 +41,6 @@ const imageData = await getImage({
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-  }
-
-  .team-member--featured .team-member__image-wrapper {
-    outline: 4px solid var(--color-surface-lighter);
   }
 
   .team-member__image-wrapper {
@@ -73,5 +56,10 @@ const imageData = await getImage({
   .team-member__content {
     flex-grow: 1;
     padding: var(--space-8);
+  }
+
+  .team-member__title {
+    margin-bottom: var(--space-4);
+    font-weight: bold;
   }
 </style>

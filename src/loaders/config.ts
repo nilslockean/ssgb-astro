@@ -3,10 +3,8 @@ import { z } from "astro/zod";
 import { executeQuery } from "@lib/datocms";
 import { SITE_CONFIG_QUERY } from "@lib/datoQueries";
 import { localeSchema } from "../schemas/locale";
-import type { Locale } from "@lib/routeUtils";
+import { type Locale, LOCALE_CODES } from "@lib/routeUtils";
 import type { CdaStructuredTextValue } from "@datocms/astro/StructuredText";
-
-const LOCALES: Locale[] = ["sv", "en", "da"];
 
 // ── Stored nav schemas ────────────────────────────────────────────────────────
 
@@ -149,7 +147,7 @@ export function configLoader(): Loader {
         config: z.infer<typeof datoSiteConfigSchema>;
       }> = [];
 
-      for (const locale of LOCALES) {
+      for (const locale of LOCALE_CODES) {
         const { siteConfig } = await executeQuery<{ siteConfig: unknown }>(
           SITE_CONFIG_QUERY,
           { locale },

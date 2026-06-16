@@ -3,9 +3,8 @@ import Section from "@components/Section.astro";
 import Layout from "../layouts/Layout.astro";
 import Team from "@components/Team.astro";
 import { getCollection } from "astro:content";
-import Link from "@components/Link.astro";
 
-const teamMembers = await getCollection("team");
+const teamMembers = await getCollection("team", ({ data }) => data.language === "sv");
 ---
 
 <Layout

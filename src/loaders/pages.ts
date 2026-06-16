@@ -4,9 +4,7 @@ import { z } from "astro/zod";
 import { executeQuery } from "@lib/datocms";
 import { PAGES_QUERY } from "@lib/datoQueries";
 import { localeSchema } from "src/schemas/locale";
-import type { Locale } from "@lib/routeUtils";
-
-const LOCALES: Locale[] = ["sv", "en", "da"];
+import { LOCALE_CODES } from "@lib/routeUtils";
 
 export const pageSchema = z.object({
   language: localeSchema.default("sv"),
@@ -30,7 +28,7 @@ export function datoPagesLoader(): Loader {
     load: async ({ store, parseData, logger }) => {
       store.clear();
 
-      for (const locale of LOCALES) {
+      for (const locale of LOCALE_CODES) {
         const { allPages } = await executeQuery<{ allPages: DatoPage[] }>(
           PAGES_QUERY,
           { locale },

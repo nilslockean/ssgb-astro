@@ -3,10 +3,9 @@ import type { CdaStructuredTextValue } from "@datocms/astro/StructuredText";
 import { z } from "astro/zod";
 import { executeQuery } from "@lib/datocms";
 import { COURSES_QUERY } from "@lib/datoQueries";
+import { LOCALE_CODES } from "@lib/routeUtils";
 import { datoImageSchema, datoNormSchema } from "src/schemas/dato";
 import { localeSchema } from "src/schemas/locale";
-
-const LOCALES = ["sv", "en", "da"] as const;
 
 export const courseSchema = z.object({
   title: z.string(),
@@ -30,7 +29,12 @@ type DatoCourse = {
   slug: string;
   excerpt: string;
   content: CdaStructuredTextValue | null;
-  featuredImage: { url: string; width: number; height: number; alt: string | null } | null;
+  featuredImage: {
+    url: string;
+    width: number;
+    height: number;
+    alt: string | null;
+  } | null;
   numDaysMin: number;
   numDaysMax: number | null;
   featured: boolean;
@@ -46,17 +50,21 @@ export function datoCoursesLoader(): Loader {
     load: async ({ store, parseData, logger }) => {
       store.clear();
 
-      for (const locale of LOCALES) {
+      for (const locale of LOCALE_CODES) {
         const { allCourses } = await executeQuery<{ allCourses: DatoCourse[] }>(
           COURSES_QUERY,
           { locale },
         );
 
-        logger.info(`Loaded ${allCourses.length} ${locale} courses from DatoCMS`);
+        logger.info(
+          `Loaded ${allCourses.length} ${locale} courses from DatoCMS`,
+        );
 
         for (const course of allCourses) {
           if (!course.slug) {
-            logger.warn(`Course ${course.id} (${locale}) has no slug — skipping`);
+            logger.warn(
+              `Course ${course.id} (${locale}) has no slug — skipping`,
+            );
             continue;
           }
 
@@ -68,7 +76,8 @@ export function datoCoursesLoader(): Loader {
               excerpt: course.excerpt,
               language: locale,
               numDays:
-                course.numDaysMax !== null && course.numDaysMax !== course.numDaysMin
+                course.numDaysMax !== null &&
+                course.numDaysMax !== course.numDaysMin
                   ? [course.numDaysMin, course.numDaysMax]
                   : [course.numDaysMin],
               order: allCourses.indexOf(course),
