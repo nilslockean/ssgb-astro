@@ -7,7 +7,6 @@ import Eyebrow from "@components/Eyebrow.astro";
 import { Slug } from "@lib/routeUtils";
 import { localePath } from "@lib/i18nUtils";
 import { localeSchema } from "src/schemas/locale";
-import CourseSelector from "@components/CourseSelector.astro";
 import Link from "@components/Link.astro";
 import Section from "@components/Section.astro";
 import { getCollection } from "astro:content";
@@ -70,5 +69,4 @@ const siteConfig = await getLocalizedConfig(currentLocale);
     <Eyebrow class="mt-16 mb-4 ml-4">Våra resor</Eyebrow>
     <CourseGrid class="mb-8" entries={featuredTrips} />
   </Section>
-  <CourseSelector />
 </Layout>
