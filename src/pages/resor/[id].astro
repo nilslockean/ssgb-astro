@@ -1,51 +1,45 @@
 ---
-import { getCollection, getEntry, render } from "astro:content";
+import { getCollection } from "astro:content";
+import { StructuredText } from "@datocms/astro";
 import Accordion from "@components/Accordion.astro";
+import ButtonBlock from "@components/dato/ButtonBlock.astro";
 import ButtonGroup from "@components/ButtonGroup.astro";
 import ButtonLink from "@components/ButtonLink.astro";
 import Hero, { type HeroButton } from "@components/Hero.astro";
 import Layout from "../../layouts/Layout.astro";
-import Gallery from "@components/Gallery.astro";
 import PageHead from "@components/PageHead.astro";
 import BookingForm from "@components/BookingForm.astro";
-import PrivateBookingPricingList from "@components/PrivateBookingPricingList.astro";
 import { formatPrice } from "@lib/stringUtils";
-import Link from "@components/Link.astro";
 import Section from "@components/Section.astro";
 
-// 1. Generate a new path for every collection entry
 export async function getStaticPaths() {
-  const posts = await getCollection("trips");
+  const posts = await getCollection("trips", ({ data }) => data.language === "sv");
   return posts.map((post) => ({
-    params: { id: post.id },
+    params: { id: post.data.slug },
     props: { post },
   }));
 }
-// 2. For your template, you can get the entry directly from the prop
+
 const { post } = Astro.props;
-const { Content } = await render(post);
-const gallery = post.data.gallery && (await getEntry(post.data.gallery));
 const heroButtons: HeroButton[] = [{ label: post.data.cta, href: "#boka" }];
 ---
 
 <Layout
   fientaEmbed
   metaDescription={post.data.excerpt}
-  metaTitle={post.data.shortName || post.data.title}
+  metaTitle={post.data.title}
 >
   {
     post.data.heroImage ? (
       <Hero
         buttons={heroButtons}
         content={post.data.excerpt}
-        eyebrow={post.data.aka}
         image={post.data.heroImage}
         title={post.data.title}
       />
     ) : (
       <PageHead
         content={post.data.excerpt}
-        eyebrow={post.data.aka}
         title={post.data.title}
       >
         <ButtonGroup slot="buttons">
@@ -64,16 +58,16 @@ const heroButtons: HeroButton[] = [{ label: post.data.cta, href: "#boka" }];
   }
   <Section>
     <div class="collection-entry">
-      <Content />
+      {
+        post.data.body && (
+          <StructuredText
+            data={post.data.body}
+            blockComponents={{ ButtonRecord: ButtonBlock }}
+          />
+        )
+      }
     </div>
   </Section>
-  {
-    gallery && (
-      <Section>
-        <Gallery entry={gallery} />
-      </Section>
-    )
-  }
 
   <Section>
     {
@@ -85,7 +79,11 @@ const heroButtons: HeroButton[] = [{ label: post.data.cta, href: "#boka" }];
     }
     <Accordion title="Pris">
       <p>
-        Kursavgiften är {formatPrice([post.data.price])} inkl. moms för fem dagar.
+        {
+          post.data.price
+            ? `Kursavgiften är ${formatPrice([post.data.price])} inkl. moms för fem dagar.`
+            : "Kontakta oss för prisinformation."
+        }
         Du ska ha med dig personlig utrustning och all annan nödvändig klätterutrustning.
         Vi är alltid auktoriserade klätterinstruktörer av Svenska Klätterförbundet
         och UIAA. Transporter och rekommenderad utrustning (utrustningslista) på vad

@@ -1,11 +1,9 @@
-import { defineCollection, reference } from "astro:content";
-import { file, glob } from "astro/loaders";
-import { Slug } from "@lib/routeUtils";
-import { z } from "astro/zod";
+import { defineCollection } from "astro:content";
 import { configLoader, configSchema } from "./loaders/config";
 import { datoCoursesLoader, courseSchema } from "./loaders/courses";
 import { datoPagesLoader, pageSchema } from "./loaders/pages";
 import { datoTeamLoader, teamSchema } from "./loaders/team";
+import { datoTripsLoader, tripSchema } from "./loaders/trips";
 
 const courses = defineCollection({
   loader: datoCoursesLoader(),
@@ -18,61 +16,13 @@ const pages = defineCollection({
 });
 
 const trips = defineCollection({
-  loader: glob({ base: "./src/content/trips", pattern: "**/*.{md,mdx}" }),
-  schema: ({ image }) =>
-    z.object({
-      title: z.string(),
-      shortName: z.string().optional(),
-      excerpt: z.string(),
-      price: z.number(),
-      prerequisites: z.string().optional(),
-      heroImage: image().optional(),
-      cta: z.string(),
-      gallery: reference("galleries").optional(),
-      slugId: z.enum(Slug),
-    }),
-});
-
-const galleries = defineCollection({
-  loader: file("./src/content/galleries.json"),
-  schema: ({ image }) =>
-    z.object({
-      images: z.array(
-        z.object({
-          image: image(),
-          alt: z.string(),
-          caption: z.string().optional(),
-        }),
-      ),
-    }),
-});
-
-const norms = defineCollection({
-  loader: file("./src/content/norms.json"),
-  schema: z.object({
-    url: z.url(),
-    title: z.string(),
-  }),
+  loader: datoTripsLoader(),
+  schema: tripSchema,
 });
 
 const team = defineCollection({
   loader: datoTeamLoader(),
   schema: teamSchema,
-});
-
-const courseSelector = defineCollection({
-  loader: file("./src/content/course-selector.json"),
-  schema: z.object({
-    title: z.string(),
-    body: z.array(
-      z.array(
-        z.object({
-          text: z.string(),
-          slug: z.enum(Slug).optional(),
-        }),
-      ),
-    ),
-  }),
 });
 
 const config = defineCollection({
@@ -83,10 +33,7 @@ const config = defineCollection({
 export const collections = {
   courses,
   pages,
-  galleries,
-  norms,
   team,
   trips,
-  courseSelector,
   config,
 };

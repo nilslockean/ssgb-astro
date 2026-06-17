@@ -96,6 +96,36 @@ export const COURSES_QUERY = `
   }
 `;
 
+export const TRIPS_QUERY = `
+  query AllTrips($locale: SiteLocale!) {
+    allTrips(locale: $locale, orderBy: position_ASC) {
+      id
+      title(locale: $locale)
+      slug(locale: $locale)
+      excerpt(locale: $locale)
+      featuredImage { url width height alt }
+      content(locale: $locale) {
+        value
+        blocks {
+          ... on ButtonRecord {
+            id
+            __typename
+            variant
+            label
+            url
+          }
+        }
+        links
+      }
+      cta(locale: $locale)
+      price
+      prerequisites(locale: $locale)
+      norm { title url }
+      position
+    }
+  }
+`;
+
 export const TEAMS_QUERY = `
   query AllTeams($locale: SiteLocale!) {
     allTeams(locale: $locale, orderBy: position_ASC) {

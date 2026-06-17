@@ -129,3 +129,8 @@ export function courseUrl(slug: string, locale: Locale = "sv"): string {
   const base = Paths[locale]?.[Slug.COURSES] ?? Paths.sv[Slug.COURSES];
   return `${LOCALE_PREFIX[locale]}${base}/${slug}`;
 }
+
+export function tripUrl(slug: string, locale: Locale = "sv"): string {
+  const base = Paths[locale]?.[Slug.TRIPS] ?? Paths.sv[Slug.TRIPS];
+  return `${LOCALE_PREFIX[locale]}${base}/${slug}`;
+}

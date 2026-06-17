@@ -2,11 +2,17 @@
 import type { CollectionEntry } from "astro:content";
 import type { HTMLAttributes } from "astro/types";
 import CourseGridItem from "./CourseGridItem.astro";
-import { courseUrl } from "@lib/routeUtils";
+import { courseUrl, tripUrl } from "@lib/routeUtils";
 import { localeSchema } from "src/schemas/locale";
 
 interface Props extends HTMLAttributes<"ul"> {
   entries: CollectionEntry<"courses">[] | CollectionEntry<"trips">[];
+}
+
+function isCourse(
+  entry: CollectionEntry<"courses"> | CollectionEntry<"trips">,
+): entry is CollectionEntry<"courses"> {
+  return "numDays" in entry.data;
 }
 
 const { entries, class: className, ...rest } = Astro.props;
@@ -26,7 +32,9 @@ const locale = localeSchema.parse(Astro.currentLocale);
   {
     entries.map((course) => {
       const title = course.data.title;
-      const href = courseUrl(course.data.slug, locale);
+      const href = isCourse(course)
+        ? courseUrl(course.data.slug, locale)
+        : tripUrl(course.data.slug, locale);
       const cta = `Läs mer om ${title.replaceAll("&shy;", "").toLowerCase()}`;
 
       return (

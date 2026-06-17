@@ -11,10 +11,7 @@ const { block } = Astro.props;
 ---
 
 <p>
-  <a
-    class:list={["btn", block.variant === "primary" ? "btn--primary" : ""]}
-    href={block.url}
-  >
+  <a class:list={["btn", `btn--${block.variant}`]} href={block.url}>
     {block.label}
   </a>
 </p>

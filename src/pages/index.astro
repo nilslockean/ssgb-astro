@@ -12,9 +12,9 @@ import Section from "@components/Section.astro";
 import { getCollection } from "astro:content";
 import { getLocalizedConfig } from "../lib/contentUtils.ts";
 
-const featuredCourses = await getCourses((course) => course.data.featured);
-const featuredTrips = await getCollection("trips");
 const locale = localeSchema.parse(Astro.currentLocale);
+const featuredCourses = await getCourses((course) => course.data.featured);
+const featuredTrips = await getCollection("trips", ({ data }) => data.language === locale);
 const heroButtons: HeroButton[] = [
   {
     label: "Boka en kurs",

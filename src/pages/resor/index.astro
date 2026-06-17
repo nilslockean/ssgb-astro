@@ -3,9 +3,9 @@ import PageHead from "@components/PageHead.astro";
 import Layout from "../../layouts/Layout.astro";
 import CourseGrid from "@components/CourseGrid.astro";
 import Section from "@components/Section.astro";
-import { getCollection, type CollectionEntry } from "astro:content";
+import { getCollection } from "astro:content";
 
-const trips = await getCollection("trips");
+const trips = await getCollection("trips", ({ data }) => data.language === "sv");
 ---
 
 <Layout
