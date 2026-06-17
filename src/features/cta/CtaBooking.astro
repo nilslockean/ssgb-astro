@@ -1,7 +1,7 @@
 ---
 import type { HTMLAttributes, HTMLTag } from "astro/types";
-import Section from "./Section.astro";
-import BookingForm from "./BookingForm.astro";
+import Section from "@components/Section.astro";
+import BookingForm from "@features/forms/BookingForm.astro";
 
 type Props<T extends HTMLTag = "section"> = HTMLAttributes<T> & {
   as?: T;
@@ -25,7 +25,7 @@ const { as, class: className, ...rest } = Astro.props;
 </Section>
 
 <style>
-  @import "../styles/breakpoints.css";
+  @import "../../styles/breakpoints.css";
 
   .cta-booking {
     margin-bottom: var(--space-8);

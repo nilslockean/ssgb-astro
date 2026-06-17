@@ -2,10 +2,10 @@
 import PageHead from "@components/PageHead.astro";
 import Layout from "../../layouts/Layout.astro";
 import { getCourses } from "@lib/contentUtils";
-import CourseGrid from "@components/CourseGrid.astro";
+import CourseGrid from "@features/courses/CourseGrid.astro";
 import CourseSelector from "@features/CourseSelector.astro";
 import Section from "@components/Section.astro";
-import CtaBooking from "@components/CtaBooking.astro";
+import CtaBooking from "@features/cta/CtaBooking.astro";
 
 const coursesWithNorms = await getCourses((course) => course.data.norm);
 const coursesWithoutNorms = await getCourses((course) => !course.data.norm);

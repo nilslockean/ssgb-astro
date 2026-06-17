@@ -1,7 +1,7 @@
 ---
 import "../styles/global.css";
-import SiteLogo from "../components/SiteLogo.astro";
-import PostHog from "../components/posthog.astro";
+import SiteLogo from "@features/navigation/SiteLogo.astro";
+import PostHog from "@features/third-party/posthog.astro";
 import { ENABLE_POSTHOG, POSTHOG_PROJECT_API_KEY } from "astro:env/client";
 import { getLocalizedConfig } from "../lib/contentUtils";
 

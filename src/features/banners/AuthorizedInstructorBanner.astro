@@ -1,7 +1,7 @@
 ---
 import { Image } from "astro:assets";
 import { getLocalizedConfig } from "@lib/contentUtils";
-import Section from "./Section.astro";
+import Section from "@components/Section.astro";
 
 const config = await getLocalizedConfig(Astro.currentLocale);
 const { title, content, image } = config.authorizedInstructor;

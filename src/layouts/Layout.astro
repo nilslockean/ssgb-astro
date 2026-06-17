@@ -1,17 +1,17 @@
 ---
 import "../styles/global.css";
-import SiteLogo from "../components/SiteLogo.astro";
-import SidebarNav from "../components/SidebarNav.astro";
-import PostHog from "../components/posthog.astro";
+import SiteLogo from "@features/navigation/SiteLogo.astro";
+import SidebarNav from "@features/navigation/SidebarNav.astro";
+import PostHog from "@features/third-party/posthog.astro";
 import ButtonGroup from "@components/ButtonGroup.astro";
-import LanguagePicker from "@components/LanguagePicker.astro";
-import LanguageList from "@components/LanguageList.astro";
+import LanguagePicker from "@features/locale/LanguagePicker.astro";
+import LanguageList from "@features/locale/LanguageList.astro";
 import MobileHeader from "@components/MobileHeader.astro";
 import NavLink from "@components/NavLink.astro";
-import AuthorizedInstructorBanner from "@components/AuthorizedInstructorBanner.astro";
+import AuthorizedInstructorBanner from "@features/banners/AuthorizedInstructorBanner.astro";
 import { getRelativeLocaleUrl } from "astro:i18n";
 import { ENABLE_POSTHOG, POSTHOG_PROJECT_API_KEY } from "astro:env/client";
-import Fienta from "@components/fienta.astro";
+import Fienta from "@features/third-party/fienta.astro";
 import { Font } from "astro:assets";
 import { getLocalizedConfig } from "../lib/contentUtils.ts";
 

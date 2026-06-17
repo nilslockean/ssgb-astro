@@ -1,8 +1,8 @@
 ---
 import { getRelativeLocaleUrl } from "astro:i18n";
 import { LOCALES, languages } from "@lib/i18nUtils";
-import { localeSchema } from "../schemas/locale";
-import LocaleFlag from "./flags/LocaleFlag.astro";
+import { localeSchema } from "src/schemas/locale";
+import LocaleFlag from "@components/flags/LocaleFlag.astro";
 
 const currentLocale = localeSchema.parse(Astro.currentLocale);
 ---
