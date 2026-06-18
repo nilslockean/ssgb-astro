@@ -1,5 +1,5 @@
 import { describe, test, expect } from "vitest";
-import { formatPrice } from "./stringUtils";
+import { formatPrice, formatPhone } from "./stringUtils";
 
 describe("formatPrice", () => {
   test("formats single price", () => {
@@ -18,5 +18,27 @@ describe("formatPrice", () => {
 
   test("formats unordered price range", () => {
     expect(formatPrice([2000, 1200, 104580])).toBe("Från 1 200 kr");
+  });
+});
+
+describe("formatPhone", () => {
+  test("formats Swedish mobile international", () => {
+    expect(formatPhone("+46736665997", false)).toBe("+46 73-666 59 97");
+  });
+
+  test("formats Swedish mobile domestic", () => {
+    expect(formatPhone("+46736665997", true)).toBe("073-666 59 97");
+  });
+
+  test("formats standard national landline number", () => {
+    expect(formatPhone("+4640123456", true)).toBe("040-12 34 56");
+  });
+
+  test("formats standard national landline number international", () => {
+    expect(formatPhone("+4640123456", false)).toBe("+46 40-12 34 56");
+  });
+
+  test("throws on invalid E.164 format", () => {
+    expect(() => formatPhone("12345", true)).toThrow("Invalid E.164 format");
   });
 });
