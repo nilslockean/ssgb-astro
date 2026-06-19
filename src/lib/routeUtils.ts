@@ -1,4 +1,5 @@
 export type Locale = "sv" | "da" | "en";
+export const defaultLocale: Locale = "sv";
 
 export const LOCALE_CODES = [
   "sv",

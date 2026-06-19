@@ -43,6 +43,7 @@ export const PAGES_QUERY = `
       title(locale: $locale)
       excerpt(locale: $locale)
       slug(locale: $locale)
+      displayContactForm
       structuredText(locale: $locale) {
         value
         blocks {
@@ -52,6 +53,13 @@ export const PAGES_QUERY = `
             variant
             label
             url
+          }
+        }
+        inlineBlocks {
+          ... on ContactDetailRecord {
+            id
+            __typename
+            value
           }
         }
         links {

@@ -1,0 +1,29 @@
+---
+import { getLocalizedConfig } from "@lib/contentUtils";
+import { formatPhone } from "@lib/stringUtils";
+import { defaultLocale } from "@lib/routeUtils";
+
+interface Props {
+  block: {
+    value: "phone" | "email";
+  };
+}
+
+const { block } = Astro.props;
+const locale = Astro.currentLocale ?? defaultLocale;
+const config = await getLocalizedConfig(locale);
+
+let href: string;
+let display: string;
+if (block.value === "phone") {
+  const phone = config.contact.phone;
+  const domestic = locale === defaultLocale;
+  display = formatPhone(phone, domestic);
+  href = `tel:${phone}`;
+} else {
+  display = config.contact.email;
+  href = `mailto:${display}`;
+}
+---
+
+<a href={href}>{display}</a>
