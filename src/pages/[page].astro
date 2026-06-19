@@ -6,6 +6,7 @@ import Section from "@components/Section.astro";
 import ButtonBlock from "@features/dato/ButtonBlock.astro";
 import PageInternalLink from "@features/dato/PageInternalLink.astro";
 import ContactDetailInline from "@features/dato/ContactDetailInline.astro";
+import ContactFormSection from "@features/forms/ContactFormSection.astro";
 
 export async function getStaticPaths() {
   const posts = await getCollection(
@@ -43,4 +44,5 @@ console.log("CF", post.data.displayContactForm);
       )
     }
   </div>
+  {post.data.displayContactForm && <ContactFormSection />}
 </Layout>

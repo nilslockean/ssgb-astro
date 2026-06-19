@@ -1,0 +1,114 @@
+---
+import Section from "@components/Section.astro";
+import { Slug } from "@lib/routeUtils";
+import { localePath } from "@lib/i18nUtils";
+import { localeSchema } from "../../schemas/locale";
+import Layout from "../../layouts/Layout.astro";
+import Link from "@components/Link.astro";
+import { getLocalizedConfig } from "@lib/contentUtils.ts";
+
+const locale = localeSchema.parse(Astro.currentLocale);
+---
+
+<Section class="mt-8">
+  <div class="contact-form-card">
+    <h2 class="h3 mt-2">Skriv ett meddelande</h2>
+
+    <form
+      action={localePath(Slug.FORM_SUCCESS, locale)}
+      class="contact-form"
+      data-netlify="true"
+      method="POST"
+      name="Kontakta oss"
+      netlify-honeypot="bot-field"
+    >
+      <p class="hidden">
+        <label>
+          Gör inte något här: <input name="bot-field" />
+        </label>
+      </p>
+
+      <div class="contact-form__grid">
+        <p>
+          <label>
+            Namn
+            <br />
+            <input name="name" required type="text" />
+          </label>
+        </p>
+
+        <p>
+          <label>
+            E-post
+            <br />
+            <input name="email" required type="email" />
+          </label>
+        </p>
+
+        <p>
+          <label>
+            Telefonnummer (valfritt)
+            <br />
+            <input name="phone" type="tel" />
+          </label>
+        </p>
+
+        <p class="contact-form__message">
+          <label>
+            Meddelande
+            <br />
+            <textarea
+              name="message"
+              placeholder="Berätta kort vad du undrar över eller vad du är ute efter."
+              required></textarea>
+          </label>
+        </p>
+      </div>
+
+      <p class="contact-form__submit">
+        <button class="btn btn--primary" type="submit">Skicka meddelande</button
+        >
+      </p>
+    </form>
+  </div>
+</Section>
+<style>
+  @import "../../styles/breakpoints.css";
+
+  .contact-form-card {
+    background-color: var(--color-surface-light);
+    border-radius: var(--border-radius-xl);
+    padding: var(--space-6) var(--space-8);
+    max-width: 56rem;
+  }
+
+  @media (--breakpoint-md) {
+    .contact-form-card {
+      padding: var(--space-8) var(--space-12);
+    }
+  }
+
+  .contact-form {
+    margin-top: var(--space-8);
+  }
+
+  .contact-form__grid {
+    display: grid;
+    gap: var(--space-8);
+  }
+
+  @media (--breakpoint-lg) {
+    .contact-form__grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  .contact-form__message {
+    grid-column: 1 / -1;
+  }
+
+  .contact-form__submit {
+    margin-top: var(--space-4);
+    text-align: right;
+  }
+</style>
