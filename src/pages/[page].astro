@@ -1,11 +1,8 @@
 ---
 import { getCollection } from "astro:content";
-import { StructuredText } from "@datocms/astro";
+import StructuredText from "@features/dato/StructuredText.astro";
 import Layout from "../layouts/Layout.astro";
 import Section from "@components/Section.astro";
-import ButtonBlock from "@features/dato/ButtonBlock.astro";
-import PageInternalLink from "@features/dato/PageInternalLink.astro";
-import ContactDetailInline from "@features/dato/ContactDetailInline.astro";
 import ContactFormSection from "@features/forms/ContactFormSection.astro";
 
 export async function getStaticPaths() {
@@ -28,20 +25,7 @@ const { post } = Astro.props;
     <p class="intro">{post.data.excerpt}</p>
   </Section>
   <div class="collection-entry p-8">
-    {
-      post.data.body && (
-        <StructuredText
-          data={post.data.body}
-          blockComponents={{ ButtonRecord: ButtonBlock }}
-          inlineBlockComponents={{ ContactDetailRecord: ContactDetailInline }}
-          linkToRecordComponents={{
-            CourseRecord: PageInternalLink,
-            PageRecord: PageInternalLink,
-            TripRecord: PageInternalLink,
-          }}
-        />
-      )
-    }
+    {post.data.body && <StructuredText data={post.data.body} />}
   </div>
   {post.data.displayContactForm && <ContactFormSection />}
 </Layout>

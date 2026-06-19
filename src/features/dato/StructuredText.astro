@@ -1,0 +1,24 @@
+---
+import { StructuredText as LibStructuredText } from "@datocms/astro";
+import type { CdaStructuredTextValue } from "@datocms/astro/StructuredText";
+import ButtonBlock from "@features/dato/ButtonBlock.astro";
+import PageInternalLink from "@features/dato/PageInternalLink.astro";
+import ContactDetailInline from "@features/dato/ContactDetailInline.astro";
+
+export interface Props {
+  data: CdaStructuredTextValue;
+}
+
+const { data } = Astro.props;
+---
+
+<LibStructuredText
+  data={data}
+  blockComponents={{ ButtonRecord: ButtonBlock }}
+  inlineBlockComponents={{ ContactDetailRecord: ContactDetailInline }}
+  linkToRecordComponents={{
+    CourseRecord: PageInternalLink,
+    PageRecord: PageInternalLink,
+    TripRecord: PageInternalLink,
+  }}
+/>
