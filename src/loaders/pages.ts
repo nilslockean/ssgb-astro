@@ -12,7 +12,7 @@ export const pageSchema = z.object({
   slug: z.string(),
   excerpt: z.string(),
   body: z.custom<CdaStructuredTextValue>().optional(),
-  displayContactForm: z.boolean(),
+  form: z.string().optional(),
 });
 
 const datoPageSchema = z.object({
@@ -21,7 +21,7 @@ const datoPageSchema = z.object({
   excerpt: z.string(),
   slug: z.string().nullable(),
   structuredText: z.custom<CdaStructuredTextValue>().nullable(),
-  displayContactForm: z.boolean().nullable(),
+  form: z.object({ id: z.string() }).nullable(),
 });
 
 export function datoPagesLoader(): Loader {
@@ -53,7 +53,7 @@ export function datoPagesLoader(): Loader {
               slug: page.slug,
               excerpt: page.excerpt,
               body: page.structuredText ?? undefined,
-              displayContactForm: page.displayContactForm ?? false,
+              form: page.form ? `${locale}-${page.form.id}` : undefined,
             },
           });
 

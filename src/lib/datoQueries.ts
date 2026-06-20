@@ -43,7 +43,7 @@ export const PAGES_QUERY = `
       title(locale: $locale)
       excerpt(locale: $locale)
       slug(locale: $locale)
-      displayContactForm
+      form { id }
       structuredText(locale: $locale) {
         value
         blocks {
@@ -130,6 +130,69 @@ export const TRIPS_QUERY = `
       prerequisites(locale: $locale)
       norm { title url }
       position
+    }
+  }
+`;
+
+export const FORMS_QUERY = `
+  query AllForms($locale: SiteLocale!) {
+    allForms(locale: $locale) {
+      id
+      title(locale: $locale)
+      description(locale: $locale)
+      content(locale: $locale) {
+        ... on FormInputTextRecord {
+          id
+          __typename
+          fieldType
+          label
+          name
+          required
+        }
+        ... on FormInputTextareaRecord {
+          id
+          __typename
+          label
+          name
+          required
+          placeholder
+        }
+        ... on FormInputDateRecord {
+          id
+          __typename
+          label
+          name
+          required
+        }
+        ... on FormInputNumberRecord {
+          id
+          __typename
+          label
+          name
+          required
+          min
+          max
+        }
+        ... on FormInputOptionRecord {
+          id
+          __typename
+          label
+          name
+          required
+          options {
+            ... on FormInputOptionValueRecord {
+              id
+              __typename
+              label
+              name
+            }
+          }
+          defaultValue
+          readonly
+        }
+      }
+      cta(locale: $locale)
+      action(locale: $locale)
     }
   }
 `;
