@@ -192,7 +192,11 @@ export const FORMS_QUERY = `
         }
       }
       cta(locale: $locale)
-      action(locale: $locale)
+      redirect {
+        ... on PageRecord {
+          slug(locale: $locale)
+        }
+      }
     }
   }
 `;

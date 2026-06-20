@@ -75,7 +75,7 @@ export const formSchema = z.object({
   content: z.array(formBlockSchema).default([]),
   cta: z.string(),
   language: localeSchema.default("sv"),
-  action: z.string(),
+  redirect: z.string().nullable(),
 });
 
 const datoFormSchema = z.object({
@@ -84,7 +84,7 @@ const datoFormSchema = z.object({
   description: z.string().nullable(),
   content: z.array(formBlockSchema).default([]),
   cta: z.string(),
-  action: z.string(),
+  redirect: z.object({ slug: z.string() }).nullable(),
 });
 
 export function datoFormsLoader(): Loader {
@@ -112,7 +112,7 @@ export function datoFormsLoader(): Loader {
               content: form.content,
               cta: form.cta,
               language: locale,
-              action: form.action,
+              redirect: form.redirect?.slug ?? null,
             },
           });
 

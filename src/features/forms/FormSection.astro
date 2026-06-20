@@ -3,6 +3,8 @@ import Section from "@components/Section.astro";
 import type { CollectionEntry } from "astro:content";
 import FormInputText from "./FormInputText.astro";
 import FormInputTextarea from "./FormInputTextarea.astro";
+import { composePath } from "@lib/routeUtils";
+import { localeSchema } from "../../schemas/locale";
 
 interface Props {
   form: CollectionEntry<"forms">;
@@ -10,6 +12,10 @@ interface Props {
 const {
   form: { data },
 } = Astro.props;
+const currentLocale = localeSchema.parse(Astro.currentLocale);
+const action = data.redirect
+  ? composePath(data.redirect, currentLocale)
+  : data.action;
 ---
 
 <Section class="mt-8">
@@ -23,7 +29,7 @@ const {
     }
 
     <form
-      action={data.action}
+      action={action}
       class="contact-form"
       data-netlify="true"
       method="POST"

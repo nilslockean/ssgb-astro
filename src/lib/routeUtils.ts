@@ -109,29 +109,60 @@ export const Paths: {
   },
 };
 
-// Returns the path segment and the locale that actually has it (falls back to "sv").
+// Returns the path segment and the locale that actually has it (falls back to defaultLocale).
 export function resolveSlug(
   slug: Slug,
-  locale: Locale = "sv",
+  locale: Locale = defaultLocale,
 ): { path: string; locale: Locale } {
-  const localePath = locale !== "sv" ? Paths[locale]?.[slug] : undefined;
+  const localePath =
+    locale !== defaultLocale ? Paths[locale]?.[slug] : undefined;
   if (localePath !== undefined) return { path: localePath, locale };
-  return { path: Paths.sv[slug], locale: "sv" };
+  return { path: Paths.sv[slug], locale: defaultLocale };
 }
 
 // Returns just the path segment. Use resolveSlug when you also need the effective locale.
-export function getPath(slug: Slug, locale: Locale = "sv"): string {
+export function getPath(slug: Slug, locale: Locale = defaultLocale): string {
   return resolveSlug(slug, locale).path;
+}
+
+export function composePath(slug: string, locale = defaultLocale, parent = "") {
+  const localePrefixMap: Record<Locale, string> = {
+    sv: "/",
+    da: "/da/",
+    en: "/en/",
+  };
+  let path = localePrefixMap[locale];
+
+  if (!slug || slug === "/") return path;
+
+  if (parent) {
+    const parts = parent.split("/").filter((p) => p.trim());
+    path += parts.join("/");
+    path += "/";
+  }
+
+  const slugParts = slug.split("/").filter((p) => p.trim());
+  if (slugParts.length > 1) {
+    throw new Error("Slugs can't be nested. Use parent parameter instead.");
+  }
+
+  path += slugParts[0];
+  path += "/";
+
+  return path;
 }
 
 const LOCALE_PREFIX: Record<Locale, string> = { sv: "", da: "/da", en: "/en" };
 
-export function courseUrl(slug: string, locale: Locale = "sv"): string {
+export function courseUrl(
+  slug: string,
+  locale: Locale = defaultLocale,
+): string {
   const base = Paths[locale]?.[Slug.COURSES] ?? Paths.sv[Slug.COURSES];
-  return `${LOCALE_PREFIX[locale]}${base}/${slug}`;
+  return `${LOCALE_PREFIX[locale]}${base}/${slug}/`;
 }
 
-export function tripUrl(slug: string, locale: Locale = "sv"): string {
+export function tripUrl(slug: string, locale: Locale = defaultLocale): string {
   const base = Paths[locale]?.[Slug.TRIPS] ?? Paths.sv[Slug.TRIPS];
-  return `${LOCALE_PREFIX[locale]}${base}/${slug}`;
+  return `${LOCALE_PREFIX[locale]}${base}/${slug}/`;
 }
