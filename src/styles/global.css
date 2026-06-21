@@ -280,6 +280,7 @@
   }
 
   form input,
+  form select,
   form textarea {
     color: var(--color-muted);
     border: 0;
@@ -297,6 +298,10 @@
 
   form textarea {
     min-height: 120px;
+  }
+
+  form select option {
+    color: initial;
   }
 
   ol {
