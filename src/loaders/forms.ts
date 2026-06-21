@@ -57,6 +57,7 @@ const formInputOptionSchema = z.object({
   options: z.array(formInputOptionValueSchema).default([]),
   defaultValue: z.string().nullable(),
   readonly: z.boolean().nullable(),
+  placeholder: z.string().nullable(),
 });
 
 export const formBlockSchema = z.discriminatedUnion("__typename", [
@@ -98,7 +99,6 @@ export function datoFormsLoader(): Loader {
           FORMS_QUERY,
           z.object({ allForms: z.array(datoFormSchema) }),
           { locale },
-          true,
         );
 
         logger.info(`Loaded ${allForms.length} ${locale} forms from DatoCMS`);

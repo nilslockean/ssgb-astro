@@ -1,0 +1,19 @@
+---
+export interface Props {
+  id: string;
+  label: string;
+  name: string;
+  min?: number;
+  max?: number;
+  required: boolean | null;
+}
+
+const { id, label, name, min, max, required } = Astro.props;
+const type = "number";
+---
+
+<label>
+  {label}{required && "*"}
+  <br />
+  <input autocomplete="on" {id} {name} {required} {type} {min} {max} />
+</label>

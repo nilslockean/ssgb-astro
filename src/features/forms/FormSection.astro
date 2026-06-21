@@ -3,24 +3,45 @@ import Section from "@components/Section.astro";
 import type { CollectionEntry } from "astro:content";
 import FormInputText from "./FormInputText.astro";
 import FormInputTextarea from "./FormInputTextarea.astro";
+import FormInputDate from "./FormInputDate.astro";
+import FormInputNumber from "./FormInputNumber.astro";
+import FormOptions from "./FormOptions.astro";
 import { composePath } from "@lib/routeUtils";
 import { localeSchema } from "../../schemas/locale";
+import { z } from "astro/zod";
+
+const jsonSchema = z.json();
+type JSONType = z.infer<typeof jsonSchema>;
 
 interface Props {
   form: CollectionEntry<"forms">;
+  id?: string;
+  title?: string;
+  preselectedFields?: JSONType | null;
 }
 const {
   form: { data },
+  id,
+  title = data.title,
+  preselectedFields,
 } = Astro.props;
 const currentLocale = localeSchema.parse(Astro.currentLocale);
-const action = data.redirect
-  ? composePath(data.redirect, currentLocale)
-  : data.action;
+const action = composePath(data.redirect || "", currentLocale);
+function getDefaultValue(fieldName: string): string | null {
+  const preselectedFieldsSchema = z.record(z.string(), z.string());
+  const result = preselectedFieldsSchema.safeParse(preselectedFields);
+  if (!result.success) {
+    return null;
+  }
+
+  const defaultValues = result.data;
+  return defaultValues[fieldName] ?? null;
+}
 ---
 
-<Section class="mt-8">
+<Section {id} class="mt-8">
   <div class="contact-form-card">
-    <h2 class="h3 mt-2">{data.title}</h2>
+    <h2 class="mt-2">{title}</h2>
 
     {
       data.description && (
@@ -33,7 +54,7 @@ const action = data.redirect
       class="contact-form"
       data-netlify="true"
       method="POST"
-      name={data.title}
+      name={title}
       netlify-honeypot="bot-field"
     >
       <p class="hidden">
@@ -45,6 +66,7 @@ const action = data.redirect
       <div class="contact-form__grid">
         {
           data.content.map((field) => {
+            const defaultValue = getDefaultValue(field.name);
             return (
               <p
                 class:list={[
@@ -59,6 +81,15 @@ const action = data.redirect
                 )}
                 {field.__typename === "FormInputTextRecord" && (
                   <FormInputText {...field} />
+                )}
+                {field.__typename === "FormInputDateRecord" && (
+                  <FormInputDate {...field} />
+                )}
+                {field.__typename === "FormInputNumberRecord" && (
+                  <FormInputNumber {...field} />
+                )}
+                {field.__typename === "FormInputOptionRecord" && (
+                  <FormOptions {...field} {defaultValue} />
                 )}
               </p>
             );

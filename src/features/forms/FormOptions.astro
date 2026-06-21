@@ -1,0 +1,38 @@
+---
+export interface Props {
+  id: string;
+  label: string;
+  name: string;
+  required: boolean | null;
+  defaultValue: string | null;
+  readonly?: boolean;
+  options: Array<{ id: string; label: string; name: string }>;
+  placeholder?: string | null;
+}
+
+const {
+  id,
+  label,
+  name,
+  required,
+  defaultValue,
+  readonly,
+  placeholder,
+  options,
+} = Astro.props;
+---
+
+<label {id}>
+  {label}{required && "*"}
+  <br />
+  <select id={name} disabled={readonly}>
+    <option value="">{placeholder || label}</option>
+    {
+      options.map((option) => (
+        <option value={option.name} selected={option.name === defaultValue}>
+          {option.label}
+        </option>
+      ))
+    }
+  </select>
+</label>

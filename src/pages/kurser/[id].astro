@@ -8,9 +8,12 @@ import Hero, { type HeroButton } from "@components/Hero.astro";
 import Layout from "../../layouts/Layout.astro";
 import PageHead from "@components/PageHead.astro";
 import BookingForm from "@features/forms/BookingForm.astro";
+import FormSection from "@features/forms/FormSection.astro";
 import PrivateBookingPricingList from "@features/pricing/PrivateBookingPricingList.astro";
 import Link from "@components/Link.astro";
 import Section from "@components/Section.astro";
+import { getEntry } from "astro:content";
+import { defaultLocale, type Locale } from "@lib/routeUtils";
 
 export async function getStaticPaths() {
   const posts = await getCollection(
@@ -23,13 +26,39 @@ export async function getStaticPaths() {
   }));
 }
 
-const { post } = Astro.props;
-const { norm } = post.data;
-const h1 = norm?.title ?? post.data.title;
-const cta = `Boka ${post.data.title.toLowerCase()}`;
-const numDays = post.data.numDays.join("-");
-const numDaysSuffix = numDays === "1" ? "dag" : "dagar";
-const numDaysDesc = `${numDays} ${numDaysSuffix}`;
+function composeNumDaysDesc(input: number[], locale = defaultLocale) {
+  const suffixMap: Record<Locale, { one: string; many: string }> = {
+    sv: { one: "dag", many: "dagar" },
+    da: { one: "dag", many: "dage" },
+    en: { one: "day", many: "days" },
+  };
+  const numDays = input.join("-");
+  const numDaysSuffix =
+    numDays === "1" ? suffixMap[locale].one : suffixMap[locale].many;
+  return `${numDays} ${numDaysSuffix}`;
+}
+
+const {
+  post: {
+    data: {
+      excerpt,
+      title,
+      heroImage,
+      body,
+      numDays,
+      norm,
+      prerequisites,
+      minAge,
+      maxParticipants,
+      form,
+      preselectedFields,
+    },
+  },
+} = Astro.props;
+const formEntry = form && (await getEntry("forms", form));
+const h1 = norm?.title ?? title;
+const cta = `Boka ${title.toLowerCase()}`;
+const numDaysDesc = composeNumDaysDesc(numDays);
 const heroButtons: HeroButton[] = [{ label: cta, href: "#boka" }];
 if (norm?.url) {
   heroButtons.push({
@@ -40,21 +69,17 @@ if (norm?.url) {
 }
 ---
 
-<Layout
-  fientaEmbed
-  metaDescription={post.data.excerpt}
-  metaTitle={post.data.title}
->
+<Layout fientaEmbed metaDescription={excerpt} metaTitle={title}>
   {
-    post.data.heroImage ? (
+    heroImage ? (
       <Hero
         buttons={heroButtons}
-        content={post.data.excerpt}
-        image={post.data.heroImage}
+        content={excerpt}
+        image={heroImage}
         title={h1}
       />
     ) : (
-      <PageHead content={post.data.excerpt} title={h1}>
+      <PageHead content={excerpt} title={h1}>
         <ButtonGroup slot="buttons">
           {heroButtons.map(({ href, label, target }, i) => (
             <ButtonLink
@@ -71,11 +96,7 @@ if (norm?.url) {
   }
   <Section>
     <div class="collection-entry">
-      {
-        post.data.body && (
-          <StructuredText data={post.data.body} />
-        )
-      }
+      {body && <StructuredText data={body} />}
       <p>
         <strong>Tidsåtgång:</strong>
         {numDaysDesc}.
@@ -85,18 +106,18 @@ if (norm?.url) {
 
   <Section>
     {
-      post.data.prerequisites && (
+      prerequisites && (
         <Accordion title="Förkunskapskrav">
-          <div set:html={post.data.prerequisites} />
+          <div set:html={prerequisites} />
         </Accordion>
       )
     }
     {
-      post.data.minAge !== null && (
+      minAge !== null && (
         <Accordion title="Åldersgräns">
           <p>
             <strong>
-              Lägsta ålder för att delta på kursen är {post.data.minAge} år.
+              Lägsta ålder för att delta på kursen är {minAge} år.
             </strong>
             Minderåriga endast i målsmans sällskap.
           </p>
@@ -125,17 +146,11 @@ if (norm?.url) {
       <PrivateBookingPricingList class="mt-4" />
     </Accordion>
   </Section>
-  <Section class="pb-16" id="boka">
-    <div class="booking-card">
-      <h2 class="mt-0">{cta}</h2>
-      <div class="max-w-prose">
-        <p class="text-lg">
-          Du föreslår ett datum, så återkommer vi med bekräftelse.
-        </p>
-      </div>
-      <BookingForm maxParticipants={post.data.maxParticipants} name={cta} />
-    </div>
-  </Section>
+  {
+    formEntry && (
+      <FormSection form={formEntry} id="boka" title={cta} {preselectedFields} />
+    )
+  }
 </Layout>
 
 <style>

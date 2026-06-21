@@ -100,6 +100,8 @@ export const COURSES_QUERY = `
       maxParticipants
       minAge
       norm { title url }
+      form { id }
+      preselectedFields(locale: $locale)
     }
   }
 `;
@@ -189,6 +191,7 @@ export const FORMS_QUERY = `
           }
           defaultValue
           readonly
+          placeholder
         }
       }
       cta(locale: $locale)

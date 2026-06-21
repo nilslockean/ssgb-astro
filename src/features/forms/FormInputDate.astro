@@ -1,0 +1,17 @@
+---
+export interface Props {
+  id: string;
+  label: string;
+  name: string;
+  required: boolean | null;
+}
+
+const { id, label, name, required } = Astro.props;
+const type = "date";
+---
+
+<label>
+  {label}{required && "*"}
+  <br />
+  <input autocomplete="on" {id} {name} {required} {type} />
+</label>

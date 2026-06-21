@@ -21,6 +21,8 @@ export const courseSchema = z.object({
   minAge: z.number().nullable().default(null),
   norm: datoNormSchema.optional(),
   body: z.custom<CdaStructuredTextValue>().optional(),
+  form: z.string().optional(),
+  preselectedFields: z.json().optional(),
 });
 
 const datoCourseSchema = z.object({
@@ -49,6 +51,8 @@ const datoCourseSchema = z.object({
       url: z.string().nullable(),
     })
     .nullable(),
+  form: z.object({ id: z.string() }).nullable(),
+  preselectedFields: z.json().nullable(),
 });
 
 export function datoCoursesLoader(): Loader {
@@ -103,6 +107,8 @@ export function datoCoursesLoader(): Loader {
               minAge: course.minAge ?? null,
               norm: course.norm ?? undefined,
               body: course.content ?? undefined,
+              form: course.form ? `${locale}-${course.form.id}` : undefined,
+              preselectedFields: course.preselectedFields,
             },
           });
 
