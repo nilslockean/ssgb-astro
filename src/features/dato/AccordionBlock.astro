@@ -1,0 +1,24 @@
+---
+import type { CdaStructuredTextValue } from "@datocms/astro/StructuredText";
+import StructuredText from "./StructuredText.astro";
+import Accordion from "@components/Accordion.astro";
+
+interface Props {
+  block: {
+    details: Array<{
+      summary: string;
+      structuredText: CdaStructuredTextValue;
+    }>;
+  };
+}
+
+const { block } = Astro.props;
+---
+
+{
+  block.details.map((detail) => (
+    <Accordion title={detail.summary}>
+      <StructuredText data={detail.structuredText} />
+    </Accordion>
+  ))
+}

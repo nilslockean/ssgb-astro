@@ -1,5 +1,5 @@
 ---
-import { courseUrl, type Locale } from "@lib/routeUtils";
+import { courseUrl, tripUrl, composePath, type Locale } from "@lib/routeUtils";
 
 interface Props {
   record: { __typename: string; id: string; slug: string };
@@ -9,18 +9,16 @@ interface Props {
 const { record, attrs } = Astro.props;
 const locale = (Astro.currentLocale ?? "sv") as Locale;
 
-const LOCALE_PREFIX: Record<Locale, string> = { sv: "", da: "/da", en: "/en" };
-
 let href: string;
 switch (record.__typename) {
   case "CourseRecord":
     href = courseUrl(record.slug, locale);
     break;
   case "TripRecord":
-    href = `/resor/${record.slug}`;
+    href = tripUrl(record.slug, locale);
     break;
   default:
-    href = `${LOCALE_PREFIX[locale]}/${record.slug}`;
+    href = composePath(record.slug, locale);
 }
 ---
 

@@ -152,17 +152,26 @@ export function composePath(slug: string, locale = defaultLocale, parent = "") {
   return path;
 }
 
-const LOCALE_PREFIX: Record<Locale, string> = { sv: "", da: "/da", en: "/en" };
+const COURSES_BASE: Record<Locale, string> = {
+  sv: "kurser",
+  en: "courses",
+  da: "kurser",
+};
+const TRIPS_BASE: Record<Locale, string> = {
+  sv: "resor",
+  en: "trips",
+  da: "rejse",
+};
 
 export function courseUrl(
   slug: string,
   locale: Locale = defaultLocale,
 ): string {
-  const base = Paths[locale]?.[Slug.COURSES] ?? Paths.sv[Slug.COURSES];
-  return `${LOCALE_PREFIX[locale]}${base}/${slug}/`;
+  const parent = COURSES_BASE[locale];
+  return composePath(slug, locale, parent);
 }
 
 export function tripUrl(slug: string, locale: Locale = defaultLocale): string {
-  const base = Paths[locale]?.[Slug.TRIPS] ?? Paths.sv[Slug.TRIPS];
-  return `${LOCALE_PREFIX[locale]}${base}/${slug}/`;
+  const parent = TRIPS_BASE[locale];
+  return composePath(slug, locale, parent);
 }

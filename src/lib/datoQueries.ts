@@ -70,6 +70,44 @@ export const PAGES_QUERY = `
             filter
             eyebrow
           }
+          ... on AccordionRecord {
+            id
+            __typename
+            details {
+              summary
+              structuredText {
+                value
+                blocks {
+                  ... on ButtonGroupRecord {
+                    id
+                    __typename
+                    buttons {
+                      variant
+                      label
+                      url
+                    }
+                  }
+                }
+                links {
+                  ... on CourseRecord {
+                    id
+                    __typename
+                    slug
+                  }
+                  ... on PageRecord {
+                    id
+                    __typename
+                    slug(locale: $locale)
+                  }
+                  ... on TripRecord {
+                    id
+                    __typename
+                    slug
+                  }
+                }
+              }
+            }
+          }
         }
         inlineBlocks {
           ... on ContactDetailRecord {

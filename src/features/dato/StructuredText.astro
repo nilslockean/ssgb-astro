@@ -7,6 +7,7 @@ import CourseCollectionBlock from "@features/dato/CourseCollectionBlock.astro";
 import PageInternalLink from "@features/dato/PageInternalLink.astro";
 import ContactDetailInline from "@features/dato/ContactDetailInline.astro";
 import PriceDetailInline from "@features/dato/PriceDetailInline.astro";
+import AccordionBlock from "@features/dato/AccordionBlock.astro";
 
 export interface Props {
   data: CdaStructuredTextValue;
@@ -21,6 +22,7 @@ const { data } = Astro.props;
     ButtonRecord: ButtonBlock,
     ButtonGroupRecord: ButtonGroupBlock,
     CourseCollectionRecord: CourseCollectionBlock,
+    AccordionRecord: AccordionBlock,
   }}
   inlineBlockComponents={{
     ContactDetailRecord: ContactDetailInline,
