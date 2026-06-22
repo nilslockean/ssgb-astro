@@ -11,10 +11,7 @@ const currentLocale = localeSchema.parse(Astro.currentLocale);
   {
     languages.map((lang) => (
       <li>
-        <a
-          href={composePath("", currentLocale)}
-          data-current={lang === currentLocale}
-        >
+        <a href={composePath("", lang)} data-current={lang === currentLocale}>
           <LocaleFlag locale={lang} size={24} />
           <span class="sr-only">{LOCALES[lang]}</span>
         </a>

@@ -13,7 +13,7 @@ const currentLocale = localeSchema.parse(Astro.currentLocale);
       <li>
         <a
           aria-current={lang === currentLocale ? "page" : undefined}
-          href={composePath("", currentLocale)}
+          href={composePath("", lang)}
           hreflang={lang}
         >
           <LocaleFlag locale={lang} size={22} />
