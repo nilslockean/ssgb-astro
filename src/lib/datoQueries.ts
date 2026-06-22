@@ -70,6 +70,10 @@ export const PAGES_QUERY = `
             filter
             eyebrow
           }
+          ... on TeamCollectionRecord {
+            id
+            __typename
+          }
           ... on AccordionRecord {
             id
             __typename

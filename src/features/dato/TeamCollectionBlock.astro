@@ -1,0 +1,19 @@
+---
+import Team from "@components/Team.astro";
+import { getCollection } from "astro:content";
+import { localeSchema } from "../../schemas/locale";
+
+interface Props {
+  block: {};
+}
+
+const { block } = Astro.props;
+const locale = localeSchema.parse(Astro.currentLocale);
+
+const teamMembers = await getCollection(
+  "team",
+  ({ data }) => data.language === locale,
+);
+---
+
+<Team entries={teamMembers} />

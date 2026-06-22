@@ -10,12 +10,12 @@ interface Props extends HTMLAttributes<"ul"> {
 const { entries, class: className, ...rest } = Astro.props;
 ---
 
-<ul
+<div
   class:list={["team grid lg:grid-cols-2 xl:grid-cols-3", className]}
   {...rest}
 >
   {entries.map((person) => <TeamMember {person} />)}
-</ul>
+</div>
 
 <style>
   .team {
