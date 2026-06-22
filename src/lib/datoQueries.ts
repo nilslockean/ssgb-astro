@@ -9,8 +9,8 @@ const NAV_MENU_ITEMS = `
         }
         ... on CourseRecord {
           __typename
-          slug
-          title
+          slug(locale: $locale)
+          title(locale: $locale)
         }
         ... on TripRecord {
           __typename
@@ -19,7 +19,6 @@ const NAV_MENU_ITEMS = `
         }
       }
       label
-      url
       newTab
       subMenu {
         items(locale: $locale) {
@@ -32,8 +31,8 @@ const NAV_MENU_ITEMS = `
               }
               ... on CourseRecord {
                 __typename
-                slug
-                title
+                slug(locale: $locale)
+                title(locale: $locale)
               }
               ... on TripRecord {
                 __typename
@@ -42,7 +41,6 @@ const NAV_MENU_ITEMS = `
               }
             }
             label
-            url
           }
         }
       }

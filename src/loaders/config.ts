@@ -41,8 +41,7 @@ const datoLinkSchema = z.object({
 
 const datoMenuItemSchema = z.object({
   label: z.string().nullable(),
-  url: z.string().nullable(),
-  link: datoLinkSchema.nullable().optional(),
+  link: datoLinkSchema,
   newTab: z.boolean().default(false),
   get subMenu() {
     return z
@@ -152,8 +151,8 @@ function linkPath(
 }
 
 function toItem(item: DatoMenuItem, locale = defaultLocale): NavItem {
-  const label = item.label || item.link?.title || "Ingen etikett";
-  const path = item.link ? linkPath(item.link, locale) : (item.url ?? "");
+  const label = item.label || item.link.title;
+  const path = linkPath(item.link, locale);
   return {
     link: { label, path, locale, newTab: item.newTab },
     subMenu: item.subMenu?.items.length
