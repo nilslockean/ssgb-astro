@@ -15,10 +15,18 @@ interface Props {
 const { block } = Astro.props;
 ---
 
-{
-  block.details.map((detail) => (
-    <Accordion title={detail.summary}>
-      <StructuredText data={detail.structuredText} />
-    </Accordion>
-  ))
-}
+<div>
+  {
+    block.details.map((detail) => (
+      <Accordion title={detail.summary}>
+        <StructuredText data={detail.structuredText} />
+      </Accordion>
+    ))
+  }
+</div>
+
+<style>
+  div {
+    padding-top: var(--space-8);
+  }
+</style>

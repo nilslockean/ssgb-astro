@@ -69,6 +69,58 @@ export const SITE_CONFIG_QUERY = `
   }
 `;
 
+const ACCORDION_RECORD_BLOCK = `
+  ... on AccordionRecord {
+    id
+    __typename
+    details {
+      summary
+      structuredText {
+        value
+        blocks {
+          ... on ButtonGroupRecord {
+            id
+            __typename
+            buttons {
+              variant
+              label
+              url
+            }
+          }
+        }
+        links {
+          ... on CourseRecord {
+            id
+            __typename
+            slug
+          }
+          ... on PageRecord {
+            id
+            __typename
+            slug(locale: $locale)
+          }
+          ... on TripRecord {
+            id
+            __typename
+            slug
+          }
+        }
+      }
+    }
+  }
+`;
+const BUTTON_GROUP_RECORD_BLOCK = `
+  ... on ButtonGroupRecord {
+    id
+    __typename
+    buttons {
+      variant
+      label
+      url
+    }
+  }
+`;
+
 export const PAGES_QUERY = `
   query AllPages($locale: SiteLocale!) {
     allPages(locale: $locale) {
@@ -88,15 +140,7 @@ export const PAGES_QUERY = `
             label
             url
           }
-          ... on ButtonGroupRecord {
-            id
-            __typename
-            buttons {
-              variant
-              label
-              url
-            }
-          }
+          ${BUTTON_GROUP_RECORD_BLOCK}
           ... on CourseCollectionRecord {
             id
             __typename
@@ -112,44 +156,7 @@ export const PAGES_QUERY = `
             id
             __typename
           }
-          ... on AccordionRecord {
-            id
-            __typename
-            details {
-              summary
-              structuredText {
-                value
-                blocks {
-                  ... on ButtonGroupRecord {
-                    id
-                    __typename
-                    buttons {
-                      variant
-                      label
-                      url
-                    }
-                  }
-                }
-                links {
-                  ... on CourseRecord {
-                    id
-                    __typename
-                    slug
-                  }
-                  ... on PageRecord {
-                    id
-                    __typename
-                    slug(locale: $locale)
-                  }
-                  ... on TripRecord {
-                    id
-                    __typename
-                    slug
-                  }
-                }
-              }
-            }
-          }
+          ${ACCORDION_RECORD_BLOCK}
         }
         inlineBlocks {
           ... on ContactDetailRecord {
@@ -226,13 +233,12 @@ export const TRIPS_QUERY = `
             label
             url
           }
+          ${BUTTON_GROUP_RECORD_BLOCK}
+          ${ACCORDION_RECORD_BLOCK}
         }
         links
       }
       cta(locale: $locale)
-      price
-      prerequisites(locale: $locale)
-      norm { title url }
       position
     }
   }

@@ -1,19 +1,19 @@
 ---
 import { getCollection } from "astro:content";
-import { StructuredText } from "@datocms/astro";
-import Accordion from "@components/Accordion.astro";
-import ButtonBlock from "@features/dato/ButtonBlock.astro";
+import StructuredText from "@features/dato/StructuredText.astro";
 import ButtonGroup from "@components/ButtonGroup.astro";
 import ButtonLink from "@components/ButtonLink.astro";
 import Hero, { type HeroButton } from "@components/Hero.astro";
 import Layout from "../../layouts/Layout.astro";
 import PageHead from "@components/PageHead.astro";
-import BookingForm from "@features/forms/BookingForm.astro";
-import { formatPrice } from "@lib/stringUtils";
 import Section from "@components/Section.astro";
+import { composePath } from "@lib/routeUtils";
 
 export async function getStaticPaths() {
-  const posts = await getCollection("trips", ({ data }) => data.language === "sv");
+  const posts = await getCollection(
+    "trips",
+    ({ data }) => data.language === "sv",
+  );
   return posts.map((post) => ({
     params: { id: post.data.slug },
     props: { post },
@@ -21,14 +21,12 @@ export async function getStaticPaths() {
 }
 
 const { post } = Astro.props;
-const heroButtons: HeroButton[] = [{ label: post.data.cta, href: "#boka" }];
+const heroButtons: HeroButton[] = [
+  { label: post.data.cta, href: composePath("kontakt", "sv") },
+];
 ---
 
-<Layout
-  fientaEmbed
-  metaDescription={post.data.excerpt}
-  metaTitle={post.data.title}
->
+<Layout metaDescription={post.data.excerpt} metaTitle={post.data.title}>
   {
     post.data.heroImage ? (
       <Hero
@@ -38,10 +36,7 @@ const heroButtons: HeroButton[] = [{ label: post.data.cta, href: "#boka" }];
         title={post.data.title}
       />
     ) : (
-      <PageHead
-        content={post.data.excerpt}
-        title={post.data.title}
-      >
+      <PageHead content={post.data.excerpt} title={post.data.title}>
         <ButtonGroup slot="buttons">
           {heroButtons.map(({ href, label, target }, i) => (
             <ButtonLink
@@ -58,76 +53,7 @@ const heroButtons: HeroButton[] = [{ label: post.data.cta, href: "#boka" }];
   }
   <Section>
     <div class="collection-entry">
-      {
-        post.data.body && (
-          <StructuredText
-            data={post.data.body}
-            blockComponents={{ ButtonRecord: ButtonBlock }}
-          />
-        )
-      }
-    </div>
-  </Section>
-
-  <Section>
-    {
-      post.data.prerequisites && (
-        <Accordion title="Förkunskapskrav">
-          <p>{post.data.prerequisites}</p>
-        </Accordion>
-      )
-    }
-    <Accordion title="Pris">
-      <p>
-        {
-          post.data.price
-            ? `Kursavgiften är ${formatPrice([post.data.price])} inkl. moms för fem dagar.`
-            : "Kontakta oss för prisinformation."
-        }
-        Du ska ha med dig personlig utrustning och all annan nödvändig klätterutrustning.
-        Vi är alltid auktoriserade klätterinstruktörer av Svenska Klätterförbundet
-        och UIAA. Transporter och rekommenderad utrustning (utrustningslista) på vad
-        du bör ta med dig skickas ut vid anmälan.
-      </p>
-      <p>
-        Utöver kursavgiften tillkommer kostnader för flyg och kost/logi. Du
-        måste även vara medlem i en av Klätterförbundets klubbar och därmed ha
-        en klätterförsäkring.
-      </p>
-    </Accordion>
-  </Section>
-  <Section class="pb-16" id="boka">
-    <div class="booking-card">
-      <h2 class="mt-0">Så gör du</h2>
-      <div class="max-w-prose text-lg">
-        <ol>
-          <li>Boka resupplägget och kursen med Sydsvergies Guidebyrå och få den bekräftad via mail/telefon. Därefter får du en utrustningslista och utbildningsnormer skickade till dig.</li>
-          <li>Boka boende.</li>
-          <li>Boka flyg. (Vi rekommenderar att du bokar ditt flyg i god tid).</li>
-        </ol>
-      </div>
-      <BookingForm
-        maxParticipants={null}
-        includeDate={false}
-        name={post.data.cta}
-      />
+      {post.data.body && <StructuredText data={post.data.body} />}
     </div>
   </Section>
 </Layout>
-
-<style>
-  @import "../../styles/breakpoints.css";
-
-  .booking-card {
-    background-color: var(--color-surface-light);
-    border-radius: var(--border-radius-xl);
-    padding: var(--space-6) var(--space-8);
-    max-width: 56rem;
-  }
-
-  @media (--breakpoint-md) {
-    .booking-card {
-      padding: var(--space-8) var(--space-12);
-    }
-  }
-</style>

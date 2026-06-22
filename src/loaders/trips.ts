@@ -12,12 +12,9 @@ export const tripSchema = z.object({
   slug: z.string(),
   excerpt: z.string(),
   cta: z.string(),
-  price: z.number().optional(),
-  prerequisites: z.string().nullable().optional(),
   order: z.number().min(0),
   heroImage: datoImageSchema.optional(),
   body: z.custom<CdaStructuredTextValue>().optional(),
-  norm: datoNormSchema.optional(),
   language: localeSchema.default("sv"),
   hasPage: z.boolean(),
 });
@@ -37,14 +34,6 @@ const datoTripSchema = z.object({
     .nullable(),
   content: z.custom<CdaStructuredTextValue>().nullable(),
   cta: z.string(),
-  price: z.number().nullable(),
-  prerequisites: z.string().nullable(),
-  norm: z
-    .object({
-      title: z.string(),
-      url: z.string().nullable(),
-    })
-    .nullable(),
   position: z.number(),
 });
 
@@ -76,8 +65,6 @@ export function datoTripsLoader(): Loader {
               slug: trip.slug,
               excerpt: trip.excerpt,
               cta: trip.cta,
-              price: trip.price ?? undefined,
-              prerequisites: trip.prerequisites ?? undefined,
               order: trip.position,
               heroImage: trip.featuredImage
                 ? {
@@ -88,7 +75,6 @@ export function datoTripsLoader(): Loader {
                   }
                 : undefined,
               body: trip.content ?? undefined,
-              norm: trip.norm ?? undefined,
               language: locale,
               hasPage: true,
             },
