@@ -3,8 +3,14 @@ import { z } from "astro/zod";
 import { executeQuery } from "@lib/datocms";
 import { SITE_CONFIG_QUERY } from "@lib/datoQueries";
 import { localeSchema } from "../schemas/locale";
-import { type Locale, LOCALE_CODES } from "@lib/routeUtils";
-import type { CdaStructuredTextValue } from "@datocms/astro/StructuredText";
+import {
+  composePath,
+  courseUrl,
+  tripUrl,
+  type Locale,
+  LOCALE_CODES,
+  defaultLocale,
+} from "@lib/routeUtils";
 
 // ── Stored nav schemas ────────────────────────────────────────────────────────
 
@@ -20,21 +26,30 @@ const navItemSchema = z.object({
     .object({ nav: z.array(z.object({ link: navLinkSchema })) })
     .optional(),
 });
+type NavItem = z.infer<typeof navItemSchema>;
 
 export const navSchema = z.array(navItemSchema);
 
 // ── Raw DatoCMS API response schemas ─────────────────────────────────────────
 
-const datoMenuItemSchema = z.object({
-  label: z.string(),
-  url: z.string(),
-  subMenu: z
-    .object({
-      items: z.array(z.object({ label: z.string(), url: z.string() })),
-    })
-    .nullable()
-    .optional(),
+const datoLinkSchema = z.object({
+  __typename: z.enum(["PageRecord", "CourseRecord", "TripRecord"]),
+  slug: z.string(),
+  title: z.string(),
 });
+
+const datoMenuItemSchema = z.object({
+  label: z.string().nullable(),
+  url: z.string().nullable(),
+  link: datoLinkSchema.nullable().optional(),
+  get subMenu() {
+    return z
+      .object({ items: z.array(datoMenuItemSchema) })
+      .nullable()
+      .optional();
+  },
+});
+type DatoMenuItem = z.infer<typeof datoMenuItemSchema>;
 
 const datoNavSchema = z
   .object({ items: z.array(datoMenuItemSchema) })
@@ -120,20 +135,38 @@ export const localizedConfigSchema = z.object({
 
 // ── Loader ────────────────────────────────────────────────────────────────────
 
-function toNavItems(
-  items: z.infer<typeof datoMenuItemSchema>[],
+function linkPath(
+  link: z.infer<typeof datoLinkSchema>,
   locale: Locale,
-): z.infer<typeof navSchema> {
-  return items.map((item) => ({
-    link: { label: item.label, path: item.url, locale },
+): string {
+  switch (link.__typename) {
+    case "CourseRecord":
+      return courseUrl(link.slug, locale);
+    case "TripRecord":
+      return tripUrl(link.slug, locale);
+    default:
+      return composePath(link.slug, locale);
+  }
+}
+
+function toItem(item: DatoMenuItem, locale = defaultLocale): NavItem {
+  const label = item.label || item.link?.title || "Ingen etikett";
+  const path = item.link ? linkPath(item.link, locale) : (item.url ?? "");
+  return {
+    link: { label, path, locale },
     subMenu: item.subMenu?.items.length
       ? {
-          nav: item.subMenu.items.map((sub) => ({
-            link: { label: sub.label, path: sub.url, locale },
-          })),
+          nav: item.subMenu.items.map((item) => toItem(item, locale)),
         }
       : undefined,
-  }));
+  };
+}
+
+function toNavItems(
+  items: DatoMenuItem[],
+  locale: Locale,
+): z.infer<typeof navSchema> {
+  return items.map((item) => toItem(item, locale));
 }
 
 export function configLoader(): Loader {

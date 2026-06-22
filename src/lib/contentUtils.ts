@@ -18,14 +18,14 @@ export async function getCourses(
 }
 
 export async function getLocalizedConfig(
-  locale = "sv",
+  locale: string,
 ): Promise<LocalizedConfig> {
   const configEntry = await getEntry("config", "index");
   if (!configEntry) {
     throw new Error("No config entry with id index found");
   }
 
-  const currentLocale = localeSchema.catch("sv").parse(locale);
+  const currentLocale = localeSchema.catch(defaultLocale).parse(locale);
   const { data } = configEntry;
 
   return localizedConfigSchema.parse({

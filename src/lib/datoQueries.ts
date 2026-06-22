@@ -1,11 +1,45 @@
 const NAV_MENU_ITEMS = `
   items(locale: $locale) {
     ... on MenuItemRecord {
+      link {
+        ... on PageRecord {
+          __typename
+          slug(locale: $locale)
+          title(locale: $locale)
+        }
+        ... on CourseRecord {
+          __typename
+          slug
+          title
+        }
+        ... on TripRecord {
+          __typename
+          slug(locale: $locale)
+          title(locale: $locale)
+        }
+      }
       label
       url
       subMenu {
         items(locale: $locale) {
           ... on MenuItemRecord {
+            link {
+              ... on PageRecord {
+                __typename
+                slug(locale: $locale)
+                title(locale: $locale)
+              }
+              ... on CourseRecord {
+                __typename
+                slug
+                title
+              }
+              ... on TripRecord {
+                __typename
+                slug(locale: $locale)
+                title(locale: $locale)
+              }
+            }
             label
             url
           }
