@@ -17,6 +17,7 @@ import {
 const navLinkSchema = z.object({
   label: z.string(),
   path: z.string(),
+  newTab: z.boolean().default(false),
   locale: localeSchema,
 });
 
@@ -42,6 +43,7 @@ const datoMenuItemSchema = z.object({
   label: z.string().nullable(),
   url: z.string().nullable(),
   link: datoLinkSchema.nullable().optional(),
+  newTab: z.boolean().default(false),
   get subMenu() {
     return z
       .object({ items: z.array(datoMenuItemSchema) })
@@ -153,7 +155,7 @@ function toItem(item: DatoMenuItem, locale = defaultLocale): NavItem {
   const label = item.label || item.link?.title || "Ingen etikett";
   const path = item.link ? linkPath(item.link, locale) : (item.url ?? "");
   return {
-    link: { label, path, locale },
+    link: { label, path, locale, newTab: item.newTab },
     subMenu: item.subMenu?.items.length
       ? {
           nav: item.subMenu.items.map((item) => toItem(item, locale)),

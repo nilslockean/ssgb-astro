@@ -20,6 +20,7 @@ const NAV_MENU_ITEMS = `
       }
       label
       url
+      newTab
       subMenu {
         items(locale: $locale) {
           ... on MenuItemRecord {
@@ -102,6 +103,11 @@ export const PAGES_QUERY = `
             id
             __typename
             filter
+            eyebrow
+          }
+          ... on TripCollectionRecord {
+            id
+            __typename
             eyebrow
           }
           ... on TeamCollectionRecord {

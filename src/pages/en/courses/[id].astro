@@ -2,7 +2,8 @@
 import { getCollection } from "astro:content";
 import { StructuredText } from "@datocms/astro";
 import Accordion from "@components/Accordion.astro";
-import BookingForm from "@features/forms/BookingForm.astro";
+import FormSection from "@features/forms/FormSection.astro";
+import { getEntry } from "astro:content";
 import Hero, { type HeroButton } from "@components/Hero.astro";
 import Layout from "../../../layouts/Layout.astro";
 import Link from "@components/Link.astro";
@@ -20,7 +21,7 @@ export async function getStaticPaths() {
 }
 
 const { post } = Astro.props;
-const { norm } = post.data;
+const { norm, form, preselectedFields } = post.data;
 const h1 = post.data.title;
 const cta = `Book ${post.data.title.toLowerCase()}`;
 const numDays = post.data.numDays.join("-");
@@ -36,6 +37,7 @@ const heroButtons: HeroButton[] = [
     href: "/en/courses/",
   },
 ];
+const formEntry = form && (await getEntry("forms", form));
 ---
 
 <Layout
@@ -88,18 +90,11 @@ const heroButtons: HeroButton[] = [
       )
     }
   </Section>
-  <Section class="pb-16" id="booking">
-    <div class="booking-card">
-      <h2 class="mt-0">{cta}</h2>
-      <div class="max-w-prose">
-        <p class="text-lg">
-          Courses are booked privately for your group on dates that suit you,
-          subject to instructor availability and suitable weather.
-        </p>
-      </div>
-      <BookingForm maxParticipants={post.data.maxParticipants} name={cta} />
-    </div>
-  </Section>
+  {
+    formEntry && (
+      <FormSection form={formEntry} id="boka" title={cta} {preselectedFields} />
+    )
+  }
 </Layout>
 
 <style>

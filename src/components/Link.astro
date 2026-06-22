@@ -1,16 +1,15 @@
 ---
-import { type Slug } from "@lib/routeUtils";
-import { localePath } from "@lib/i18nUtils";
+import { composePath } from "@lib/routeUtils";
 import type { HTMLAttributes } from "astro/types";
 import { localeSchema } from "src/schemas/locale";
 
 export interface Props extends HTMLAttributes<"a"> {
-  slug?: Slug;
+  slug?: string;
 }
 
 const { slug, href, class: className, ...rest } = Astro.props;
 const locale = localeSchema.catch("sv").parse(Astro.currentLocale);
-const to = slug ? localePath(slug, locale) : href;
+const to = slug ? composePath(slug, locale) : href;
 ---
 
 <a class:list={["link", className]} href={to} {...rest}><slot /></a>

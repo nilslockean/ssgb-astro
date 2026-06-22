@@ -1,6 +1,6 @@
 ---
+import { composePath } from "@lib/routeUtils";
 import type { HTMLAttributes } from "astro/types";
-import { getRelativeLocaleUrl } from "astro:i18n";
 import { localeSchema } from "src/schemas/locale";
 
 const DEFAULT_HEIGHT = 64;
@@ -15,7 +15,7 @@ const width = Math.ceil((height / DEFAULT_HEIGHT) * DEFAULT_WIDTH);
 const currentLocale = localeSchema.parse(Astro.currentLocale);
 ---
 
-<a class="flex" href={getRelativeLocaleUrl(currentLocale, "/")}>
+<a class="flex" href={composePath("", currentLocale)}>
   <svg
     width={width}
     height={height}

@@ -9,7 +9,6 @@ import LanguageList from "@features/locale/LanguageList.astro";
 import MobileHeader from "@components/MobileHeader.astro";
 import NavLink from "@components/NavLink.astro";
 import AuthorizedInstructorBanner from "@features/banners/AuthorizedInstructorBanner.astro";
-import { getRelativeLocaleUrl } from "astro:i18n";
 import { ENABLE_POSTHOG, POSTHOG_PROJECT_API_KEY } from "astro:env/client";
 import Fienta from "@features/third-party/fienta.astro";
 import { Font } from "astro:assets";
@@ -82,10 +81,7 @@ const title = metaTitle
         <nav class="layout__sidebar-secondary-nav">
           {
             config.navigation.secondary.map((item) => (
-              <NavLink
-                href={getRelativeLocaleUrl(item.link.locale, item.link.path)}
-                small
-              >
+              <NavLink href={item.link.path} small>
                 {item.link.label}
               </NavLink>
             ))
@@ -111,14 +107,7 @@ const title = metaTitle
             <nav>
               {
                 config.navigation.primary.map((item) => (
-                  <NavLink
-                    href={getRelativeLocaleUrl(
-                      item.link.locale,
-                      item.link.path,
-                    )}
-                  >
-                    {item.link.label}
-                  </NavLink>
+                  <NavLink href={item.link.path}>{item.link.label}</NavLink>
                 ))
               }
             </nav>
@@ -131,7 +120,8 @@ const title = metaTitle
             {
               config.navigation.footer.map((item) => (
                 <NavLink
-                  href={getRelativeLocaleUrl(item.link.locale, item.link.path)}
+                  target={item.link.newTab ? "_blank" : null}
+                  href={item.link.path}
                   small
                 >
                   {item.link.label}

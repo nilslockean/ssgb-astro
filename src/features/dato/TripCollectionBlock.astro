@@ -1,0 +1,26 @@
+---
+import CourseGrid from "@features/courses/CourseGrid.astro";
+import { getCourses } from "@lib/contentUtils";
+import { localeSchema } from "../../schemas/locale";
+import Eyebrow from "@components/Eyebrow.astro";
+import { getCollection } from "astro:content";
+
+interface Props {
+  block: {
+    eyebrow?: string | null;
+  };
+}
+
+const {
+  block: { eyebrow },
+} = Astro.props;
+
+const locale = localeSchema.parse(Astro.currentLocale);
+const entries = await getCollection(
+  "trips",
+  ({ data }) => data.language === locale,
+);
+---
+
+{eyebrow && <Eyebrow>{eyebrow}</Eyebrow>}
+<CourseGrid entries={entries} />

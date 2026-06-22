@@ -1,8 +1,8 @@
 ---
-import { getRelativeLocaleUrl } from "astro:i18n";
 import { LOCALES, languages } from "@lib/i18nUtils";
 import { localeSchema } from "src/schemas/locale";
 import LocaleFlag from "@components/flags/LocaleFlag.astro";
+import { composePath } from "@lib/routeUtils";
 
 const currentLocale = localeSchema.parse(Astro.currentLocale);
 ---
@@ -13,7 +13,7 @@ const currentLocale = localeSchema.parse(Astro.currentLocale);
       <li>
         <a
           aria-current={lang === currentLocale ? "page" : undefined}
-          href={getRelativeLocaleUrl(lang)}
+          href={composePath("", currentLocale)}
           hreflang={lang}
         >
           <LocaleFlag locale={lang} size={22} />

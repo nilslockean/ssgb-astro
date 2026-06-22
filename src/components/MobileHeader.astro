@@ -3,7 +3,6 @@ import Eyebrow from "./Eyebrow.astro";
 import NavLink from "./NavLink.astro";
 import SiteLogo from "@features/navigation/SiteLogo.astro";
 import { type Navigation } from "@lib/routeUtils";
-import { getRelativeLocaleUrl } from "astro:i18n";
 import LanguageList from "@features/locale/LanguageList.astro";
 import { LOCALES } from "@lib/i18nUtils";
 import { localeSchema } from "../schemas/locale";
@@ -92,33 +91,19 @@ const currentLocale = localeSchema.parse(Astro.currentLocale);
     {
       links.map((item) => (
         <li>
-          <a
-            class="font-heading text-5xl"
-            href={getRelativeLocaleUrl(item.link.locale, item.link.path)}
-          >
+          <a class="font-heading text-5xl" href={item.link.path}>
             {item.link.label}
           </a>
           {item.subMenu && (
             <ul class="mt-6 ml-4 flex flex-col gap-2">
               {item.subMenu.nav.map((entry) => (
                 <li>
-                  <NavLink
-                    href={getRelativeLocaleUrl(
-                      entry.link.locale,
-                      entry.link.path,
-                    )}
-                    set:html={entry.link.label}
-                  />
+                  <NavLink href={item.link.path} set:html={entry.link.label} />
                 </li>
               ))}
               {item.subMenu.more && (
                 <li>
-                  <NavLink
-                    href={getRelativeLocaleUrl(
-                      item.subMenu.more.locale,
-                      item.subMenu.more.path,
-                    )}
-                  >
+                  <NavLink href={item.link.path}>
                     {item.subMenu.more.label}
                   </NavLink>
                 </li>

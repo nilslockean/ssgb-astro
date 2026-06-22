@@ -4,14 +4,13 @@ import Layout from "../../layouts/Layout.astro";
 import Section from "@components/Section.astro";
 import ButtonGroup from "@components/ButtonGroup.astro";
 import ButtonLink from "@components/ButtonLink.astro";
-import { Slug } from "@lib/routeUtils";
-import { localePath } from "@lib/i18nUtils";
+import { composePath } from "@lib/routeUtils";
 import { localeSchema } from "../../schemas/locale";
 import { getLocalizedConfig } from "@lib/contentUtils";
 
 const locale = localeSchema.parse(Astro.currentLocale);
 const siteConfig = await getLocalizedConfig(locale);
-const contactPath = localePath(Slug.CONTACT, "da");
+const contactPath = composePath("kontakt", locale);
 
 const heroButtons: HeroButton[] = [
   {

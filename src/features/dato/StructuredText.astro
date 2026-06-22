@@ -4,6 +4,7 @@ import type { CdaStructuredTextValue } from "@datocms/astro/StructuredText";
 import ButtonBlock from "@features/dato/ButtonBlock.astro";
 import ButtonGroupBlock from "@features/dato/ButtonGroupBlock.astro";
 import CourseCollectionBlock from "@features/dato/CourseCollectionBlock.astro";
+import TripCollectionBlock from "@features/dato/TripCollectionBlock.astro";
 import PageInternalLink from "@features/dato/PageInternalLink.astro";
 import ContactDetailInline from "@features/dato/ContactDetailInline.astro";
 import PriceDetailInline from "@features/dato/PriceDetailInline.astro";
@@ -23,6 +24,7 @@ const { data } = Astro.props;
     ButtonRecord: ButtonBlock,
     ButtonGroupRecord: ButtonGroupBlock,
     CourseCollectionRecord: CourseCollectionBlock,
+    TripCollectionRecord: TripCollectionBlock,
     AccordionRecord: AccordionBlock,
     TeamCollectionRecord: TeamCollectionBlock,
   }}

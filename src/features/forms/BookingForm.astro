@@ -1,8 +1,7 @@
 ---
-import { Slug } from "@lib/routeUtils";
-import { localePath } from "@lib/i18nUtils";
-import { localeSchema } from "src/schemas/locale";
+import { localeSchema } from "../../schemas/locale";
 import type { HTMLAttributes } from "astro/types";
+import { composePath } from "@lib/routeUtils";
 
 interface Props extends HTMLAttributes<"form"> {
   name: string;
@@ -22,12 +21,14 @@ const {
 const locale = localeSchema.catch("sv").parse(Astro.currentLocale);
 const isEnglish = locale === "en";
 const dateLabel = isEnglish ? "Preferred start date" : "Önskat startdatum";
-const submitLabel = isEnglish ? "Send booking request" : "Skicka bokningsförfrågan";
+const submitLabel = isEnglish
+  ? "Send booking request"
+  : "Skicka bokningsförfrågan";
 ---
 
 <form
   class:list={["booking-form", className]}
-  action={localePath(Slug.FORM_SUCCESS, locale)}
+  action={composePath("tack", locale)}
   data-netlify="true"
   method="POST"
   name={name}
@@ -57,31 +58,35 @@ const submitLabel = isEnglish ? "Send booking request" : "Skicka bokningsförfr�
       </label>
     </p>
 
-    { includeDate && (
-      <p>
-        <label>
-          {dateLabel}
-          <br />
-          <input name="date" required type="date" />
-        </label>
-      </p>
-    )}
+    {
+      includeDate && (
+        <p>
+          <label>
+            {dateLabel}
+            <br />
+            <input name="date" required type="date" />
+          </label>
+        </p>
+      )
+    }
 
-    { maxParticipants !== null && (
-      <p>
-        <label>
-          {isEnglish ? "Number of participants" : "Antal deltagare"}
-          <br />
-          <input
-            max={maxParticipants}
-            min="1"
-            name="participants"
-            required
-            type="number"
-          />
-        </label>
-      </p>
-    )}
+    {
+      maxParticipants !== null && (
+        <p>
+          <label>
+            {isEnglish ? "Number of participants" : "Antal deltagare"}
+            <br />
+            <input
+              max={maxParticipants}
+              min="1"
+              name="participants"
+              required
+              type="number"
+            />
+          </label>
+        </p>
+      )
+    }
 
     <p class="booking-form__message">
       <label>

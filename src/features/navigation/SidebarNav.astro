@@ -2,7 +2,6 @@
 import NavLink from "@components/NavLink.astro";
 import CourseNavItem from "./CourseNavItem.astro";
 import type { Navigation } from "@lib/routeUtils";
-import { getRelativeLocaleUrl } from "astro:i18n";
 
 interface Props {
   entries: Navigation;
@@ -15,7 +14,7 @@ const { entries } = Astro.props;
   {
     entries.map((item, i) => {
       const hasSubmenu = Boolean(item.subMenu?.nav?.length);
-      const href = getRelativeLocaleUrl(item.link.locale, item.link.path);
+      const href = item.link.path;
       const anchorName = `--sidebar-item-${i}`;
 
       return hasSubmenu ? (
@@ -25,10 +24,7 @@ const { entries } = Astro.props;
             set:html={item.link.label}
             style={`anchor-name: ${anchorName}`}
           />
-          <ul
-            class="sidebar-nav__sub"
-            style={`position-anchor: ${anchorName}`}
-          >
+          <ul class="sidebar-nav__sub" style={`position-anchor: ${anchorName}`}>
             {item.subMenu!.nav.map((sub) => (
               <CourseNavItem entry={sub.link} />
             ))}
