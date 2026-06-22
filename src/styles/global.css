@@ -523,7 +523,21 @@
   }
 
   .collection-entry {
-    max-width: var(--prose);
+    h1,
+    h2 {
+      & + p {
+        font-size: var(--text-lg);
+        font-weight: var(--font-weight-medium);
+        margin-bottom: var(--space-8);
+      }
+    }
+
+    p,
+    ul:not(.course-grid),
+    ol,
+    blockquote {
+      max-width: var(--prose);
+    }
   }
 
   .collection-entry p + p,
@@ -531,14 +545,14 @@
     margin-top: var(--space-4);
   }
 
-  .collection-entry ul,
+  .collection-entry ul:not(.course-grid),
   ul.list {
     margin-block: var(--space-4);
     margin-left: var(--space-5);
     list-style: disc;
   }
 
-  .collection-entry ul > li + li {
+  .collection-entry ul:not(.course-grid) > li + li {
     margin-top: var(--space-1);
   }
 }
@@ -682,10 +696,6 @@
 
   .font-heading {
     font-family: var(--font-heading);
-  }
-
-  .normal-case {
-    text-transform: none;
   }
 
   .uppercase {

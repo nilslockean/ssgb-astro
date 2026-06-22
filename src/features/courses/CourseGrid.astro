@@ -2,7 +2,7 @@
 import type { CollectionEntry } from "astro:content";
 import type { HTMLAttributes } from "astro/types";
 import CourseGridItem from "./CourseGridItem.astro";
-import { courseUrl, tripUrl } from "@lib/routeUtils";
+import { courseUrl, defaultLocale, tripUrl } from "@lib/routeUtils";
 import { localeSchema } from "src/schemas/locale";
 
 interface Props extends HTMLAttributes<"ul"> {
@@ -13,6 +13,17 @@ function isCourse(
   entry: CollectionEntry<"courses"> | CollectionEntry<"trips">,
 ): entry is CollectionEntry<"courses"> {
   return "numDays" in entry.data;
+}
+
+function composeCta(title: string, locale = defaultLocale) {
+  title = title.replaceAll("&shy;", "").toLowerCase();
+  const prefix =
+    locale === "da"
+      ? "Læs mere om"
+      : locale === "en"
+        ? "Read more about"
+        : "Läs mer om";
+  return `${prefix} ${title}`;
 }
 
 const { entries, class: className, ...rest } = Astro.props;
@@ -35,7 +46,7 @@ const locale = localeSchema.parse(Astro.currentLocale);
       const href = isCourse(course)
         ? courseUrl(course.data.slug, locale)
         : tripUrl(course.data.slug, locale);
-      const cta = `Läs mer om ${title.replaceAll("&shy;", "").toLowerCase()}`;
+      const cta = composeCta(title, locale);
 
       return (
         <CourseGridItem
@@ -43,6 +54,7 @@ const locale = localeSchema.parse(Astro.currentLocale);
           excerpt={course.data.excerpt}
           href={href}
           title={title}
+          displayLink={course.data.hasPage}
         />
       );
     })
@@ -54,5 +66,7 @@ const locale = localeSchema.parse(Astro.currentLocale);
   .course-grid {
     display: grid;
     gap: var(--space-8);
+    margin-bottom: var(--space-12);
+    margin-top: var(--space-8);
   }
 </style>

@@ -23,6 +23,7 @@ export const courseSchema = z.object({
   body: z.custom<CdaStructuredTextValue>().optional(),
   form: z.string().optional(),
   preselectedFields: z.json().optional(),
+  hasPage: z.boolean(),
 });
 
 const datoCourseSchema = z.object({
@@ -53,6 +54,7 @@ const datoCourseSchema = z.object({
     .nullable(),
   form: z.object({ id: z.string() }).nullable(),
   preselectedFields: z.json().nullable(),
+  hasPage: z.boolean(),
 });
 
 export function datoCoursesLoader(): Loader {
@@ -109,6 +111,7 @@ export function datoCoursesLoader(): Loader {
               body: course.content ?? undefined,
               form: course.form ? `${locale}-${course.form.id}` : undefined,
               preselectedFields: course.preselectedFields,
+              hasPage: course.hasPage,
             },
           });
 

@@ -1,0 +1,25 @@
+---
+import ButtonGroup from "@components/ButtonGroup.astro";
+
+interface Props {
+  block: {
+    buttons: Array<{
+      variant?: string;
+      label: string;
+      url: string;
+    }>;
+  };
+}
+
+const { block } = Astro.props;
+---
+
+<ButtonGroup>
+  {
+    block.buttons.map((button) => (
+      <a class:list={["btn", `btn--${button.variant}`]} href={button.url}>
+        {button.label}
+      </a>
+    ))
+  }
+</ButtonGroup>

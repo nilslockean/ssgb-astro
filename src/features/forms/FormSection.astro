@@ -25,6 +25,7 @@ const {
   title = data.title,
   preselectedFields,
 } = Astro.props;
+console.log("Form", { data, title, id });
 const currentLocale = localeSchema.parse(Astro.currentLocale);
 const action = composePath(data.redirect || "", currentLocale);
 function getDefaultValue(fieldName: string): string | null {

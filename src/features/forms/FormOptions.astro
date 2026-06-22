@@ -25,7 +25,7 @@ const {
 <label {id}>
   {label}{required && "*"}
   <br />
-  <select id={name} disabled={readonly}>
+  <select id={name} disabled={readonly} {required}>
     <option value="">{placeholder || label}</option>
     {
       options.map((option) => (

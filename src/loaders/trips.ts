@@ -19,6 +19,7 @@ export const tripSchema = z.object({
   body: z.custom<CdaStructuredTextValue>().optional(),
   norm: datoNormSchema.optional(),
   language: localeSchema.default("sv"),
+  hasPage: z.boolean(),
 });
 
 const datoTripSchema = z.object({
@@ -89,6 +90,7 @@ export function datoTripsLoader(): Loader {
               body: trip.content ?? undefined,
               norm: trip.norm ?? undefined,
               language: locale,
+              hasPage: true,
             },
           });
 

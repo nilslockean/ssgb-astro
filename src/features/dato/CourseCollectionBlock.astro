@@ -1,0 +1,34 @@
+---
+import CourseGrid from "@features/courses/CourseGrid.astro";
+import { getCourses } from "@lib/contentUtils";
+import { localeSchema } from "../../schemas/locale";
+import Eyebrow from "@components/Eyebrow.astro";
+
+interface Props {
+  block: {
+    filter: "all" | "with-norms" | "without-norms" | "featured";
+    eyebrow?: string | null;
+  };
+}
+
+const {
+  block: { filter, eyebrow },
+} = Astro.props;
+
+const locale = localeSchema.parse(Astro.currentLocale);
+const entries = await getCourses((course) => {
+  switch (filter) {
+    case "with-norms":
+      return course.data.norm;
+    case "without-norms":
+      return !course.data.norm;
+    case "featured":
+      return course.data.featured;
+    default:
+      return true;
+  }
+}, locale);
+---
+
+{eyebrow && <Eyebrow>{eyebrow}</Eyebrow>}
+<CourseGrid entries={entries} />

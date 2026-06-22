@@ -2,15 +2,17 @@ import { getCollection, getEntry, type CollectionEntry } from "astro:content";
 import { z } from "astro/zod";
 import { localeSchema } from "src/schemas/locale";
 import { localizedConfigSchema } from "../loaders/config";
+import { defaultLocale } from "./routeUtils";
 
 export type LocalizedConfig = z.infer<typeof localizedConfigSchema>;
 
 export async function getCourses(
   filter?: (entry: CollectionEntry<"courses">) => unknown,
+  locale = defaultLocale,
 ) {
   const courses = await getCollection(
     "courses",
-    (course) => course.data.language === "sv" && (!filter || filter(course)),
+    (course) => course.data.language === locale && (!filter || filter(course)),
   );
   return courses.sort((a, b) => a.data.order - b.data.order);
 }

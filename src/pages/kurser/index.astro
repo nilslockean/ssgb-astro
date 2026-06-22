@@ -1,4 +1,5 @@
 ---
+import FormSection from "@features/forms/FormSection.astro";
 import PageHead from "@components/PageHead.astro";
 import Layout from "../../layouts/Layout.astro";
 import { getCourses } from "@lib/contentUtils";
@@ -6,9 +7,11 @@ import CourseGrid from "@features/courses/CourseGrid.astro";
 import CourseSelector from "@features/CourseSelector.astro";
 import Section from "@components/Section.astro";
 import CtaBooking from "@features/cta/CtaBooking.astro";
+import { getEntry } from "astro:content";
 
 const coursesWithNorms = await getCourses((course) => course.data.norm);
 const coursesWithoutNorms = await getCourses((course) => !course.data.norm);
+const formEntry = await getEntry("forms", "sv-L8D21t0MRt6edN4zhLVd1g");
 ---
 
 <Layout
@@ -51,5 +54,5 @@ const coursesWithoutNorms = await getCourses((course) => !course.data.norm);
   </Section>
 
   <CourseSelector />
-  <CtaBooking />
+  {formEntry && <FormSection form={formEntry} />}
 </Layout>

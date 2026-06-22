@@ -40,6 +40,7 @@ export const PAGES_QUERY = `
   query AllPages($locale: SiteLocale!) {
     allPages(locale: $locale) {
       id
+      eyebrow(locale: $locale)
       title(locale: $locale)
       excerpt(locale: $locale)
       slug(locale: $locale)
@@ -54,9 +55,29 @@ export const PAGES_QUERY = `
             label
             url
           }
+          ... on ButtonGroupRecord {
+            id
+            __typename
+            buttons {
+              variant
+              label
+              url
+            }
+          }
+          ... on CourseCollectionRecord {
+            id
+            __typename
+            filter
+            eyebrow
+          }
         }
         inlineBlocks {
           ... on ContactDetailRecord {
+            id
+            __typename
+            value
+          }
+          ... on PriceDetailRecord {
             id
             __typename
             value
@@ -102,6 +123,7 @@ export const COURSES_QUERY = `
       norm { title url }
       form { id }
       preselectedFields(locale: $locale)
+      hasPage(locale: $locale)
     }
   }
 `;

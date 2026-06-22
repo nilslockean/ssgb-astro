@@ -8,6 +8,7 @@ import { LOCALE_CODES } from "@lib/routeUtils";
 
 export const pageSchema = z.object({
   language: localeSchema.default("sv"),
+  eyebrow: z.string().optional(),
   title: z.string(),
   slug: z.string(),
   excerpt: z.string(),
@@ -17,6 +18,7 @@ export const pageSchema = z.object({
 
 const datoPageSchema = z.object({
   id: z.string(),
+  eyebrow: z.string().nullable(),
   title: z.string(),
   excerpt: z.string(),
   slug: z.string().nullable(),
@@ -49,6 +51,7 @@ export function datoPagesLoader(): Loader {
             id: `${locale}-${page.slug}`,
             data: {
               language: locale,
+              eyebrow: page.eyebrow ?? undefined,
               title: page.title,
               slug: page.slug,
               excerpt: page.excerpt,

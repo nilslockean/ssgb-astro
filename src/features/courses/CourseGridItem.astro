@@ -7,19 +7,38 @@ interface Props extends HTMLAttributes<"li"> {
   excerpt: string;
   href: string;
   cta: string;
+  displayLink?: boolean;
 }
 
-const { title, excerpt, href, cta, class: className, ...rest } = Astro.props;
+const {
+  title,
+  excerpt,
+  href,
+  cta,
+  displayLink = true,
+  class: className,
+  ...rest
+} = Astro.props;
 ---
 
 <li class:list={["course-grid-item", className]} {...rest}>
-  <h3 class="course-grid-item__title font-heading mt-0 normal-case">
-    <a class="course-grid-item__link" href={href} set:html={title} />
+  <h3 class="course-grid-item__title font-heading mt-0">
+    {
+      displayLink ? (
+        <a class="course-grid-item__link" href={href} set:html={title} />
+      ) : (
+        <span set:html={title} />
+      )
+    }
   </h3>
   <p class="course-grid-item__excerpt">{excerpt}</p>
-  <p class="course-grid-item__action">
-    <ButtonLink href={href}>{cta}</ButtonLink>
-  </p>
+  {
+    displayLink && (
+      <p class="course-grid-item__action">
+        <ButtonLink href={href}>{cta}</ButtonLink>
+      </p>
+    )
+  }
 </li>
 
 <style>

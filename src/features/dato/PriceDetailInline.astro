@@ -1,0 +1,19 @@
+---
+import { getLocalizedConfig } from "@lib/contentUtils";
+import { formatPrice } from "@lib/stringUtils";
+import { defaultLocale } from "@lib/routeUtils";
+
+interface Props {
+  block: {
+    value: "single" | "double" | "many" | "openBooking";
+  };
+}
+
+const { block } = Astro.props;
+const locale = Astro.currentLocale ?? defaultLocale;
+const config = await getLocalizedConfig(locale);
+const price = config.defaultPrices[block.value];
+const formattedPrice = formatPrice([price]);
+---
+
+<span>{formattedPrice}</span>

@@ -33,7 +33,7 @@ const heroButtons: HeroButton[] = [
   },
   {
     label: "View all courses",
-    href: "/en/courses",
+    href: "/en/courses/",
   },
 ];
 ---
@@ -58,11 +58,7 @@ const heroButtons: HeroButton[] = [
 
   <Section>
     <div class="collection-entry">
-      {
-        post.data.body && (
-          <StructuredText data={post.data.body} />
-        )
-      }
+      {post.data.body && <StructuredText data={post.data.body} />}
       <p>
         <strong>Duration:</strong>
         {numDaysDesc}.

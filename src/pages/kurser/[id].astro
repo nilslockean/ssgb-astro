@@ -18,7 +18,7 @@ import { defaultLocale, type Locale } from "@lib/routeUtils";
 export async function getStaticPaths() {
   const posts = await getCollection(
     "courses",
-    (course) => course.data.language === "sv",
+    (course) => course.data.language === "sv" && course.data.hasPage,
   );
   return posts.map((post) => ({
     params: { id: post.data.slug },
