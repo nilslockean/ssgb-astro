@@ -59,7 +59,7 @@ export function datoTripsLoader(): Loader {
           }
 
           const data = await parseData({
-            id: `${locale}-${trip.slug}`,
+            id: `${locale}-${trip.id}`,
             data: {
               title: trip.title,
               slug: trip.slug,
@@ -80,7 +80,7 @@ export function datoTripsLoader(): Loader {
             },
           });
 
-          store.set({ id: `${locale}-${trip.slug}`, data });
+          store.set({ id: `${locale}-${trip.id}`, data });
         }
       }
     },

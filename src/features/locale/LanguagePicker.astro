@@ -2,16 +2,17 @@
 import { LOCALES, languages } from "@lib/i18nUtils";
 import { localeSchema } from "src/schemas/locale";
 import LocaleFlag from "@components/flags/LocaleFlag.astro";
-import { composePath } from "@lib/routeUtils";
+import { getLocalizedUrls } from "@lib/routeUtils";
 
 const currentLocale = localeSchema.parse(Astro.currentLocale);
+const localizedUrls = await getLocalizedUrls(Astro.url);
 ---
 
 <ul>
   {
     languages.map((lang) => (
       <li>
-        <a href={composePath("", lang)} data-current={lang === currentLocale}>
+        <a href={localizedUrls[lang]} data-current={lang === currentLocale}>
           <LocaleFlag locale={lang} size={24} />
           <span class="sr-only">{LOCALES[lang]}</span>
         </a>

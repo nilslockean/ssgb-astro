@@ -81,7 +81,7 @@ export function datoCoursesLoader(): Loader {
           }
 
           const data = await parseData({
-            id: `${locale}-${course.slug}`,
+            id: `${locale}-${course.id}`,
             data: {
               title: course.title,
               slug: course.slug,
@@ -112,7 +112,7 @@ export function datoCoursesLoader(): Loader {
             },
           });
 
-          store.set({ id: `${locale}-${course.slug}`, data });
+          store.set({ id: `${locale}-${course.id}`, data });
         }
       }
     },

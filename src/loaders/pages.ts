@@ -48,7 +48,7 @@ export function datoPagesLoader(): Loader {
           }
 
           const data = await parseData({
-            id: `${locale}-${page.slug}`,
+            id: `${locale}-${page.id}`,
             data: {
               language: locale,
               eyebrow: page.eyebrow ?? undefined,
@@ -60,7 +60,7 @@ export function datoPagesLoader(): Loader {
             },
           });
 
-          store.set({ id: `${locale}-${page.slug}`, data });
+          store.set({ id: `${locale}-${page.id}`, data });
         }
       }
     },
