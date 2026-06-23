@@ -48,23 +48,41 @@ const NAV_MENU_ITEMS = `
   }
 `;
 
-export const SITE_CONFIG_QUERY = `
-  query SiteConfig($locale: SiteLocale!) {
-    siteConfig {
-      title
-      tagline(locale: $locale)
-      email
-      phone
-      pricesSingle
-      pricesDouble
-      pricesMany
-      pricesOpenBooking
-      navPrimary { ${NAV_MENU_ITEMS} }
-      navSecondary { ${NAV_MENU_ITEMS} }
-      navFooter { ${NAV_MENU_ITEMS} }
-      authorizedInstructorTitle(locale: $locale)
-      authorizedInstructorContent(locale: $locale)
-      authorizedInstructorImage(locale: $locale) { url width height alt }
+const BUTTON_LINK = `
+  link {
+    __typename
+    ... on PageRecord {
+      slug(locale: $locale)
+    }
+    ... on CourseRecord {
+      slug
+    }
+    ... on TripRecord {
+      slug
+    }
+  }
+`;
+
+const BUTTON_RECORD = `
+  ... on ButtonRecord {
+    id
+    __typename
+    variant
+    label
+    url
+    ${BUTTON_LINK}
+  }
+`;
+
+const BUTTON_GROUP_RECORD_BLOCK = `
+  ... on ButtonGroupRecord {
+    id
+    __typename
+    buttons {
+      variant
+      label
+      url
+      ${BUTTON_LINK}
     }
   }
 `;
@@ -78,15 +96,7 @@ const ACCORDION_RECORD_BLOCK = `
       structuredText {
         value
         blocks {
-          ... on ButtonGroupRecord {
-            id
-            __typename
-            buttons {
-              variant
-              label
-              url
-            }
-          }
+          ${BUTTON_GROUP_RECORD_BLOCK}
         }
         links {
           ... on CourseRecord {
@@ -109,14 +119,24 @@ const ACCORDION_RECORD_BLOCK = `
     }
   }
 `;
-const BUTTON_GROUP_RECORD_BLOCK = `
-  ... on ButtonGroupRecord {
-    id
-    __typename
-    buttons {
-      variant
-      label
-      url
+
+export const SITE_CONFIG_QUERY = `
+  query SiteConfig($locale: SiteLocale!) {
+    siteConfig {
+      title
+      tagline(locale: $locale)
+      email
+      phone
+      pricesSingle
+      pricesDouble
+      pricesMany
+      pricesOpenBooking
+      navPrimary { ${NAV_MENU_ITEMS} }
+      navSecondary { ${NAV_MENU_ITEMS} }
+      navFooter { ${NAV_MENU_ITEMS} }
+      authorizedInstructorTitle(locale: $locale)
+      authorizedInstructorContent(locale: $locale)
+      authorizedInstructorImage(locale: $locale) { url width height alt }
     }
   }
 `;
@@ -133,13 +153,7 @@ export const PAGES_QUERY = `
       structuredText(locale: $locale) {
         value
         blocks {
-          ... on ButtonRecord {
-            id
-            __typename
-            variant
-            label
-            url
-          }
+          ${BUTTON_RECORD}
           ${BUTTON_GROUP_RECORD_BLOCK}
           ... on CourseCollectionRecord {
             id
@@ -225,13 +239,7 @@ export const TRIPS_QUERY = `
       content(locale: $locale) {
         value
         blocks {
-          ... on ButtonRecord {
-            id
-            __typename
-            variant
-            label
-            url
-          }
+          ${BUTTON_RECORD}
           ${BUTTON_GROUP_RECORD_BLOCK}
           ${ACCORDION_RECORD_BLOCK}
         }
@@ -327,6 +335,68 @@ export const TEAMS_QUERY = `
       bio(locale: $locale)
       image { url width height alt }
       position
+    }
+  }
+`;
+
+export const HOME_PAGE_QUERY = `
+  query HomePage($locale: SiteLocale!) {
+    homePage {
+      eyebrow(locale: $locale)
+      tagline(locale: $locale)
+      title(locale: $locale)
+      heroDescription(locale: $locale)
+      heroButtons(locale: $locale) {
+        ${BUTTON_RECORD}
+      }
+      structuredText(locale: $locale) {
+        value
+        blocks {
+          ${BUTTON_GROUP_RECORD_BLOCK}
+          ... on CourseCollectionRecord {
+            id
+            __typename
+            filter
+            eyebrow
+          }
+          ... on TripCollectionRecord {
+            id
+            __typename
+            eyebrow
+          }
+          ... on TeamCollectionRecord {
+            id
+            __typename
+          }
+          ${ACCORDION_RECORD_BLOCK}
+        }
+        links {
+          ... on CourseRecord {
+            id
+            __typename
+            slug
+          }
+          ... on PageRecord {
+            id
+            __typename
+            slug(locale: $locale)
+          }
+          ... on TripRecord {
+            id
+            __typename
+            slug
+          }
+        }
+      }
+      heroVideo {
+        video {
+          muxPlaybackId
+          streamingUrl
+          mp4High: mp4Url(res: high)
+          mp4Med: mp4Url(res: medium)
+          thumbnailUrl(format: jpg)
+        }
+      }
     }
   }
 `;

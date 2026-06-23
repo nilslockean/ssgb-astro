@@ -30,5 +30,11 @@ const entries = await getCourses((course) => {
 }, locale);
 ---
 
-{eyebrow && <Eyebrow>{eyebrow}</Eyebrow>}
+{eyebrow && <Eyebrow class="course-collection__eyebrow">{eyebrow}</Eyebrow>}
 <CourseGrid entries={entries} />
+
+<style>
+  .course-collection__eyebrow {
+    margin-top: var(--space-12);
+  }
+</style>

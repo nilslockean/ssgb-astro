@@ -1,0 +1,28 @@
+---
+import Hero from "@components/Hero.astro";
+import Layout from "../layouts/Layout.astro";
+import Section from "@components/Section.astro";
+import StructuredText from "@features/dato/StructuredText.astro";
+import { getLocalizedHomePage } from "@lib/contentUtils";
+
+const homePage = await getLocalizedHomePage(Astro.currentLocale);
+const heroButtons = homePage.heroButtons.map(({ label, href }) => ({
+  label,
+  href,
+}));
+---
+
+<Layout metaDescription={homePage.heroDescription} tagline={homePage.tagline}>
+  <Hero
+    buttons={heroButtons}
+    content={homePage.heroDescription}
+    eyebrow={homePage.eyebrow}
+    size="large"
+    title={homePage.title}
+    video={homePage.heroVideo || undefined}
+  />
+
+  <Section class="collection-entry">
+    <StructuredText data={homePage.structuredText} />
+  </Section>
+</Layout>

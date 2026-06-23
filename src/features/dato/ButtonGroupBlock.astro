@@ -1,23 +1,25 @@
 ---
 import ButtonGroup from "@components/ButtonGroup.astro";
+import { type ButtonBlockProps, resolveHref } from "./ButtonBlock.astro";
+import { localeSchema } from "../../schemas/locale";
 
 interface Props {
   block: {
-    buttons: Array<{
-      variant?: string;
-      label: string;
-      url: string;
-    }>;
+    buttons: Array<ButtonBlockProps>;
   };
 }
 
 const { block } = Astro.props;
+const locale = localeSchema.parse(Astro.currentLocale);
 ---
 
-<ButtonGroup>
+<ButtonGroup class="mt-6">
   {
     block.buttons.map((button) => (
-      <a class:list={["btn", `btn--${button.variant}`]} href={button.url}>
+      <a
+        class:list={["btn", `btn--${button.variant}`]}
+        href={resolveHref(button.link, button.url, locale)}
+      >
         {button.label}
       </a>
     ))

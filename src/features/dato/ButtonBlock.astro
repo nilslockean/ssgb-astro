@@ -1,17 +1,48 @@
 ---
+import { courseUrl, tripUrl, composePath, type Locale } from "@lib/routeUtils";
+import { localeSchema } from "../../schemas/locale";
+
+interface ButtonLink {
+  __typename?: string;
+  slug: string;
+}
+
+export interface ButtonBlockProps {
+  variant?: string;
+  label: string;
+  url: string;
+  link?: ButtonLink | null;
+}
+
 interface Props {
-  block: {
-    variant?: string;
-    label: string;
-    url: string;
-  };
+  block: ButtonBlockProps;
 }
 
 const { block } = Astro.props;
+
+export function resolveHref(
+  link: ButtonLink | null | undefined,
+  url: string,
+  locale: Locale,
+): string {
+  if (link) {
+    switch (link.__typename) {
+      case "CourseRecord":
+        return courseUrl(link.slug, locale);
+      case "TripRecord":
+        return tripUrl(link.slug, locale);
+      default:
+        return composePath(link.slug, locale);
+    }
+  }
+  return url || "#";
+}
+const locale = localeSchema.parse(Astro.currentLocale);
+const href = resolveHref(block.link, block.url, locale);
 ---
 
 <p>
-  <a class:list={["btn", `btn--${block.variant}`]} href={block.url}>
+  <a class:list={["btn", `btn--${block.variant}`]} href={href}>
     {block.label}
   </a>
 </p>
