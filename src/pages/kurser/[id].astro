@@ -5,7 +5,7 @@ import Template from "../../templates/Course.astro";
 export async function getStaticPaths() {
   const posts = await getCollection(
     "courses",
-    (course) => course.data.language === "en" && course.data.hasPage,
+    (course) => course.data.language === "sv" && course.data.hasPage,
   );
   return posts.map((post) => ({
     params: { id: post.data.slug },

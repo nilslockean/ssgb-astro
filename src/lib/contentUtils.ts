@@ -9,7 +9,7 @@ export type LocalizedConfig = z.infer<typeof localizedConfigSchema>;
 export async function getCourses(
   filter?: (entry: CollectionEntry<"courses">) => unknown,
   locale = defaultLocale,
-) {
+): Promise<CollectionEntry<"courses">[]> {
   const courses = await getCollection(
     "courses",
     (course) => course.data.language === locale && (!filter || filter(course)),

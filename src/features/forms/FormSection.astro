@@ -6,6 +6,7 @@ import FormInputTextarea from "./FormInputTextarea.astro";
 import FormInputDate from "./FormInputDate.astro";
 import FormInputNumber from "./FormInputNumber.astro";
 import FormOptions from "./FormOptions.astro";
+import FormCourseOptions from "./FormCourseOptions.astro";
 import { composePath } from "@lib/routeUtils";
 import { localeSchema } from "../../schemas/locale";
 import { z } from "astro/zod";
@@ -26,7 +27,11 @@ const {
   preselectedFields,
 } = Astro.props;
 const currentLocale = localeSchema.parse(Astro.currentLocale);
-const action = composePath(data.redirect || "", currentLocale);
+const currentSlug = Astro.url.pathname
+  .split("/")
+  .filter((x) => x)
+  .pop();
+const action = composePath(data.redirect, currentLocale);
 function getDefaultValue(fieldName: string): string | null {
   const preselectedFieldsSchema = z.record(z.string(), z.string());
   const result = preselectedFieldsSchema.safeParse(preselectedFields);
@@ -90,6 +95,9 @@ function getDefaultValue(fieldName: string): string | null {
                 )}
                 {field.__typename === "FormInputOptionRecord" && (
                   <FormOptions {...field} {defaultValue} />
+                )}
+                {field.__typename === "FormInputCoursesOptionRecord" && (
+                  <FormCourseOptions {...field} defaultValue={currentSlug} />
                 )}
               </p>
             );

@@ -1,0 +1,46 @@
+---
+import type { Locale } from "@lib/routeUtils";
+import { getCourses } from "../../lib/contentUtils";
+import { localeSchema } from "../../schemas/locale";
+
+export interface Props {
+  id: string;
+  label: string;
+  required: boolean | null;
+  defaultValue: string | null;
+  placeholder?: string | null;
+}
+
+const { id, label, required, defaultValue, placeholder } = Astro.props;
+const name = "courses";
+const locale = localeSchema.parse(Astro.currentLocale);
+const courses = await getCourses(undefined, locale);
+const options = courses.map((course) => ({
+  name: course.data.slug,
+  label: course.data.title,
+}));
+
+const TRANSLATIONS = {
+  other: {
+    sv: "Övrigt",
+    da: "Andre",
+    en: "Other",
+  },
+} as const satisfies Record<string, Record<Locale, string>>;
+---
+
+<label {id}>
+  {label}{required && "*"}
+  <br />
+  <select id={name} {required}>
+    <option value="">{placeholder || label}</option>
+    {
+      options.map((option) => (
+        <option value={option.name} selected={option.name === defaultValue}>
+          {option.label}
+        </option>
+      ))
+    }
+    <option value="other">{TRANSLATIONS.other[locale]}</option>
+  </select>
+</label>

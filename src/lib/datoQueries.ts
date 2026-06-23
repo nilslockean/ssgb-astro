@@ -300,6 +300,13 @@ export const FORMS_QUERY = `
           readonly
           placeholder
         }
+        ... on FormInputCoursesOptionRecord {
+          id
+          __typename
+          label
+          required
+          placeholder
+        }
       }
       cta(locale: $locale)
       redirect {

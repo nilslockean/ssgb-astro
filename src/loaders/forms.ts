@@ -60,12 +60,21 @@ const formInputOptionSchema = z.object({
   placeholder: z.string().nullable(),
 });
 
+const formInputCoursesOptionSchema = z.object({
+  id: z.string(),
+  __typename: z.literal("FormInputCoursesOptionRecord"),
+  label: z.string(),
+  required: z.boolean().nullable(),
+  placeholder: z.string().nullable(),
+});
+
 export const formBlockSchema = z.discriminatedUnion("__typename", [
   formInputTextSchema,
   formInputTextareaSchema,
   formInputDateSchema,
   formInputNumberSchema,
   formInputOptionSchema,
+  formInputCoursesOptionSchema,
 ]);
 
 export type FormBlock = z.infer<typeof formBlockSchema>;
@@ -76,7 +85,7 @@ export const formSchema = z.object({
   content: z.array(formBlockSchema).default([]),
   cta: z.string(),
   language: localeSchema.default("sv"),
-  redirect: z.string().nullable(),
+  redirect: z.string(),
 });
 
 const datoFormSchema = z.object({
@@ -85,7 +94,7 @@ const datoFormSchema = z.object({
   description: z.string().nullable(),
   content: z.array(formBlockSchema).default([]),
   cta: z.string(),
-  redirect: z.object({ slug: z.string() }).nullable(),
+  redirect: z.object({ slug: z.string() }),
 });
 
 export function datoFormsLoader(): Loader {
@@ -112,7 +121,7 @@ export function datoFormsLoader(): Loader {
               content: form.content,
               cta: form.cta,
               language: locale,
-              redirect: form.redirect?.slug ?? null,
+              redirect: form.redirect.slug,
             },
           });
 
