@@ -1,18 +1,11 @@
 ---
 import { getCollection } from "astro:content";
-import { StructuredText } from "@datocms/astro";
-import Accordion from "@components/Accordion.astro";
-import FormSection from "@features/forms/FormSection.astro";
-import { getEntry } from "astro:content";
-import Hero, { type HeroButton } from "@components/Hero.astro";
-import Layout from "../../../layouts/Layout.astro";
-import Link from "@components/Link.astro";
-import Section from "@components/Section.astro";
+import Template from "../../../templates/Course.astro";
 
 export async function getStaticPaths() {
   const posts = await getCollection(
     "courses",
-    (course) => course.data.language === "en",
+    (course) => course.data.language === "en" && course.data.hasPage,
   );
   return posts.map((post) => ({
     params: { id: post.data.slug },
@@ -20,96 +13,9 @@ export async function getStaticPaths() {
   }));
 }
 
-const { post } = Astro.props;
-const { norm, form, preselectedFields } = post.data;
-const h1 = post.data.title;
-const cta = `Book ${post.data.title.toLowerCase()}`;
-const numDays = post.data.numDays.join("-");
-const numDaysSuffix = numDays === "1" ? "day" : "days";
-const numDaysDesc = `${numDays} ${numDaysSuffix}`;
-const heroButtons: HeroButton[] = [
-  {
-    label: cta,
-    href: "#booking",
-  },
-  {
-    label: "View all courses",
-    href: "/en/courses/",
-  },
-];
-const formEntry = form && (await getEntry("forms", form));
+const {
+  post: { data },
+} = Astro.props;
 ---
 
-<Layout
-  metaDescription={post.data.excerpt}
-  metaTitle={post.data.title}
-  tagline={post.data.title}
->
-  {
-    post.data.heroImage ? (
-      <Hero
-        buttons={heroButtons}
-        content={post.data.excerpt}
-        image={post.data.heroImage}
-        title={h1}
-      />
-    ) : (
-      <Hero buttons={heroButtons} content={post.data.excerpt} title={h1} />
-    )
-  }
-
-  <Section>
-    <div class="collection-entry">
-      {post.data.body && <StructuredText data={post.data.body} />}
-      <p>
-        <strong>Duration:</strong>
-        {numDaysDesc}.
-      </p>
-    </div>
-  </Section>
-
-  <Section>
-    {
-      post.data.prerequisites && (
-        <Accordion title="Prerequisites">
-          <p>{post.data.prerequisites}</p>
-        </Accordion>
-      )
-    }
-    {
-      norm?.url && (
-        <Accordion title="Course standard">
-          <p>
-            This course follows the Swedish Climbing Federation standard for{" "}
-            <Link href={norm.url} target="_blank">
-              {norm.title}
-            </Link>
-            .
-          </p>
-        </Accordion>
-      )
-    }
-  </Section>
-  {
-    formEntry && (
-      <FormSection form={formEntry} id="boka" title={cta} {preselectedFields} />
-    )
-  }
-</Layout>
-
-<style>
-  @import "../../../styles/breakpoints.css";
-
-  .booking-card {
-    background-color: var(--color-surface-light);
-    border-radius: var(--border-radius-xl);
-    padding: var(--space-6) var(--space-8);
-    max-width: 56rem;
-  }
-
-  @media (--breakpoint-md) {
-    .booking-card {
-      padding: var(--space-8) var(--space-12);
-    }
-  }
-</style>
+<Template {data} />

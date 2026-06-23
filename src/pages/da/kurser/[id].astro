@@ -1,11 +1,11 @@
 ---
 import { getCollection } from "astro:content";
-import Template from "../../templates/Course.astro";
+import Template from "../../../templates/Course.astro";
 
 export async function getStaticPaths() {
   const posts = await getCollection(
     "courses",
-    (course) => course.data.language === "en" && course.data.hasPage,
+    (course) => course.data.language === "da" && course.data.hasPage,
   );
   return posts.map((post) => ({
     params: { id: post.data.slug },

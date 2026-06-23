@@ -1,0 +1,177 @@
+---
+import { CollectionEntry, getCollection } from "astro:content";
+import { StructuredText } from "@datocms/astro";
+import Accordion from "@components/Accordion.astro";
+import ButtonGroup from "@components/ButtonGroup.astro";
+import ButtonLink from "@components/ButtonLink.astro";
+import Hero, { type HeroButton } from "@components/Hero.astro";
+import Layout from "../layouts/Layout.astro";
+import PageHead from "@components/PageHead.astro";
+import FormSection from "@features/forms/FormSection.astro";
+import PrivateBookingPricingList from "@features/pricing/PrivateBookingPricingList.astro";
+import Link from "@components/Link.astro";
+import Section from "@components/Section.astro";
+import { getEntry } from "astro:content";
+import { defaultLocale, type Locale } from "@lib/routeUtils";
+import { localeSchema } from "../schemas/locale";
+
+interface Props {
+  data: CollectionEntry<"courses">;
+}
+
+function composeNumDaysDesc(input: number[], locale = defaultLocale) {
+  const suffixMap: Record<Locale, { one: string; many: string }> = {
+    sv: { one: "dag", many: "dagar" },
+    da: { one: "dag", many: "dage" },
+    en: { one: "day", many: "days" },
+  };
+  const numDays = input.join("-");
+  const numDaysSuffix =
+    numDays === "1" ? suffixMap[locale].one : suffixMap[locale].many;
+  return `${numDays} ${numDaysSuffix}`;
+}
+
+function composeCta(title: string, locale = defaultLocale) {
+  title = title.toLowerCase();
+  if (locale === "sv") {
+    return `Boka ${title}`;
+  }
+  return `Book ${title}`;
+}
+
+const TRANSLATIONS = {
+  readStandard: {
+    sv: "Läs kursnormen",
+    da: "Læs kursusstandarderne",
+    en: "Read course standard",
+  },
+  duration: {
+    sv: "Tidsåtgång",
+    da: "Varighed",
+    en: "Duration",
+  },
+  prerequisites: {
+    sv: "Förkunskapskrav",
+    da: "Forudsætninger",
+    en: "Prerequisites",
+  },
+  standard: {
+    sv: "Kursnorm",
+    da: "Kursusstandard",
+    en: "Course standard",
+  },
+  standardLinkLabel: {
+    sv: "Denna kurs uppfyller Svenska Klätterförbundets norm för $1",
+    da: 'Dette kursus opfylder den svenske klatreforbunds standard "$1"',
+    en: 'This course meets the Swedish Climbing Federation\'s standard "$1"',
+  },
+  standardDescription: {
+    sv: "Normerna säkerställer att kursen leds av instruktörer med rätt kompetens och att innehållet följer etablerade säkerhetskrav.",
+    da: "Standarderne sikrer, at kurset ledes af instruktører med de rette færdigheder, og at indholdet følger etablerede sikkerhedskrav.",
+    en: "The standards ensure that the course is led by instructors with the right skills and that the content follows established safety requirements.",
+  },
+  pricing: {
+    sv: "Pris",
+    da: "Pris",
+    en: "Pricing",
+  },
+} as const satisfies Record<string, Record<Locale, string>>;
+
+const {
+  data: {
+    excerpt,
+    title,
+    heroImage,
+    body,
+    numDays,
+    norm,
+    prerequisites,
+    form,
+    preselectedFields,
+  },
+} = Astro.props;
+const locale = localeSchema.parse(Astro.currentLocale);
+const formEntry = form && (await getEntry("forms", form));
+const h1 = locale === "sv" && norm ? norm.title : title;
+const cta = composeCta(title, locale);
+const numDaysDesc = composeNumDaysDesc(numDays, locale);
+const heroButtons: HeroButton[] = [{ label: cta, href: "#boka" }];
+if (norm?.url) {
+  heroButtons.push({
+    label: TRANSLATIONS.readStandard[locale],
+    href: norm.url,
+    target: "_blank",
+  });
+}
+---
+
+<Layout fientaEmbed metaDescription={excerpt} metaTitle={title}>
+  {
+    heroImage ? (
+      <Hero
+        buttons={heroButtons}
+        content={excerpt}
+        image={heroImage}
+        title={h1}
+      />
+    ) : (
+      <PageHead content={excerpt} title={h1}>
+        <ButtonGroup slot="buttons">
+          {heroButtons.map(({ href, label, target }, i) => (
+            <ButtonLink
+              {href}
+              {target}
+              variant={i == 0 ? "primary" : "default"}
+            >
+              {label}
+            </ButtonLink>
+          ))}
+        </ButtonGroup>
+      </PageHead>
+    )
+  }
+  <Section>
+    <div class="collection-entry">
+      {body && <StructuredText data={body} />}
+      <p>
+        <strong>{TRANSLATIONS.duration[locale]}:</strong>
+        {numDaysDesc}.
+      </p>
+    </div>
+  </Section>
+
+  <Section>
+    {
+      prerequisites && (
+        <Accordion title={TRANSLATIONS.prerequisites[locale]}>
+          <div set:html={prerequisites} />
+        </Accordion>
+      )
+    }
+    {
+      norm?.url && (
+        <Accordion title={TRANSLATIONS.standard[locale]}>
+          <>
+            <p>
+              <Link href={norm.url} target="_blank">
+                {TRANSLATIONS.standardLinkLabel[locale].replace(
+                  "$1",
+                  norm.title,
+                )}
+              </Link>
+            </p>
+            <p>{TRANSLATIONS.standardDescription[locale]}</p>
+          </>
+        </Accordion>
+      )
+    }
+    <Accordion title={TRANSLATIONS.pricing[locale]}>
+      <PrivateBookingPricingList class="mt-4" {locale} />
+    </Accordion>
+  </Section>
+  {
+    formEntry && (
+      <FormSection form={formEntry} id="boka" title={cta} {preselectedFields} />
+    )
+  }
+</Layout>

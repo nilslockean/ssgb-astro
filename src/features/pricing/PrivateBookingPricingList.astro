@@ -2,27 +2,48 @@
 import type { HTMLAttributes } from "astro/types";
 import { formatPrice } from "@lib/stringUtils";
 import { getLocalizedConfig } from "@lib/contentUtils";
+import { defaultLocale, type Locale } from "@lib/routeUtils";
+import { localeSchema } from "../../schemas/locale";
 
-interface Props extends HTMLAttributes<"ul"> {}
+interface Props extends HTMLAttributes<"ul"> {
+  locale?: Locale;
+}
 
-const { class: className, ...rest } = Astro.props;
-const config = await getLocalizedConfig(Astro.currentLocale);
+const TRANSLATIONS = {
+  perPersonPerDay: {
+    sv: "per person och dag",
+    da: "per person og dag",
+    en: "per person per day",
+  },
+} as const satisfies Record<string, Record<Locale, string>>;
+
+const personWord: Record<Locale, { one: string; many: string }> = {
+  sv: { one: "person", many: "personer" },
+  da: { one: "person", many: "personer" },
+  en: { one: "person", many: "people" },
+};
+
+const { locale = defaultLocale, class: className, ...rest } = Astro.props;
+const currentLocale = localeSchema.parse(locale);
+const config = await getLocalizedConfig(currentLocale);
 const {
   defaultPrices: { single, double, many },
 } = config;
 
+const pw = personWord[currentLocale];
+
 const list = [
-  ["1 person", single],
-  ["2 personer", double],
-  ["3-4 personer", many],
-] as const satisfies [string, number][];
+  [`1 ${pw.one}`, single],
+  [`2 ${pw.many}`, double],
+  [`3-4 ${pw.many}`, many],
+] satisfies [string, number][];
 ---
 
 <ul class:list={[className]} {...rest}>
   {
     list.map(([label, price]) => (
       <li>
-        <strong>{label}:</strong> {formatPrice([price])} per person och dag
+        <strong>{label}:</strong> {formatPrice([price])} {TRANSLATIONS.perPersonPerDay[currentLocale]}
       </li>
     ))
   }

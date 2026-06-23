@@ -18,7 +18,6 @@ export const courseSchema = z.object({
   prerequisites: z.string().nullable().optional(),
   heroImage: datoImageSchema.optional(),
   maxParticipants: z.number().min(1).default(4),
-  minAge: z.number().nullable().default(null),
   norm: datoNormSchema.optional(),
   body: z.custom<CdaStructuredTextValue>().optional(),
   form: z.string().optional(),
@@ -45,7 +44,6 @@ const datoCourseSchema = z.object({
   featured: z.boolean(),
   prerequisites: z.string().nullable(),
   maxParticipants: z.number().nullable(),
-  minAge: z.number().nullable(),
   norm: z
     .object({
       title: z.string(),
@@ -106,7 +104,6 @@ export function datoCoursesLoader(): Loader {
                   }
                 : undefined,
               maxParticipants: course.maxParticipants ?? 4,
-              minAge: course.minAge ?? null,
               norm: course.norm ?? undefined,
               body: course.content ?? undefined,
               form: course.form ? `${locale}-${course.form.id}` : undefined,

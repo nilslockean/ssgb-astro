@@ -206,7 +206,6 @@ export const COURSES_QUERY = `
       featured
       prerequisites
       maxParticipants
-      minAge
       norm { title url }
       form { id }
       preselectedFields(locale: $locale)
