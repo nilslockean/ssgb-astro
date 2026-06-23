@@ -7,6 +7,17 @@ export const LOCALE_CODES = [
   "en",
 ] as const satisfies readonly Locale[];
 
+const COURSES_BASE: Record<Locale, string> = {
+  sv: "kurser",
+  en: "courses",
+  da: "kurser",
+};
+const TRIPS_BASE: Record<Locale, string> = {
+  sv: "resor",
+  en: "trips",
+  da: "rejse",
+};
+
 export function composePath(slug: string, locale = defaultLocale, parent = "") {
   const localePrefixMap: Record<Locale, string> = {
     sv: "/",
@@ -33,17 +44,6 @@ export function composePath(slug: string, locale = defaultLocale, parent = "") {
 
   return path;
 }
-
-const COURSES_BASE: Record<Locale, string> = {
-  sv: "kurser",
-  en: "courses",
-  da: "kurser",
-};
-const TRIPS_BASE: Record<Locale, string> = {
-  sv: "resor",
-  en: "trips",
-  da: "rejse",
-};
 
 export function courseUrl(
   slug: string,
