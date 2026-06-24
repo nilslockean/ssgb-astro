@@ -3,7 +3,7 @@ import { z } from "astro/zod";
 import { executeQuery } from "@lib/datocms";
 import { SITE_CONFIG_QUERY } from "@lib/datoQueries";
 import { localeSchema } from "../schemas/locale";
-import { datoSeoTagsSchema, type DatoSeoTag } from "../schemas/dato";
+import { datoImageSchema, datoSeoTagsSchema, type DatoSeoTag } from "../schemas/dato";
 import {
   composePath,
   courseUrl,
@@ -77,6 +77,13 @@ const datoSiteConfigSchema = z.object({
     height: z.number(),
     alt: z.string(),
   }),
+  logo: z.object({
+    url: z.string(),
+    width: z.number(),
+    height: z.number(),
+    alt: z.string(),
+    format: z.string(),
+  }).nullable(),
 });
 
 const datoSiteResponseSchema = z.object({
@@ -137,6 +144,7 @@ export const configSchema = z.object({
   authorizedInstructor: z.record(localeSchema, authorizedInstructorSchema),
   faviconMetaTags: datoSeoTagsSchema,
   globalSeo: globalSeoSchema.nullable(),
+  logo: datoImageSchema.nullable(),
 });
 
 export type SiteConfig = z.infer<typeof configSchema>;
@@ -157,6 +165,7 @@ export const localizedConfigSchema = z.object({
   authorizedInstructor: authorizedInstructorSchema,
   faviconMetaTags: datoSeoTagsSchema,
   globalSeo: globalSeoSchema.nullable(),
+  logo: datoImageSchema.nullable(),
 });
 
 // ── Loader ────────────────────────────────────────────────────────────────────
@@ -268,6 +277,9 @@ export function configLoader(): Loader {
           authorizedInstructor,
           faviconMetaTags,
           globalSeo,
+          logo: svConfig.logo
+            ? { src: svConfig.logo.url, width: svConfig.logo.width, height: svConfig.logo.height, alt: svConfig.logo.alt }
+            : null,
         },
       });
 

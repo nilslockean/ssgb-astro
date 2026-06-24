@@ -150,6 +150,7 @@ export const SITE_CONFIG_QUERY = `
       authorizedInstructorTitle(locale: $locale)
       authorizedInstructorContent(locale: $locale)
       authorizedInstructorImage(locale: $locale) { url width height alt }
+      logo { url width height alt format }
     }
   }
 `;
