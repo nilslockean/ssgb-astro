@@ -3,13 +3,14 @@ import { z } from "astro/zod";
 import { executeQuery } from "@lib/datocms";
 import { TEAMS_QUERY } from "@lib/datoQueries";
 import { LOCALE_CODES } from "@lib/routeUtils";
-import { datoImageSchema } from "src/schemas/dato";
+import { datoImageSchema, datoResponsiveImageSchema } from "src/schemas/dato";
 import { localeSchema } from "src/schemas/locale";
 
 export const teamSchema = z.object({
   name: z.string(),
   bio: z.string(),
   image: datoImageSchema,
+  imageData: datoResponsiveImageSchema.optional(),
   alt: z.string().nullable().optional(),
   title: z.string().optional(),
   language: localeSchema.default("sv"),
@@ -27,6 +28,7 @@ const datoTeamMemberSchema = z.object({
       width: z.number(),
       height: z.number(),
       alt: z.string().nullable(),
+      responsiveImage: datoResponsiveImageSchema.nullable(),
     })
     .nullable(),
   position: z.number(),
@@ -65,6 +67,7 @@ export function datoTeamLoader(): Loader {
                     alt: person.image.alt ?? undefined,
                   }
                 : undefined,
+              imageData: person.image?.responsiveImage ?? undefined,
               alt: person.image?.alt ?? undefined,
               title: person.title ?? undefined,
               language: locale,

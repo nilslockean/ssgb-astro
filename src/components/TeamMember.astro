@@ -1,14 +1,14 @@
 ---
 import type { CollectionEntry } from "astro:content";
 import type { HTMLAttributes } from "astro/types";
-import { Image } from "astro:assets";
+import { Image } from "@datocms/astro/Image";
 
 interface Props extends HTMLAttributes<"li"> {
   person: CollectionEntry<"team">;
 }
 const {
   person: {
-    data: { name, bio, image, alt, title },
+    data: { name, bio, image, imageData, alt, title },
   },
 } = Astro.props;
 ---
@@ -16,14 +16,21 @@ const {
 <div class="team-member">
   <figure class="team-member__figure">
     <div class="team-member__image-wrapper">
-      <Image
-        alt={alt ?? ""}
-        class="team-member__image"
-        height={image?.height ?? 800}
-        loading="lazy"
-        src={image?.src ?? ""}
-        width={image?.width ?? 600}
-      />
+      {imageData ? (
+        <Image
+          data={imageData}
+          imgClass="team-member__image"
+          usePlaceholder
+        />
+      ) : (
+        <img
+          alt={alt ?? ""}
+          class="team-member__image"
+          height={image?.height ?? 800}
+          src={image?.src ?? ""}
+          width={image?.width ?? 600}
+        />
+      )}
     </div>
   </figure>
 

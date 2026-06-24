@@ -28,11 +28,12 @@ const heroButtons: HeroButton[] = [
 
 <Layout metaDescription={post.data.excerpt} metaTitle={post.data.title} seoData={post.data.seo}>
   {
-    post.data.heroImage ? (
+    post.data.heroImage || post.data.heroImageData ? (
       <Hero
         buttons={heroButtons}
         content={post.data.excerpt}
         image={post.data.heroImage}
+        data={post.data.heroImageData}
         title={post.data.title}
       />
     ) : (

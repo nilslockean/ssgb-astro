@@ -28,3 +28,13 @@ export const datoSeoTagSchema = z.object({
 export type DatoSeoTag = z.infer<typeof datoSeoTagSchema>;
 
 export const datoSeoTagsSchema = z.array(datoSeoTagSchema);
+
+export const datoResponsiveImageSchema = z.object({
+  src: z.string(),
+  width: z.number(),
+  height: z.number(),
+  alt: z.string().nullable().optional(),
+  base64: z.string().nullable().optional(),
+});
+
+export type DatoResponsiveImage = z.infer<typeof datoResponsiveImageSchema>;

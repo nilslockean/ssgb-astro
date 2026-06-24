@@ -230,7 +230,10 @@ export const COURSES_QUERY = `
       excerpt
       seo: _seoMetaTags { attributes content tag }
       content { value blocks links }
-      featuredImage { url width height alt }
+      featuredImage {
+        url width height alt
+        responsiveImage(imgixParams: { auto: format, w: 1600 }) { src width height alt base64 }
+      }
       numDaysMin
       numDaysMax
       featured
@@ -252,7 +255,10 @@ export const TRIPS_QUERY = `
       slug(locale: $locale)
       excerpt(locale: $locale)
       seo: _seoMetaTags { attributes content tag }
-      featuredImage { url width height alt }
+      featuredImage {
+        url width height alt
+        responsiveImage(imgixParams: { auto: format, w: 1600 }) { src width height alt base64 }
+      }
       content(locale: $locale) {
         value
         blocks {
@@ -350,7 +356,10 @@ export const TEAMS_QUERY = `
       name
       title(locale: $locale)
       bio(locale: $locale)
-      image { url width height alt }
+      image {
+        url width height alt
+        responsiveImage(imgixParams: { auto: format, w: 600 }) { src width height alt base64 }
+      }
       position
     }
   }

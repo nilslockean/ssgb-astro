@@ -82,6 +82,7 @@ const {
     excerpt,
     title,
     heroImage,
+    heroImageData,
     body,
     numDays,
     norm,
@@ -108,11 +109,12 @@ if (norm?.url) {
 
 <Layout fientaEmbed metaDescription={excerpt} metaTitle={title} seoData={seo}>
   {
-    heroImage ? (
+    heroImage || heroImageData ? (
       <Hero
         buttons={heroButtons}
         content={excerpt}
         image={heroImage}
+        data={heroImageData}
         title={h1}
       />
     ) : (

@@ -1,16 +1,18 @@
 ---
 import { Picture } from "astro:assets";
+import { Image } from "@datocms/astro/Image";
 import type { ImageMetadata } from "astro";
 import type { HTMLAttributes } from "astro/types";
 import ButtonGroup from "./ButtonGroup.astro";
 import ButtonLink from "./ButtonLink.astro";
 import Eyebrow from "./Eyebrow.astro";
-import type { DatoImage } from "../schemas/dato";
+import type { DatoImage, DatoResponsiveImage } from "../schemas/dato";
 
 export type HeroButton = { label: string; href: string; target?: string };
 
 interface Props extends HTMLAttributes<"section"> {
   image?: ImageMetadata | DatoImage;
+  data?: DatoResponsiveImage;
   video?: string;
   title: string;
   content: string;
@@ -21,6 +23,7 @@ interface Props extends HTMLAttributes<"section"> {
 
 const {
   image,
+  data,
   video,
   title,
   content,
@@ -45,6 +48,30 @@ const {
       <video autoplay class="hero__video" loop muted playsinline>
         <source src={video} type="video/mp4" />
       </video>
+    ) : data ? (
+      <Image
+        data={data}
+        pictureClass="hero__img"
+        priority
+        usePlaceholder={false}
+        imgStyle={{
+          objectFit: "cover",
+          width: "100%",
+          height: "100%",
+          maxWidth: "none",
+          opacity: 0,
+          transition: "opacity 0.4s ease-in",
+        }}
+        pictureStyle={{
+          position: "absolute",
+          inset: 0,
+          width: "100%",
+          height: "100%",
+          backgroundImage: data.base64 ? `url("${data.base64}")` : undefined,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+        }}
+      />
     ) : image ? (
       <Picture
         alt=""
@@ -92,6 +119,32 @@ const {
   </div>
 </section>
 
+<script>
+;(function () {
+  function fadeIn(img) {
+    img.style.opacity = "1";
+  }
+  function setup() {
+    var pictures = document.querySelectorAll(".hero__img");
+    for (var i = 0; i < pictures.length; i++) {
+      var img = pictures[i].querySelector("img");
+      if (!img) continue;
+      if (img.complete) {
+        fadeIn(img);
+      } else {
+        img.addEventListener("load", fadeIn.bind(null, img));
+        img.addEventListener("error", fadeIn.bind(null, img));
+      }
+    }
+  }
+  document.addEventListener("DOMContentLoaded", setup);
+  document.addEventListener("astro:page-load", setup);
+  if (document.readyState === "complete") {
+    setup();
+  }
+})();
+</script>
+
 <style>
   @import "../styles/breakpoints.css";
 
@@ -128,6 +181,14 @@ const {
 
   .hero--video .hero__overlay {
     --opacity: 0.65;
+  }
+
+  @keyframes hero-fade-in {
+    to { opacity: 1; }
+  }
+
+  .hero__img img {
+    animation: hero-fade-in 0.6s ease-in 10s forwards;
   }
 
   .hero__img {
