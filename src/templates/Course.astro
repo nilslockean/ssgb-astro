@@ -88,6 +88,7 @@ const {
     prerequisites,
     form,
     preselectedFields,
+    seo,
   },
 } = Astro.props;
 const locale = localeSchema.parse(Astro.currentLocale);
@@ -105,7 +106,7 @@ if (norm?.url) {
 }
 ---
 
-<Layout fientaEmbed metaDescription={excerpt} metaTitle={title}>
+<Layout fientaEmbed metaDescription={excerpt} metaTitle={title} seoData={seo}>
   {
     heroImage ? (
       <Hero

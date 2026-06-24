@@ -122,6 +122,19 @@ const ACCORDION_RECORD_BLOCK = `
 
 export const SITE_CONFIG_QUERY = `
   query SiteConfig($locale: SiteLocale!) {
+    _site {
+      faviconMetaTags(variants: [icon, appleTouchIcon, msApplication]) {
+        attributes
+        content
+        tag
+      }
+      globalSeo {
+        siteName
+        titleSuffix
+        twitterAccount
+        facebookPageUrl
+      }
+    }
     siteConfig {
       title
       tagline(locale: $locale)
@@ -149,6 +162,7 @@ export const PAGES_QUERY = `
       title(locale: $locale)
       excerpt(locale: $locale)
       slug(locale: $locale)
+      seo: _seoMetaTags { attributes content tag }
       form { id }
       structuredText(locale: $locale) {
         value
@@ -213,6 +227,7 @@ export const COURSES_QUERY = `
       title
       slug
       excerpt
+      seo: _seoMetaTags { attributes content tag }
       content { value blocks links }
       featuredImage { url width height alt }
       numDaysMin
@@ -235,6 +250,7 @@ export const TRIPS_QUERY = `
       title(locale: $locale)
       slug(locale: $locale)
       excerpt(locale: $locale)
+      seo: _seoMetaTags { attributes content tag }
       featuredImage { url width height alt }
       content(locale: $locale) {
         value
@@ -342,6 +358,7 @@ export const TEAMS_QUERY = `
 export const HOME_PAGE_QUERY = `
   query HomePage($locale: SiteLocale!) {
     homePage {
+      seo: _seoMetaTags { attributes content tag }
       eyebrow(locale: $locale)
       tagline(locale: $locale)
       title(locale: $locale)

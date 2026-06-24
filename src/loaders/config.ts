@@ -3,6 +3,7 @@ import { z } from "astro/zod";
 import { executeQuery } from "@lib/datocms";
 import { SITE_CONFIG_QUERY } from "@lib/datoQueries";
 import { localeSchema } from "../schemas/locale";
+import { datoSeoTagsSchema, type DatoSeoTag } from "../schemas/dato";
 import {
   composePath,
   courseUrl,
@@ -78,6 +79,19 @@ const datoSiteConfigSchema = z.object({
   }),
 });
 
+const datoSiteResponseSchema = z.object({
+  _site: z.object({
+    faviconMetaTags: datoSeoTagsSchema,
+    globalSeo: z.object({
+      siteName: z.string().nullable(),
+      titleSuffix: z.string().nullable(),
+      twitterAccount: z.string().nullable(),
+      facebookPageUrl: z.string().nullable(),
+    }).nullable(),
+  }),
+  siteConfig: datoSiteConfigSchema,
+});
+
 // ── Shared sub-schemas ────────────────────────────────────────────────────────
 
 const authorizedInstructorSchema = z.object({
@@ -102,6 +116,13 @@ const defaultPricesSchema = z.object({
 
 // ── Stored config schema (content collection) ─────────────────────────────────
 
+const globalSeoSchema = z.object({
+  siteName: z.string().nullable(),
+  titleSuffix: z.string().nullable(),
+  twitterAccount: z.string().nullable(),
+  facebookPageUrl: z.string().nullable(),
+});
+
 export const configSchema = z.object({
   siteTitle: z.literal("Sydsveriges Guidebyrå"),
   siteUrl: z.url(),
@@ -114,6 +135,8 @@ export const configSchema = z.object({
     footer: z.record(localeSchema, navSchema),
   }),
   authorizedInstructor: z.record(localeSchema, authorizedInstructorSchema),
+  faviconMetaTags: datoSeoTagsSchema,
+  globalSeo: globalSeoSchema.nullable(),
 });
 
 export type SiteConfig = z.infer<typeof configSchema>;
@@ -132,6 +155,8 @@ export const localizedConfigSchema = z.object({
     footer: navSchema,
   }),
   authorizedInstructor: authorizedInstructorSchema,
+  faviconMetaTags: datoSeoTagsSchema,
+  globalSeo: globalSeoSchema.nullable(),
 });
 
 // ── Loader ────────────────────────────────────────────────────────────────────
@@ -181,15 +206,22 @@ export function configLoader(): Loader {
         config: z.infer<typeof datoSiteConfigSchema>;
       }> = [];
 
+      let faviconMetaTags: DatoSeoTag[] = [];
+      let globalSeo: z.infer<typeof globalSeoSchema> | null = null;
+
       for (const locale of LOCALE_CODES) {
-        const { siteConfig } = await executeQuery(
+        const response = await executeQuery(
           SITE_CONFIG_QUERY,
-          z.object({ siteConfig: datoSiteConfigSchema }),
+          datoSiteResponseSchema,
           { locale },
         );
-        if (!siteConfig)
+        if (!response.siteConfig)
           throw new Error("No siteConfig record found in DatoCMS");
-        results.push({ locale, config: siteConfig });
+        if (locale === "sv") {
+          faviconMetaTags = response._site.faviconMetaTags;
+          globalSeo = response._site.globalSeo;
+        }
+        results.push({ locale, config: response.siteConfig });
         logger.info(`Loaded ${locale} site config from DatoCMS`);
       }
 
@@ -234,6 +266,8 @@ export function configLoader(): Loader {
           },
           navigation: { primary, secondary, footer },
           authorizedInstructor,
+          faviconMetaTags,
+          globalSeo,
         },
       });
 

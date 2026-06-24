@@ -12,7 +12,10 @@ import AuthorizedInstructorBanner from "@features/banners/AuthorizedInstructorBa
 import { ENABLE_POSTHOG, POSTHOG_PROJECT_API_KEY } from "astro:env/client";
 import Fienta from "@features/third-party/fienta.astro";
 import { Font } from "astro:assets";
+import { Seo } from "@datocms/astro/Seo";
 import { getLocalizedConfig } from "../lib/contentUtils.ts";
+import { getLocalizedUrls } from "../lib/routeUtils.ts";
+import type { DatoSeoTag } from "../schemas/dato.ts";
 
 const config = await getLocalizedConfig(Astro.currentLocale);
 
@@ -21,12 +24,23 @@ export interface Props {
   metaTitle?: string;
   tagline?: string;
   fientaEmbed?: boolean;
+  seoData?: DatoSeoTag[];
 }
-const { metaDescription, tagline, metaTitle, fientaEmbed } = Astro.props;
+const { metaDescription, tagline, metaTitle, fientaEmbed, seoData } = Astro.props;
 const url = Astro.url.toString();
 const title = metaTitle
   ? `${metaTitle} • ${config.siteTitle}`
   : `${config.siteTitle} • ${tagline || config.siteTagline}`;
+
+const faviconData = config.faviconMetaTags ?? [];
+const allSeoData = seoData ? [...seoData, ...faviconData] : undefined;
+
+let localizedUrls: Record<string, string> | null = null;
+try {
+  localizedUrls = await getLocalizedUrls(Astro.url);
+} catch {
+  // not available for error pages or unmatched routes
+}
 ---
 
 <!doctype html>
@@ -36,21 +50,34 @@ const title = metaTitle
     <meta content="width=device-width" name="viewport" />
     <link href="/favicon.svg" rel="icon" type="image/svg+xml" />
     <meta content={Astro.generator} name="generator" />
-    <title set:html={title} />
-    <meta content={metaDescription} name="description" />
 
-    <meta content={url} property="og:url" />
-    <meta content="website" property="og:type" />
-    <meta content={title} property="og:title" />
-    <meta content={metaDescription} property="og:description" />
-    <meta content="/og-default.png" property="og:image" />
+    {allSeoData ? (
+      <Seo data={allSeoData} />
+    ) : (
+      <>
+        <title set:html={title} />
+        <meta content={metaDescription} name="description" />
+        <meta content={url} property="og:url" />
+        <meta content="website" property="og:type" />
+        <meta content={title} property="og:title" />
+        <meta content={metaDescription} property="og:description" />
+        <meta content="summary_large_image" name="twitter:card" />
+        <meta content={url} property="twitter:url" />
+        <meta content={title} name="twitter:title" />
+        <meta content={metaDescription} name="twitter:description" />
+      </>
+    )}
 
-    <meta content="summary_large_image" name="twitter:card" />
-    <meta content="dubbel8.se" property="twitter:domain" />
-    <meta content={url} property="twitter:url" />
-    <meta content={title} name="twitter:title" />
-    <meta content={metaDescription} name="twitter:description" />
-    <meta content="/og-default.png" name="twitter:image" />
+    <link href={url} rel="canonical" />
+    {localizedUrls && (
+      <>
+        {Object.entries(localizedUrls).map(([locale, href]) => (
+          <link href={href} rel="alternate" hreflang={locale} />
+        ))}
+        <link href={localizedUrls.sv} rel="alternate" hreflang="x-default" />
+      </>
+    )}
+
     <Font cssVariable="--font-barlow-condensed" preload />
     <Font cssVariable="--font-host-grotesk" preload />
 

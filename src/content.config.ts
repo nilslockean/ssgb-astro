@@ -1,10 +1,11 @@
 import { defineCollection } from "astro:content";
+import { configLoader, configSchema } from "./loaders/config";
+import { homePageLoader, homePageSchema } from "./loaders/homePage";
 import { datoCoursesLoader, courseSchema } from "./loaders/courses";
 import { datoPagesLoader, pageSchema } from "./loaders/pages";
 import { datoTeamLoader, teamSchema } from "./loaders/team";
 import { datoTripsLoader, tripSchema } from "./loaders/trips";
 import { datoFormsLoader, formSchema } from "./loaders/forms";
-import { configCollection, homePageCollection } from "./lib/contentUtils";
 
 const courses = defineCollection({
   loader: datoCoursesLoader(),
@@ -31,12 +32,22 @@ const forms = defineCollection({
   schema: formSchema,
 });
 
+const config = defineCollection({
+  loader: configLoader(),
+  schema: configSchema,
+});
+
+const homePage = defineCollection({
+  loader: homePageLoader(),
+  schema: homePageSchema,
+});
+
 export const collections = {
   courses,
   pages,
   team,
   trips,
   forms,
-  config: configCollection,
-  homePage: homePageCollection,
+  config,
+  homePage,
 };

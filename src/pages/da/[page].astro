@@ -18,7 +18,7 @@ export async function getStaticPaths() {
 const { post } = Astro.props;
 ---
 
-<Layout metaDescription={post.data.excerpt} metaTitle={post.data.title}>
+<Layout metaDescription={post.data.excerpt} metaTitle={post.data.title} seoData={post.data.seo}>
   <Section class="pb-0">
     <h1 class="mb-6">{post.data.title}</h1>
     <p class="intro">{post.data.excerpt}</p>

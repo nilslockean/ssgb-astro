@@ -15,3 +15,16 @@ export const datoNormSchema = z.object({
 });
 
 export type DatoNorm = z.infer<typeof datoNormSchema>;
+
+const seoAttributesSchema = z.record(z.string(), z.string()).nullable();
+const seoContentSchema = z.string().nullable();
+
+export const datoSeoTagSchema = z.object({
+  tag: z.string(),
+  content: seoContentSchema,
+  attributes: seoAttributesSchema,
+});
+
+export type DatoSeoTag = z.infer<typeof datoSeoTagSchema>;
+
+export const datoSeoTagsSchema = z.array(datoSeoTagSchema);

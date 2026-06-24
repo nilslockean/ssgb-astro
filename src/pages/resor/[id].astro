@@ -26,7 +26,7 @@ const heroButtons: HeroButton[] = [
 ];
 ---
 
-<Layout metaDescription={post.data.excerpt} metaTitle={post.data.title}>
+<Layout metaDescription={post.data.excerpt} metaTitle={post.data.title} seoData={post.data.seo}>
   {
     post.data.heroImage ? (
       <Hero

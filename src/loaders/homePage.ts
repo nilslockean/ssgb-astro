@@ -11,6 +11,7 @@ import {
   composePath,
 } from "@lib/routeUtils";
 import { localeSchema } from "src/schemas/locale";
+import { datoSeoTagsSchema, type DatoSeoTag } from "../schemas/dato";
 
 const datoLinkSchema = z.object({
   __typename: z.string().optional(),
@@ -49,6 +50,7 @@ const datoStructuredTextSchema = z.object({
 });
 
 const datoHomePageSchema = z.object({
+  seo: datoSeoTagsSchema,
   eyebrow: z.string().nullable(),
   tagline: z.string().nullable(),
   title: z.string(),
@@ -72,6 +74,7 @@ export const homePageSchema = z.object({
   heroButtons: z.record(localeSchema, z.array(heroButtonSchema)),
   structuredText: z.record(localeSchema, z.custom<CdaStructuredTextValue>()),
   heroVideo: z.string(),
+  seo: z.record(localeSchema, datoSeoTagsSchema),
 });
 
 export const localizedHomePageSchema = z.object({
@@ -82,6 +85,7 @@ export const localizedHomePageSchema = z.object({
   heroButtons: z.array(heroButtonSchema),
   structuredText: z.custom<CdaStructuredTextValue>(),
   heroVideo: z.string(),
+  seo: datoSeoTagsSchema,
 });
 
 function resolveButtonLink(
@@ -130,6 +134,7 @@ export function homePageLoader(): Loader {
       const heroButtons: Record<string, z.infer<typeof heroButtonSchema>[]> =
         {};
       const structuredText: Record<string, CdaStructuredTextValue> = {};
+      const seo: Record<string, DatoSeoTag[]> = {};
       let heroVideo = "";
 
       for (const { locale, data } of results) {
@@ -145,6 +150,7 @@ export function homePageLoader(): Loader {
         }));
 
         structuredText[locale] = data.structuredText as CdaStructuredTextValue;
+        seo[locale] = data.seo;
 
         if (!heroVideo && data.heroVideo?.video?.mp4High) {
           heroVideo = data.heroVideo.video.mp4High;
@@ -164,6 +170,7 @@ export function homePageLoader(): Loader {
           heroButtons,
           structuredText,
           heroVideo,
+          seo,
         },
       });
 

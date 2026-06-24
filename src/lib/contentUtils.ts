@@ -1,61 +1,11 @@
-import { getCollection, type CollectionEntry } from "astro:content";
+import { getCollection, getEntry, type CollectionEntry } from "astro:content";
 import { z } from "astro/zod";
-import { defaultLocale, type Locale } from "./routeUtils";
-import { defineSingleton } from "./singleton";
-import {
-  configLoader,
-  configSchema,
-  localizedConfigSchema,
-} from "../loaders/config";
-import {
-  homePageLoader,
-  homePageSchema,
-  localizedHomePageSchema,
-} from "../loaders/homePage";
+import { localeSchema } from "src/schemas/locale";
+import { localizedConfigSchema } from "../loaders/config";
+import { localizedHomePageSchema } from "../loaders/homePage";
+import { defaultLocale } from "./routeUtils";
 
 export type LocalizedConfig = z.infer<typeof localizedConfigSchema>;
-
-const configSingleton = defineSingleton({
-  name: "config",
-  loader: configLoader(),
-  schema: configSchema,
-  localizedSchema: localizedConfigSchema,
-  localize: (data, locale) => ({
-    ...data,
-    siteTagline: data.siteTagline[locale],
-    navigation: {
-      primary: data.navigation.primary[locale] ?? [],
-      secondary: data.navigation.secondary[locale] ?? [],
-      footer: data.navigation.footer[locale] ?? [],
-    },
-    authorizedInstructor: data.authorizedInstructor[locale],
-  }),
-});
-
-const homePageSingleton = defineSingleton({
-  name: "homePage",
-  loader: homePageLoader(),
-  schema: homePageSchema,
-  localizedSchema: localizedHomePageSchema,
-  localize: (data, locale: Locale) => ({
-    eyebrow: data.eyebrow[locale],
-    tagline: data.tagline[locale],
-    title: data.title[locale],
-    heroDescription: data.heroDescription[locale],
-    heroButtons: data.heroButtons[locale],
-    structuredText: data.structuredText[locale],
-    heroVideo: data.heroVideo,
-  }),
-});
-
-export const configCollection = configSingleton.collection;
-export const homePageCollection = homePageSingleton.collection;
-
-export const getLocalizedConfig = (locale: string) =>
-  configSingleton.getLocalized(locale);
-
-export const getLocalizedHomePage = (locale: string) =>
-  homePageSingleton.getLocalized(locale);
 
 export async function getCourses(
   filter?: (entry: CollectionEntry<"courses">) => unknown,
@@ -66,4 +16,46 @@ export async function getCourses(
     (course) => course.data.language === locale && (!filter || filter(course)),
   );
   return courses.sort((a, b) => a.data.order - b.data.order);
+}
+
+export async function getLocalizedConfig(
+  locale: string,
+): Promise<LocalizedConfig> {
+  const entry = await getEntry("config", "index");
+  if (!entry) {
+    throw new Error(`No singleton entry found for config`);
+  }
+  const currentLocale = localeSchema.catch(defaultLocale).parse(locale);
+  const { data } = entry;
+
+  return localizedConfigSchema.parse({
+    ...data,
+    siteTagline: data.siteTagline[currentLocale],
+    navigation: {
+      primary: data.navigation.primary[currentLocale] ?? [],
+      secondary: data.navigation.secondary[currentLocale] ?? [],
+      footer: data.navigation.footer[currentLocale] ?? [],
+    },
+    authorizedInstructor: data.authorizedInstructor[currentLocale],
+  });
+}
+
+export async function getLocalizedHomePage(locale: string) {
+  const entry = await getEntry("homePage", "index");
+  if (!entry) {
+    throw new Error(`No singleton entry found for homePage`);
+  }
+  const currentLocale = localeSchema.catch(defaultLocale).parse(locale);
+  const { data } = entry;
+
+  return localizedHomePageSchema.parse({
+    eyebrow: data.eyebrow[currentLocale],
+    tagline: data.tagline[currentLocale],
+    title: data.title[currentLocale],
+    heroDescription: data.heroDescription[currentLocale],
+    heroButtons: data.heroButtons[currentLocale],
+    structuredText: data.structuredText[currentLocale],
+    heroVideo: data.heroVideo,
+    seo: data.seo[currentLocale],
+  });
 }

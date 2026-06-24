@@ -5,6 +5,7 @@ import { executeQuery } from "@lib/datocms";
 import { COURSES_QUERY } from "@lib/datoQueries";
 import { LOCALE_CODES } from "@lib/routeUtils";
 import { datoImageSchema, datoNormSchema } from "src/schemas/dato";
+import { datoSeoTagsSchema, type DatoSeoTag } from "../schemas/dato";
 import { localeSchema } from "src/schemas/locale";
 
 export const courseSchema = z.object({
@@ -23,6 +24,7 @@ export const courseSchema = z.object({
   form: z.string().optional(),
   preselectedFields: z.json().optional(),
   hasPage: z.boolean(),
+  seo: datoSeoTagsSchema.optional(),
 });
 
 const datoCourseSchema = z.object({
@@ -30,6 +32,7 @@ const datoCourseSchema = z.object({
   title: z.string(),
   slug: z.string().nullable(),
   excerpt: z.string(),
+  seo: datoSeoTagsSchema,
   content: z.custom<CdaStructuredTextValue>().nullable(),
   featuredImage: z
     .object({
@@ -109,6 +112,7 @@ export function datoCoursesLoader(): Loader {
               form: course.form ? `${locale}-${course.form.id}` : undefined,
               preselectedFields: course.preselectedFields,
               hasPage: course.hasPage,
+              seo: course.seo,
             },
           });
 

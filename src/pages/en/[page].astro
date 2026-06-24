@@ -20,13 +20,13 @@ export async function getStaticPaths() {
 
 const {
   post: {
-    data: { excerpt, eyebrow, title, body, form },
+    data: { excerpt, eyebrow, title, body, form, seo },
   },
 } = Astro.props;
 const formEntry = form && (await getEntry("forms", form));
 ---
 
-<Layout metaDescription={excerpt} metaTitle={title}>
+<Layout metaDescription={excerpt} metaTitle={title} seoData={seo}>
   <Section class="pb-0">
     {eyebrow && <Eyebrow>{eyebrow}</Eyebrow>}
     <h1 class="mb-6">{title}</h1>

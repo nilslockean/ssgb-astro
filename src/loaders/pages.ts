@@ -5,6 +5,7 @@ import { executeQuery } from "@lib/datocms";
 import { PAGES_QUERY } from "@lib/datoQueries";
 import { localeSchema } from "src/schemas/locale";
 import { LOCALE_CODES } from "@lib/routeUtils";
+import { datoSeoTagsSchema, type DatoSeoTag } from "../schemas/dato";
 
 export const pageSchema = z.object({
   language: localeSchema.default("sv"),
@@ -14,6 +15,7 @@ export const pageSchema = z.object({
   excerpt: z.string(),
   body: z.custom<CdaStructuredTextValue>().optional(),
   form: z.string().optional(),
+  seo: datoSeoTagsSchema.optional(),
 });
 
 const datoPageSchema = z.object({
@@ -22,6 +24,7 @@ const datoPageSchema = z.object({
   title: z.string(),
   excerpt: z.string(),
   slug: z.string().nullable(),
+  seo: datoSeoTagsSchema,
   structuredText: z.custom<CdaStructuredTextValue>().nullable(),
   form: z.object({ id: z.string() }).nullable(),
 });
@@ -57,6 +60,7 @@ export function datoPagesLoader(): Loader {
               excerpt: page.excerpt,
               body: page.structuredText ?? undefined,
               form: page.form ? `${locale}-${page.form.id}` : undefined,
+              seo: page.seo,
             },
           });
 

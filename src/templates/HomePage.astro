@@ -12,7 +12,7 @@ const heroButtons = homePage.heroButtons.map(({ label, href }) => ({
 }));
 ---
 
-<Layout metaDescription={homePage.heroDescription} tagline={homePage.tagline}>
+<Layout metaDescription={homePage.heroDescription} tagline={homePage.tagline} seoData={homePage.seo}>
   <Hero
     buttons={heroButtons}
     content={homePage.heroDescription}
