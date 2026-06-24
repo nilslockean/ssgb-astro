@@ -11,13 +11,16 @@ Website for [Sydsveriges Guidebyrå](https://ssgb.se), built with [Astro](https:
 ├── public/                  # Static assets served as-is (favicons, etc.)
 ├── src/
 │   ├── components/          # Reusable Astro components
-│   │   └── dato/            # DatoCMS block components (e.g. ButtonBlock)
+│   ├── features/            # Domain features (dato blocks, forms, navigation, etc.)
 │   ├── layouts/             # Page layout wrappers
 │   ├── lib/                 # Utilities: DatoCMS client, queries, routing
 │   ├── loaders/             # Astro Content Layer loaders (DatoCMS)
 │   ├── pages/               # File-based routes (.astro)
 │   ├── schemas/             # Zod schemas (dato, locale)
-│   └── styles/              # Global CSS
+│   ├── styles/              # Global CSS
+│   └── templates/           # Shared page templates (Course, Trip, HomePage)
+├── migrations/              # DatoCMS migration scripts
+├── content.config.ts        # Astro Content Layer collection definitions
 ├── datoschema.ts            # DatoCMS model type definitions (generated)
 ├── astro.config.mjs         # Astro configuration
 └── package.json
@@ -49,8 +52,7 @@ Copy `.env.example` to `.env` and fill in the required values before running loc
 | Variable                  | Required | Description                                      |
 | :------------------------ | :------- | :----------------------------------------------- |
 | `DATOCMS_CDA_TOKEN`       | ✅       | DatoCMS Content Delivery API token               |
-| `FIENTA_INCLUDE_DRAFTS`   |          | Show draft Fienta events (default: `false`)      |
-| `ENABLE_POSTHOG`          |          | Toggle analytics (default: `true`)               |
+| `ENABLE_POSTHOG`          |          | Toggle analytics (default: `false`)              |
 | `POSTHOG_PROJECT_API_KEY` |          | PostHog project API key                          |
 
 ---
@@ -67,7 +69,6 @@ Dependencies are kept intentionally minimal.
 | :----------------- | :------------------------------------------------------------------------------------------------ |
 | `astro`            | Core framework. File-based routing, component islands, static HTML output with minimal client JS. |
 | `@astrojs/netlify` | Adapter for SSR + static pre-rendering on Netlify.                                                |
-| `@astrojs/mdx`     | `.mdx` file support for trips content.                                                            |
 | `@astrojs/sitemap` | Generates `sitemap.xml` at build time.                                                            |
 
 #### CMS (DatoCMS)
@@ -79,9 +80,7 @@ Dependencies are kept intentionally minimal.
 
 #### Analytics
 
-| Package      | Purpose                                                              |
-| :----------- | :------------------------------------------------------------------- |
-| `posthog-js` | Privacy-friendly product analytics.                                  |
+PostHog is loaded via a CDN snippet — no JavaScript package required.
 
 ### Development
 
@@ -110,6 +109,12 @@ Dependencies are kept intentionally minimal.
 | :--------------------- | :------------------------------------------------------------------------------- |
 | `autoprefixer`         | Adds vendor prefixes automatically.                                              |
 | `postcss-custom-media` | Enables `@custom-media` breakpoint variables (not yet natively supported).       |
+
+#### CLI & migrations
+
+| Package   | Purpose                                                                                       |
+| :-------- | :-------------------------------------------------------------------------------------------- |
+| `datocms` | DatoCMS CLI for schema migrations, content imports, and project management.                   |
 
 #### TypeScript & build tooling
 
