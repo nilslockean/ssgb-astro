@@ -1,0 +1,65 @@
+---
+import type { CollectionEntry } from "astro:content";
+import StructuredText from "@features/dato/StructuredText.astro";
+import ButtonGroup from "@components/ButtonGroup.astro";
+import ButtonLink from "@components/ButtonLink.astro";
+import Hero, { type HeroButton } from "@components/Hero.astro";
+import Layout from "../layouts/Layout.astro";
+import PageHead from "@components/PageHead.astro";
+import Section from "@components/Section.astro";
+import { composePath } from "@lib/routeUtils";
+import { defaultLocale } from "@lib/routeUtils";
+import { localeSchema } from "../schemas/locale";
+
+interface Props {
+  data: CollectionEntry<"trips">["data"];
+}
+
+const CONTACT_SLUG: Record<string, string> = {
+  sv: "kontakt",
+  en: "contact",
+  da: "kontakt",
+};
+
+const {
+  data: { title, excerpt, cta, heroImage, heroImageData, body, seo },
+} = Astro.props;
+
+const locale = localeSchema.catch(defaultLocale).parse(Astro.currentLocale);
+const heroButtons: HeroButton[] = [
+  { label: cta, href: composePath(CONTACT_SLUG[locale], locale) },
+];
+---
+
+<Layout metaDescription={excerpt} metaTitle={title} seoData={seo}>
+  {
+    heroImage || heroImageData ? (
+      <Hero
+        buttons={heroButtons}
+        content={excerpt}
+        image={heroImage}
+        data={heroImageData}
+        title={title}
+      />
+    ) : (
+      <PageHead content={excerpt} title={title}>
+        <ButtonGroup slot="buttons">
+          {heroButtons.map(({ href, label, target }, i) => (
+            <ButtonLink
+              {href}
+              {target}
+              variant={i == 0 ? "primary" : "default"}
+            >
+              {label}
+            </ButtonLink>
+          ))}
+        </ButtonGroup>
+      </PageHead>
+    )
+  }
+  <Section>
+    <div class="collection-entry">
+      {body && <StructuredText data={body} />}
+    </div>
+  </Section>
+</Layout>
