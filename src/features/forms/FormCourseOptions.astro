@@ -32,7 +32,7 @@ const TRANSLATIONS = {
 <label {id}>
   {label}{required && "*"}
   <br />
-  <select id={name} {required}>
+  <select id={name} {name} {required}>
     <option value="">{placeholder || label}</option>
     {
       options.map((option) => (
