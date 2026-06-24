@@ -67,12 +67,6 @@ export default defineConfig({
         access: "public",
         default: "",
       }),
-      FIENTA_INCLUDE_DRAFTS: envField.boolean({
-        context: "server",
-        access: "public",
-        optional: true,
-        default: false,
-      }),
       DATOCMS_CDA_TOKEN: envField.string({
         context: "server",
         access: "secret",

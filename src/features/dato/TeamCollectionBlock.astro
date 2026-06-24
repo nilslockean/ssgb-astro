@@ -6,8 +6,6 @@ import { localeSchema } from "../../schemas/locale";
 interface Props {
   block: {};
 }
-
-const { block } = Astro.props;
 const locale = localeSchema.parse(Astro.currentLocale);
 
 const teamMembers = await getCollection(

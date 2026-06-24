@@ -2,15 +2,14 @@
 import "../styles/global.css";
 import SiteLogo from "@features/navigation/SiteLogo.astro";
 import SidebarNav from "@features/navigation/SidebarNav.astro";
-import PostHog from "@features/third-party/posthog.astro";
 import ButtonGroup from "@components/ButtonGroup.astro";
 import LanguagePicker from "@features/locale/LanguagePicker.astro";
 import LanguageList from "@features/locale/LanguageList.astro";
 import MobileHeader from "@components/MobileHeader.astro";
 import NavLink from "@components/NavLink.astro";
 import AuthorizedInstructorBanner from "@features/banners/AuthorizedInstructorBanner.astro";
+import PostHog from "@features/third-party/posthog.astro";
 import { ENABLE_POSTHOG, POSTHOG_PROJECT_API_KEY } from "astro:env/client";
-import Fienta from "@features/third-party/fienta.astro";
 import { Font } from "astro:assets";
 import { Seo } from "@datocms/astro/Seo";
 import { getLocalizedConfig } from "../lib/contentUtils.ts";
@@ -23,10 +22,9 @@ export interface Props {
   metaDescription: string;
   metaTitle?: string;
   tagline?: string;
-  fientaEmbed?: boolean;
   seoData?: DatoSeoTag[];
 }
-const { metaDescription, tagline, metaTitle, fientaEmbed, seoData } = Astro.props;
+const { metaDescription, tagline, metaTitle, seoData } = Astro.props;
 const url = Astro.url.toString();
 const title = metaTitle
   ? `${metaTitle} • ${config.siteTitle}`
@@ -82,18 +80,6 @@ try {
     <Font cssVariable="--font-host-grotesk" preload />
 
     {ENABLE_POSTHOG && <PostHog projectApiKey={POSTHOG_PROJECT_API_KEY} />}
-    {
-      fientaEmbed && (
-        <Fienta
-          options={{
-            border_radius: "12px",
-            background: "rgba(0,0,0,0.5)",
-            descriptionEnabled: true,
-            step: "description",
-          }}
-        />
-      )
-    }
 
     <slot name="head" />
   </head>

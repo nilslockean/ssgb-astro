@@ -27,11 +27,10 @@ All content is fetched from DatoCMS at build time via custom loaders in `src/loa
 | `courses`      | `datoCoursesLoader` | DatoCMS      |
 | `pages`        | `datoPagesLoader`   | DatoCMS      |
 | `config`       | `configLoader`      | DatoCMS      |
-| `trips`        | glob (MDX)          | `src/content/trips/` |
-| `galleries`    | file (JSON)         | `src/content/galleries.json` |
-| `norms`        | file (JSON)         | `src/content/norms.json` |
-| `team`         | file (JSON)         | `src/content/team.json` |
-| `courseSelector` | file (JSON)       | `src/content/course-selector.json` |
+| `trips`        | `datoTripsLoader`   | DatoCMS      |
+| `team`         | `datoTeamLoader`    | DatoCMS      |
+| `forms`        | `datoFormsLoader`   | DatoCMS      |
+| `homePage`     | `homePageLoader`    | DatoCMS      |
 
 Loaders for DatoCMS collections use a `${locale}-${slug}` entry ID strategy to prevent cross-locale slug collisions. The `slug` is always stored in `data` for use in routing.
 
@@ -39,13 +38,13 @@ GraphQL queries live in `src/lib/datoQueries.ts`. DatoCMS schema types are in `d
 
 ### Routing and navigation
 
-Paths are centralised in `src/lib/routeUtils.ts` via the `Paths` record and `Slug` enum. Use `courseUrl(slug, locale)` to build locale-aware course URLs. Dynamic routes use `getStaticPaths()` with `params` derived from `post.data.slug`.
+Paths are centralised in `src/lib/routeUtils.ts`. Use `courseUrl(slug, locale)` and `tripUrl(slug, locale)` to build locale-aware URLs. Dynamic routes use `getStaticPaths()` with `params` derived from `post.data.slug`.
 
 Navigation is fetched from DatoCMS `SiteConfig` via `getLocalizedConfig(locale)` in `src/lib/contentUtils.ts`, which returns three named nav trees: `primary` (sidebar + mobile), `secondary` (sidebar bottom), `footer` (desktop footer).
 
 ### Structured text
 
-DatoCMS structured text fields are rendered with `<StructuredText>` from `@datocms/astro`. Block components live in `src/components/dato/`. Use `CdaStructuredTextValue` from `@datocms/astro/StructuredText` for type annotations in `.ts` files.
+DatoCMS structured text fields are rendered with `<StructuredText>` from `@datocms/astro`. Block components live in `src/features/dato/`. Use `CdaStructuredTextValue` from `@datocms/astro/StructuredText` for type annotations in `.ts` files.
 
 ### CSS
 
@@ -56,7 +55,6 @@ No utility framework — plain CSS in `src/styles/global.css` with PostCSS (`aut
 ```
 @components/* → src/components/*
 @lib/*        → src/lib/*
-@config       → src/site.config.ts
 @assets/*     → src/assets/*
 @types/*      → src/types/*
 ```
@@ -65,7 +63,6 @@ No utility framework — plain CSS in `src/styles/global.css` with PostCSS (`aut
 
 - **Netlify adapter** — SSR + pre-rendering target
 - **DatoCMS** — all CMS content; client in `src/lib/datocms.ts`; queries in `src/lib/datoQueries.ts`
-- **Fienta** — booking API in `src/lib/fientaUtils.ts`; `FIENTA_INCLUDE_DRAFTS` env var controls draft event visibility
 - **PostHog** — analytics; controlled by `ENABLE_POSTHOG` and `POSTHOG_PROJECT_API_KEY` env vars
 
 ### Environment variables
@@ -75,8 +72,7 @@ Declare new env vars in the `env.schema` block in `astro.config.mjs` (Astro's ty
 | Variable                  | Required | Description                                      |
 | :------------------------ | :------- | :----------------------------------------------- |
 | `DATOCMS_CDA_TOKEN`       | ✅       | DatoCMS Content Delivery API token                |
-| `FIENTA_INCLUDE_DRAFTS`   |          | Show draft Fienta events (default: `false`)       |
-| `ENABLE_POSTHOG`          |          | Toggle analytics (default: `true`)                |
+| `ENABLE_POSTHOG`          |          | Toggle analytics (default: `false`)               |
 | `POSTHOG_PROJECT_API_KEY` |          | PostHog project API key                           |
 
 ### Testing

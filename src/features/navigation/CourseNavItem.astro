@@ -1,19 +1,19 @@
 ---
 import type { HTMLAttributes } from "astro/types";
-import NavLink from "@components/NavLink.astro";
-import { type NavLink as INavLink } from "@lib/routeUtils";
+import AstroNavLink from "@components/NavLink.astro";
+import type { NavLink } from "@lib/routeUtils";
 import { getRelativeLocaleUrl } from "astro:i18n";
 
 interface Props extends HTMLAttributes<"li"> {
-  entry: INavLink;
+  entry: NavLink;
 }
 
 const { entry } = Astro.props;
 ---
 
 <li>
-  <NavLink
-    class:list={["nav-link--sm", entry.className]}
+  <AstroNavLink
+    class:list={["nav-link--sm"]}
     href={getRelativeLocaleUrl(entry.locale, entry.path)}
     set:html={entry.label}
   />

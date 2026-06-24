@@ -1,6 +1,22 @@
 export type Locale = "sv" | "da" | "en";
 export const defaultLocale: Locale = "sv";
 
+export interface NavLink {
+  label: string;
+  path: string;
+  locale: Locale;
+  newTab: boolean;
+}
+
+export interface NavItem {
+  link: NavLink;
+  subMenu?: {
+    nav: { link: NavLink }[];
+  };
+}
+
+export type Navigation = NavItem[];
+
 export const LOCALE_CODES = [
   "sv",
   "da",

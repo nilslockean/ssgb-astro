@@ -54,6 +54,7 @@ const { projectApiKey, clientApiHost = "https://eu.i.posthog.com" } =
       }),
       (e.__SV = 1));
   })(document, window.posthog || []);
+  // eslint-disable-next-line no-undef
   posthog.init(projectApiKey, {
     api_host: clientApiHost,
     defaults: "2025-05-24",

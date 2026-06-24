@@ -1,0 +1,60 @@
+---
+import { getCollection } from "astro:content";
+import StructuredText from "@features/dato/StructuredText.astro";
+import ButtonGroup from "@components/ButtonGroup.astro";
+import ButtonLink from "@components/ButtonLink.astro";
+import Hero, { type HeroButton } from "@components/Hero.astro";
+import Layout from "../../../layouts/Layout.astro";
+import PageHead from "@components/PageHead.astro";
+import Section from "@components/Section.astro";
+import { composePath } from "@lib/routeUtils";
+
+export async function getStaticPaths() {
+  const posts = await getCollection(
+    "trips",
+    ({ data }) => data.language === "en",
+  );
+  return posts.map((post) => ({
+    params: { id: post.data.slug },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const heroButtons: HeroButton[] = [
+  { label: post.data.cta, href: composePath("contact", "en") },
+];
+---
+
+<Layout metaDescription={post.data.excerpt} metaTitle={post.data.title} seoData={post.data.seo}>
+  {
+    post.data.heroImage || post.data.heroImageData ? (
+      <Hero
+        buttons={heroButtons}
+        content={post.data.excerpt}
+        image={post.data.heroImage}
+        data={post.data.heroImageData}
+        title={post.data.title}
+      />
+    ) : (
+      <PageHead content={post.data.excerpt} title={post.data.title}>
+        <ButtonGroup slot="buttons">
+          {heroButtons.map(({ href, label, target }, i) => (
+            <ButtonLink
+              {href}
+              {target}
+              variant={i == 0 ? "primary" : "default"}
+            >
+              {label}
+            </ButtonLink>
+          ))}
+        </ButtonGroup>
+      </PageHead>
+    )
+  }
+  <Section>
+    <div class="collection-entry">
+      {post.data.body && <StructuredText data={post.data.body} />}
+    </div>
+  </Section>
+</Layout>

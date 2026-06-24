@@ -1,8 +1,7 @@
 ---
-import Eyebrow from "./Eyebrow.astro";
 import NavLink from "./NavLink.astro";
 import SiteLogo from "@features/navigation/SiteLogo.astro";
-import { type Navigation } from "@lib/routeUtils";
+import type { Navigation } from "@lib/routeUtils";
 import LanguageList from "@features/locale/LanguageList.astro";
 import { LOCALES } from "@lib/i18nUtils";
 import { localeSchema } from "../schemas/locale";
@@ -101,13 +100,6 @@ const currentLocale = localeSchema.parse(Astro.currentLocale);
                   <NavLink href={entry.link.path} set:html={entry.link.label} />
                 </li>
               ))}
-              {item.subMenu.more && (
-                <li>
-                  <NavLink href={item.subMenu.more.path}>
-                    {item.subMenu.more.label}
-                  </NavLink>
-                </li>
-              )}
             </ul>
           )}
         </li>

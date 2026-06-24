@@ -23,9 +23,7 @@
     "@astrojs/sitemap": "^3.7.1",
     "@datocms/astro": "^0.6.13",
     "@datocms/cda-client": "^0.2.10",
-    "@fancyapps/ui": "^6.1.13",
-    "astro": "^6.0.8",
-    "posthog-js": "^1.363.1"
+    "astro": "^6.0.8"
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.11.1",

@@ -28,7 +28,7 @@ const { entries } = Astro.props;
             {item.subMenu!.nav.map((sub) => (
               <CourseNavItem entry={sub.link} />
             ))}
-            {item.subMenu!.more && <CourseNavItem entry={item.subMenu!.more} />}
+            
           </ul>
         </div>
       ) : (
