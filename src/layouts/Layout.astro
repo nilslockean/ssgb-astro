@@ -48,13 +48,13 @@ try {
   <head>
     <meta charset="UTF-8" />
     <meta content="width=device-width" name="viewport" />
-    <link href="/favicon.svg" rel="icon" type="image/svg+xml" />
     <meta content={Astro.generator} name="generator" />
 
     {allSeoData ? (
       <Seo data={allSeoData} />
     ) : (
       <>
+        <link href="/favicon.svg" rel="icon" type="image/svg+xml" />
         <title set:html={title} />
         <meta content={metaDescription} name="description" />
         <meta content={url} property="og:url" />
