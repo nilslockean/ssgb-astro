@@ -4,7 +4,11 @@ import { z } from "astro/zod";
 import { executeQuery } from "@lib/datocms";
 import { COURSES_QUERY } from "@lib/datoQueries";
 import { LOCALE_CODES } from "@lib/routeUtils";
-import { datoImageSchema, datoNormSchema, datoResponsiveImageSchema } from "src/schemas/dato";
+import {
+  datoImageSchema,
+  datoNormSchema,
+  datoResponsiveImageSchema,
+} from "src/schemas/dato";
 import { datoSeoTagsSchema, type DatoSeoTag } from "../schemas/dato";
 import { localeSchema } from "src/schemas/locale";
 
@@ -23,7 +27,6 @@ export const courseSchema = z.object({
   norm: datoNormSchema.optional(),
   body: z.custom<CdaStructuredTextValue>().optional(),
   form: z.string().optional(),
-  preselectedFields: z.json().optional(),
   hasPage: z.boolean(),
   seo: datoSeoTagsSchema.optional(),
 });
@@ -56,7 +59,6 @@ const datoCourseSchema = z.object({
     })
     .nullable(),
   form: z.object({ id: z.string() }).nullable(),
-  preselectedFields: z.json().nullable(),
   hasPage: z.boolean(),
 });
 
@@ -113,7 +115,6 @@ export function datoCoursesLoader(): Loader {
               norm: course.norm ?? undefined,
               body: course.content ?? undefined,
               form: course.form ? `${locale}-${course.form.id}` : undefined,
-              preselectedFields: course.preselectedFields,
               hasPage: course.hasPage,
               seo: course.seo,
             },

@@ -88,7 +88,6 @@ const {
     norm,
     prerequisites,
     form,
-    preselectedFields,
     seo,
   },
 } = Astro.props;
@@ -172,9 +171,5 @@ if (norm?.url) {
       <PrivateBookingPricingList class="mt-4" {locale} />
     </Accordion>
   </Section>
-  {
-    formEntry && (
-      <FormSection form={formEntry} id="boka" title={cta} {preselectedFields} />
-    )
-  }
+  {formEntry && <FormSection form={formEntry} id="boka" title={cta} />}
 </Layout>

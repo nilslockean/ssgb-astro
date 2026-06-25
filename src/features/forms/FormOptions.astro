@@ -4,7 +4,7 @@ export interface Props {
   label: string;
   name: string;
   required: boolean | null;
-  defaultValue: string | null;
+  defaultValue?: string | null;
   readonly?: boolean | null;
   options: Array<{ id: string; label: string; name: string }>;
   placeholder?: string | null;

@@ -11,20 +11,15 @@ import { composePath } from "@lib/routeUtils";
 import { localeSchema } from "../../schemas/locale";
 import { z } from "astro/zod";
 
-const jsonSchema = z.json();
-type JSONType = z.infer<typeof jsonSchema>;
-
 interface Props {
   form: CollectionEntry<"forms">;
   id?: string;
   title?: string;
-  preselectedFields?: JSONType | null;
 }
 const {
   form: { data },
   id,
   title = data.title,
-  preselectedFields,
 } = Astro.props;
 const currentLocale = localeSchema.parse(Astro.currentLocale);
 const currentSlug = Astro.url.pathname
@@ -32,16 +27,6 @@ const currentSlug = Astro.url.pathname
   .filter((x) => x)
   .pop();
 const action = composePath(data.redirect, currentLocale);
-function getDefaultValue(fieldName: string): string | null {
-  const preselectedFieldsSchema = z.record(z.string(), z.string());
-  const result = preselectedFieldsSchema.safeParse(preselectedFields);
-  if (!result.success) {
-    return null;
-  }
-
-  const defaultValues = result.data;
-  return defaultValues[fieldName] ?? null;
-}
 ---
 
 <Section {id} class="mt-8">
@@ -71,7 +56,6 @@ function getDefaultValue(fieldName: string): string | null {
       <div class="contact-form__grid">
         {
           data.content.map((field) => {
-            const defaultValue = getDefaultValue(field.name);
             return (
               <p
                 class:list={[
@@ -94,7 +78,7 @@ function getDefaultValue(fieldName: string): string | null {
                   <FormInputNumber {...field} />
                 )}
                 {field.__typename === "FormInputOptionRecord" && (
-                  <FormOptions {...field} {defaultValue} />
+                  <FormOptions {...field} />
                 )}
                 {field.__typename === "FormInputCoursesOptionRecord" && (
                   <FormCourseOptions {...field} defaultValue={currentSlug} />
