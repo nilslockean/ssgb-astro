@@ -229,7 +229,42 @@ export const COURSES_QUERY = `
       slug
       excerpt
       seo: _seoMetaTags { attributes content tag }
-      content { value blocks links }
+      content { 
+        value
+        blocks {
+          ${BUTTON_GROUP_RECORD_BLOCK}
+          ${ACCORDION_RECORD_BLOCK}
+        }
+        links {
+          ... on CourseRecord {
+            id
+            __typename
+            slug
+          }
+          ... on PageRecord {
+            id
+            __typename
+            slug(locale: $locale)
+          }
+          ... on TripRecord {
+            id
+            __typename
+            slug
+          }
+        }
+        inlineBlocks {
+          ... on ContactDetailRecord {
+            id
+            __typename
+            value
+          }
+          ... on PriceDetailRecord {
+            id
+            __typename
+            value
+          }
+        }
+      }
       featuredImage {
         url width height alt
         responsiveImage(imgixParams: { auto: format, w: 1600 }) { src width height alt base64 }
