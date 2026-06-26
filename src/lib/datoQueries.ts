@@ -276,7 +276,6 @@ export const COURSES_QUERY = `
       maxParticipants
       norm { title url }
       form { id }
-      hasPage(locale: $locale)
     }
   }
 `;

@@ -27,7 +27,6 @@ export const courseSchema = z.object({
   norm: datoNormSchema.optional(),
   body: z.custom<CdaStructuredTextValue>().optional(),
   form: z.string().optional(),
-  hasPage: z.boolean(),
   seo: datoSeoTagsSchema.optional(),
 });
 
@@ -59,7 +58,6 @@ const datoCourseSchema = z.object({
     })
     .nullable(),
   form: z.object({ id: z.string() }).nullable(),
-  hasPage: z.boolean(),
 });
 
 export function datoCoursesLoader(): Loader {
@@ -115,7 +113,6 @@ export function datoCoursesLoader(): Loader {
               norm: course.norm ?? undefined,
               body: course.content ?? undefined,
               form: course.form ? `${locale}-${course.form.id}` : undefined,
-              hasPage: course.hasPage,
               seo: course.seo,
             },
           });

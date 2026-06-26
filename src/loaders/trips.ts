@@ -18,7 +18,6 @@ export const tripSchema = z.object({
   heroImageData: datoResponsiveImageSchema.optional(),
   body: z.custom<CdaStructuredTextValue>().optional(),
   language: localeSchema.default("sv"),
-  hasPage: z.boolean(),
   seo: datoSeoTagsSchema.optional(),
 });
 
@@ -82,7 +81,6 @@ export function datoTripsLoader(): Loader {
               heroImageData: trip.featuredImage?.responsiveImage ?? undefined,
               body: trip.content ?? undefined,
               language: locale,
-              hasPage: true,
               seo: trip.seo,
             },
           });
