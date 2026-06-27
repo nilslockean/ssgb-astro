@@ -1,0 +1,31 @@
+---
+import type { CollectionEntry } from "astro:content";
+import StructuredText from "@features/dato/StructuredText.astro";
+import Layout from "../layouts/Layout.astro";
+import Section from "@components/Section.astro";
+import FormSection from "@features/forms/FormSection.astro";
+import Eyebrow from "@components/Eyebrow.astro";
+import { getEntry } from "astro:content";
+
+interface Props {
+  data: CollectionEntry<"pages">;
+}
+
+const {
+  data: { excerpt, eyebrow, title, body, form, seo },
+} = Astro.props.data;
+
+const formEntry = form && (await getEntry("forms", form));
+---
+
+<Layout metaDescription={excerpt} metaTitle={title} seoData={seo}>
+  <Section class="pb-0">
+    {eyebrow && <Eyebrow>{eyebrow}</Eyebrow>}
+    <h1 class="mb-6">{title}</h1>
+    <p class="intro">{excerpt}</p>
+  </Section>
+  <div class="collection-entry p-8">
+    {body && <StructuredText data={body} />}
+  </div>
+  {formEntry && <FormSection form={formEntry} />}
+</Layout>
