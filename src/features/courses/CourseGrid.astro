@@ -1,12 +1,12 @@
 ---
 import type { CollectionEntry } from "astro:content";
-import type { HTMLAttributes } from "astro/types";
 import CourseGridItem from "./CourseGridItem.astro";
 import { courseUrl, defaultLocale, tripUrl } from "@lib/routeUtils";
 import { localeSchema } from "src/schemas/locale";
 
-interface Props extends HTMLAttributes<"ul"> {
+interface Props {
   entries: CollectionEntry<"courses">[] | CollectionEntry<"trips">[];
+  class?: string;
 }
 
 function isCourse(
@@ -26,11 +26,11 @@ function composeCta(title: string, locale = defaultLocale) {
   return `${prefix} ${title}`;
 }
 
-const { entries, class: className, ...rest } = Astro.props;
+const { entries, class: className } = Astro.props;
 const locale = localeSchema.parse(Astro.currentLocale);
 ---
 
-<ul
+<div
   class:list={[
     "course-grid",
     "grid-cols-1",
@@ -38,7 +38,6 @@ const locale = localeSchema.parse(Astro.currentLocale);
     "xl:grid-cols-3",
     className,
   ]}
-  {...rest}
 >
   {
     entries.map((course) => {
@@ -52,15 +51,15 @@ const locale = localeSchema.parse(Astro.currentLocale);
         <CourseGridItem
           cta={cta}
           excerpt={course.data.excerpt}
+          heroImage={course.data.heroImage}
           href={href}
           title={title}
-          displayLink={true}
         />
       );
     })
   }
   <slot />
-</ul>
+</div>
 
 <style>
   .course-grid {

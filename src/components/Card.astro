@@ -1,0 +1,141 @@
+---
+type Props = {
+  as?:
+    | "li"
+    | "div"
+    | "section"
+    | "article"
+    | "header"
+    | "footer"
+    | "nav"
+    | "main"
+    | "aside";
+  headingLevel?: "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
+  title?: string;
+  href?: string;
+  content?: string;
+  image?: { src: string; alt?: string };
+  class?: string;
+};
+
+const {
+  as: Tag = "div",
+  headingLevel: HeadingTag = "h3",
+  title,
+  href,
+  content,
+  image,
+  class: className,
+} = Astro.props;
+---
+
+<Tag class:list={["card", image && "card--has-image", className]}>
+  {
+    image && (
+      <img
+        class="card__bg"
+        src={image.src}
+        alt={image.alt ?? ""}
+        role="presentation"
+        loading="lazy"
+      />
+    )
+  }
+  {image && <span aria-hidden="true" class="card__overlay" />}
+  <div class="card__body">
+    {
+      title && (
+        <HeadingTag class="card__title">
+          {href ? (
+            <a class="card__link" href={href} set:html={title} />
+          ) : (
+            <span set:html={title} />
+          )}
+        </HeadingTag>
+      )
+    }
+    {
+      content ? (
+        <div class="card__content" set:html={content} />
+      ) : (
+        <div class="card__content">
+          <slot />
+        </div>
+      )
+    }
+    <div class="card__actions">
+      <slot name="actions" />
+    </div>
+  </div>
+</Tag>
+
+<style>
+  .card {
+    position: relative;
+    background-color: var(--color-surface-light);
+    border-radius: var(--border-radius-xl);
+    padding: var(--space-8);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow: hidden;
+  }
+
+  .card:not(.card--has-image) {
+    background-color: var(--color-surface-light);
+  }
+
+  .card__bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .card__overlay {
+    --opacity: 0.9;
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: linear-gradient(
+      65deg,
+      rgb(0 0 0 / var(--opacity)),
+      rgb(0 0 0 / 0.5)
+    );
+  }
+
+  .card__body {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+  }
+
+  .card--has-image .card__body {
+    color: var(--color-white);
+  }
+
+  .card__link {
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .card__link:hover {
+    text-decoration: underline;
+  }
+
+  .card__title {
+    margin-top: 0;
+  }
+
+  .card__content {
+    flex-grow: 1;
+  }
+
+  .card__actions {
+    margin-top: var(--space-8);
+  }
+</style>

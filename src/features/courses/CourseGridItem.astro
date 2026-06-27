@@ -1,13 +1,15 @@
 ---
-import type { HTMLAttributes } from "astro/types";
+import Card from "@components/Card.astro";
 import ButtonLink from "@components/ButtonLink.astro";
+import type { DatoImage } from "../../schemas/dato";
 
-interface Props extends HTMLAttributes<"li"> {
+interface Props {
   title: string;
   excerpt: string;
   href: string;
   cta: string;
   displayLink?: boolean;
+  heroImage?: DatoImage;
 }
 
 const {
@@ -16,55 +18,27 @@ const {
   href,
   cta,
   displayLink = true,
-  class: className,
-  ...rest
+  heroImage,
 } = Astro.props;
 ---
 
-<li class:list={["course-grid-item", className]} {...rest}>
-  <h3 class="course-grid-item__title font-heading mt-0">
-    {
-      displayLink ? (
-        <a class="course-grid-item__link" href={href} set:html={title} />
-      ) : (
-        <span set:html={title} />
-      )
-    }
-  </h3>
+<Card
+  as="article"
+  headingLevel="h3"
+  title={title}
+  href={displayLink ? href : undefined}
+  image={heroImage ? { src: heroImage.src, alt: heroImage.alt ?? undefined } : undefined}
+>
   <p class="course-grid-item__excerpt">{excerpt}</p>
   {
     displayLink && (
-      <p class="course-grid-item__action">
-        <ButtonLink href={href}>{cta}</ButtonLink>
-      </p>
+      <ButtonLink href={href} slot="actions">{cta}</ButtonLink>
     )
   }
-</li>
+</Card>
 
 <style>
-  .course-grid-item {
-    background-color: var(--color-surface-light);
-    border-radius: var(--border-radius-xl);
-    padding: var(--space-8);
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-  }
-
-  .course-grid-item__link {
-    text-decoration: none;
-    color: var(--color-text);
-  }
-
-  .course-grid-item__link:hover {
-    text-decoration: underline;
-  }
-
   .course-grid-item__excerpt {
     flex-grow: 1;
-  }
-
-  .course-grid-item__action {
-    margin-top: var(--space-8);
   }
 </style>
