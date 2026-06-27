@@ -6,14 +6,15 @@ import Eyebrow from "@components/Eyebrow.astro";
 
 interface Props {
   block: {
-    filter: "all" | "with-norms" | "without-norms";
+    filter: "all" | "with-norms" | "without-norms" | "manual";
     eyebrow?: string | null;
     limit?: number | null;
+    manualCourses?: { id: string }[] | null;
   };
 }
 
 const {
-  block: { filter, eyebrow, limit },
+  block: { filter, eyebrow, limit, manualCourses },
 } = Astro.props;
 
 const locale = localeSchema.parse(Astro.currentLocale);
@@ -23,6 +24,10 @@ let entries = await getCourses((course) => {
       return course.data.norm;
     case "without-norms":
       return !course.data.norm;
+    case "manual": {
+      const ids = manualCourses?.map((c) => c.id) ?? [];
+      return ids.some((id) => course.id.endsWith(`-${id}`));
+    }
     default:
       return true;
   }

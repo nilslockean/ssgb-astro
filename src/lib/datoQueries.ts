@@ -176,6 +176,9 @@ export const PAGES_QUERY = `
             filter
             eyebrow
             limit
+            manualCourses {
+              id
+            }
           }
           ... on TripCollectionRecord {
             id
@@ -419,6 +422,9 @@ export const HOME_PAGE_QUERY = `
             filter
             eyebrow
             limit
+            manualCourses {
+              id
+            }
           }
           ... on TripCollectionRecord {
             id
