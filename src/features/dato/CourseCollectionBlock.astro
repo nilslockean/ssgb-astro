@@ -6,28 +6,31 @@ import Eyebrow from "@components/Eyebrow.astro";
 
 interface Props {
   block: {
-    filter: "all" | "with-norms" | "without-norms" | "featured";
+    filter: "all" | "with-norms" | "without-norms";
     eyebrow?: string | null;
+    limit?: number | null;
   };
 }
 
 const {
-  block: { filter, eyebrow },
+  block: { filter, eyebrow, limit },
 } = Astro.props;
 
 const locale = localeSchema.parse(Astro.currentLocale);
-const entries = await getCourses((course) => {
+let entries = await getCourses((course) => {
   switch (filter) {
     case "with-norms":
       return course.data.norm;
     case "without-norms":
       return !course.data.norm;
-    case "featured":
-      return course.data.featured;
     default:
       return true;
   }
 }, locale);
+
+if (limit) {
+  entries = entries.slice(0, limit);
+}
 ---
 
 {eyebrow && <Eyebrow class="course-collection__eyebrow">{eyebrow}</Eyebrow>}

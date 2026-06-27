@@ -19,7 +19,6 @@ export const courseSchema = z.object({
   language: localeSchema.default("sv"),
   numDays: z.array(z.number()),
   order: z.number().min(0),
-  featured: z.boolean().optional(),
   prerequisites: z.string().nullable().optional(),
   heroImage: datoImageSchema.optional(),
   heroImageData: datoResponsiveImageSchema.optional(),
@@ -48,7 +47,6 @@ const datoCourseSchema = z.object({
     .nullable(),
   numDaysMin: z.number(),
   numDaysMax: z.number().nullable(),
-  featured: z.boolean(),
   prerequisites: z.string().nullable(),
   maxParticipants: z.number().nullable(),
   norm: z
@@ -98,7 +96,6 @@ export function datoCoursesLoader(): Loader {
                   ? [course.numDaysMin, course.numDaysMax]
                   : [course.numDaysMin],
               order: allCourses.indexOf(course),
-              featured: course.featured ?? false,
               prerequisites: course.prerequisites ?? undefined,
               heroImage: course.featuredImage
                 ? {

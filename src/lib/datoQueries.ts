@@ -175,6 +175,7 @@ export const PAGES_QUERY = `
             __typename
             filter
             eyebrow
+            limit
           }
           ... on TripCollectionRecord {
             id
@@ -271,7 +272,6 @@ export const COURSES_QUERY = `
       }
       numDaysMin
       numDaysMax
-      featured
       prerequisites
       maxParticipants
       norm { title url }
@@ -418,6 +418,7 @@ export const HOME_PAGE_QUERY = `
             __typename
             filter
             eyebrow
+            limit
           }
           ... on TripCollectionRecord {
             id

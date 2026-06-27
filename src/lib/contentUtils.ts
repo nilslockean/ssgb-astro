@@ -8,14 +8,16 @@ import { defaultLocale } from "./routeUtils";
 export type LocalizedConfig = z.infer<typeof localizedConfigSchema>;
 
 export async function getCourses(
-  filter?: (entry: CollectionEntry<"courses">) => unknown,
+  filter?: (entry: CollectionEntry<"courses">, index: number) => unknown,
   locale = defaultLocale,
 ): Promise<CollectionEntry<"courses">[]> {
   const courses = await getCollection(
     "courses",
-    (course) => course.data.language === locale && (!filter || filter(course)),
+    (course) => course.data.language === locale,
   );
-  return courses.sort((a, b) => a.data.order - b.data.order);
+  return courses
+    .filter((course, index) => (filter ? filter(course, index) : true))
+    .sort((a, b) => a.data.order - b.data.order);
 }
 
 export async function getLocalizedConfig(
