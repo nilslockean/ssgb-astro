@@ -2,7 +2,6 @@
 import type { HTMLAttributes } from "astro/types";
 import AstroNavLink from "@components/NavLink.astro";
 import type { NavLink } from "@lib/routeUtils";
-import { getRelativeLocaleUrl } from "astro:i18n";
 
 interface Props extends HTMLAttributes<"li"> {
   entry: NavLink;
@@ -14,7 +13,7 @@ const { entry } = Astro.props;
 <li>
   <AstroNavLink
     class:list={["nav-link--sm"]}
-    href={getRelativeLocaleUrl(entry.locale, entry.path)}
+    href={entry.path}
     set:html={entry.label}
   />
 </li>
