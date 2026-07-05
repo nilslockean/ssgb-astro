@@ -22,7 +22,7 @@ const CONTACT_SLUG: Record<string, string> = {
 };
 
 const {
-  data: { title, excerpt, cta, heroImage, heroImageData, body, seo },
+  data: { title, excerpt, cta, slug, heroImage, heroImageData, body, seo },
 } = Astro.props;
 
 const locale = localeSchema.catch(defaultLocale).parse(Astro.currentLocale);
@@ -32,6 +32,17 @@ const heroButtons: HeroButton[] = [
 ---
 
 <Layout metaDescription={excerpt} metaTitle={title} seoData={seo}>
+  <script
+    is:inline
+    slot="head"
+    define:vars={{ tripTitle: title, tripSlug: slug, tripLocale: locale }}
+  >
+    window.posthog?.capture("trip_viewed", {
+      trip_title: tripTitle,
+      trip_slug: tripSlug,
+      locale: tripLocale,
+    });
+  </script>
   {
     heroImage || heroImageData ? (
       <Hero

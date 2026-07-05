@@ -12,7 +12,11 @@ const localizedUrls = await getLocalizedUrls(Astro.url);
   {
     languages.map((lang) => (
       <li>
-        <a href={localizedUrls[lang]} data-current={lang === currentLocale}>
+        <a
+          href={localizedUrls[lang]}
+          data-current={lang === currentLocale}
+          data-lang={lang}
+        >
           <LocaleFlag locale={lang} size={24} />
           <span class="sr-only">{LOCALES[lang]}</span>
         </a>
@@ -20,6 +24,18 @@ const localizedUrls = await getLocalizedUrls(Astro.url);
     ))
   }
 </ul>
+
+<script>
+  document
+    .querySelectorAll<HTMLAnchorElement>("a[data-lang]")
+    .forEach((link) => {
+      link.addEventListener("click", () => {
+        (window as any).posthog?.capture("language_changed", {
+          new_locale: link.dataset.lang,
+        });
+      });
+    });
+</script>
 
 <style>
   ul {

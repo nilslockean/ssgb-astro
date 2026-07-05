@@ -120,29 +120,41 @@ const {
 </section>
 
 <script>
-;(function () {
-  function fadeIn(img) {
-    img.style.opacity = "1";
-  }
-  function setup() {
-    var pictures = document.querySelectorAll(".hero__img");
-    for (var i = 0; i < pictures.length; i++) {
-      var img = pictures[i].querySelector("img");
-      if (!img) continue;
-      if (img.complete) {
-        fadeIn(img);
-      } else {
-        img.addEventListener("load", fadeIn.bind(null, img));
-        img.addEventListener("error", fadeIn.bind(null, img));
+  (function () {
+    function fadeIn(img) {
+      img.style.opacity = "1";
+    }
+    function setup() {
+      var pictures = document.querySelectorAll(".hero__img");
+      for (var i = 0; i < pictures.length; i++) {
+        var img = pictures[i].querySelector("img");
+        if (!img) continue;
+        if (img.complete) {
+          fadeIn(img);
+        } else {
+          img.addEventListener("load", fadeIn.bind(null, img));
+          img.addEventListener("error", fadeIn.bind(null, img));
+        }
       }
     }
-  }
-  document.addEventListener("DOMContentLoaded", setup);
-  document.addEventListener("astro:page-load", setup);
-  if (document.readyState === "complete") {
-    setup();
-  }
-})();
+    document.addEventListener("DOMContentLoaded", setup);
+    document.addEventListener("astro:page-load", setup);
+    if (document.readyState === "complete") {
+      setup();
+    }
+  })();
+
+  document
+    .querySelectorAll<HTMLAnchorElement>(".hero__buttons a")
+    .forEach((btn, i) => {
+      btn.addEventListener("click", () => {
+        (window as any).posthog?.capture("booking_cta_clicked", {
+          label: btn.textContent?.trim(),
+          href: btn.getAttribute("href"),
+          is_primary: i === 0,
+        });
+      });
+    });
 </script>
 
 <style>
@@ -184,7 +196,9 @@ const {
   }
 
   @keyframes hero-fade-in {
-    to { opacity: 1; }
+    to {
+      opacity: 1;
+    }
   }
 
   .hero__img img {

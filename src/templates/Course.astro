@@ -81,6 +81,7 @@ const {
   data: {
     excerpt,
     title,
+    slug,
     heroImage,
     heroImageData,
     body,
@@ -107,6 +108,17 @@ if (norm?.url) {
 ---
 
 <Layout metaDescription={excerpt} metaTitle={title} seoData={seo}>
+  <script
+    is:inline
+    slot="head"
+    define:vars={{ courseTitle: title, courseSlug: slug, courseLocale: locale }}
+  >
+    window.posthog?.capture("course_viewed", {
+      course_title: courseTitle,
+      course_slug: courseSlug,
+      locale: courseLocale,
+    });
+  </script>
   {
     heroImage || heroImageData ? (
       <Hero

@@ -28,6 +28,18 @@ const currentSlug = Astro.url.pathname
 const action = composePath(data.redirect, currentLocale);
 ---
 
+<script>
+  document
+    .querySelectorAll<HTMLFormElement>("form.contact-form")
+    .forEach((form) => {
+      form.addEventListener("submit", () => {
+        (window as any).posthog?.capture("booking_form_submitted", {
+          form_name: form.name,
+        });
+      });
+    });
+</script>
+
 <Section {id} class="mt-8">
   <div class="contact-form-card">
     <h2 class="mt-2">{title}</h2>

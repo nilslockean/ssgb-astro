@@ -27,15 +27,32 @@ const {
   headingLevel="h3"
   title={title}
   href={displayLink ? href : undefined}
-  image={heroImage ? { src: heroImage.src, alt: heroImage.alt ?? undefined } : undefined}
+  image={heroImage
+    ? { src: heroImage.src, alt: heroImage.alt ?? undefined }
+    : undefined}
 >
   <p class="course-grid-item__excerpt">{excerpt}</p>
   {
     displayLink && (
-      <ButtonLink href={href} slot="actions">{cta}</ButtonLink>
+      <ButtonLink href={href} slot="actions">
+        {cta}
+      </ButtonLink>
     )
   }
 </Card>
+
+<script>
+  document
+    .querySelectorAll<HTMLAnchorElement>(".course-grid .card__link")
+    .forEach((link) => {
+      link.addEventListener("click", () => {
+        (window as any).posthog?.capture("course_card_clicked", {
+          course_title: link.textContent?.trim(),
+          href: link.getAttribute("href"),
+        });
+      });
+    });
+</script>
 
 <style>
   .course-grid-item__excerpt {
