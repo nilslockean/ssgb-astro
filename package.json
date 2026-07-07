@@ -18,28 +18,28 @@
     "watch": "vitest"
   },
   "dependencies": {
-    "@astrojs/mdx": "^5.0.2",
-    "@astrojs/netlify": "^7.0.4",
-    "@astrojs/sitemap": "^3.7.1",
+    "@astrojs/mdx": "^7.0.2",
+    "@astrojs/netlify": "^8.1.1",
+    "@astrojs/sitemap": "^3.7.3",
     "@datocms/astro": "^0.6.13",
     "@datocms/cda-client": "^0.2.10",
-    "astro": "^6.0.8"
+    "astro": "^7.0.6"
   },
   "devDependencies": {
-    "@axe-core/playwright": "^4.11.1",
+    "@axe-core/playwright": "^4.12.1",
     "@eslint/js": "^10.0.1",
-    "@playwright/test": "^1.58.2",
-    "@types/node": "^25.5.0",
-    "@typescript-eslint/parser": "^8.57.1",
-    "autoprefixer": "^10.4.27",
+    "@playwright/test": "^1.61.1",
+    "@types/node": "^26.1.0",
+    "@typescript-eslint/parser": "^8.63.0",
+    "autoprefixer": "^10.5.2",
     "datocms": "^4.0.28",
-    "dotenv": "^17.3.1",
-    "eslint": "^10.1.0",
-    "eslint-plugin-astro": "^1.6.0",
+    "dotenv": "^17.4.2",
+    "eslint": "^10.6.0",
+    "eslint-plugin-astro": "^2.1.1",
     "postcss-custom-media": "^12.0.1",
-    "prettier": "^3.8.1",
+    "prettier": "^3.9.4",
     "prettier-plugin-astro": "^0.14.1",
     "vite-tsconfig-paths": "^6.1.1",
-    "vitest": "^4.1.0"
+    "vitest": "^4.1.10"
   }
 }
