@@ -13,9 +13,7 @@ export async function getStaticPaths() {
   }));
 }
 
-const {
-  post: { data },
-} = Astro.props;
+const { post } = Astro.props;
 ---
 
-<Template {data} />
+<Template entry={post} />

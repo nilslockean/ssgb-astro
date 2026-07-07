@@ -9,6 +9,7 @@ import Layout from "../layouts/Layout.astro";
 import PageHead from "@components/PageHead.astro";
 import FormSection from "@features/forms/FormSection.astro";
 import PrivateBookingPricingList from "@features/pricing/PrivateBookingPricingList.astro";
+import PriceCalculator from "@features/pricing/PriceCalculator.astro";
 import Link from "@components/Link.astro";
 import Section from "@components/Section.astro";
 import { getEntry } from "astro:content";
@@ -16,7 +17,7 @@ import { defaultLocale, type Locale } from "@lib/routeUtils";
 import { localeSchema } from "../schemas/locale";
 
 interface Props {
-  data: CollectionEntry<"courses">;
+  entry: CollectionEntry<"courses">;
 }
 
 function composeNumDaysDesc(input: number[], locale = defaultLocale) {
@@ -78,23 +79,26 @@ const TRANSLATIONS = {
 } as const satisfies Record<string, Record<Locale, string>>;
 
 const {
-  data: {
-    excerpt,
-    title,
-    slug,
-    heroImage,
-    heroImageData,
-    body,
-    numDays,
-    norm,
-    prerequisites,
-    form,
-    seo,
+  entry: {
+    data: {
+      excerpt,
+      title,
+      slug,
+      heroImage,
+      heroImageData,
+      body,
+      numDays,
+      norm,
+      prerequisites,
+      form,
+      seo,
+    },
   },
 } = Astro.props;
 const locale = localeSchema.parse(Astro.currentLocale);
 const formEntry = form && (await getEntry("forms", form));
-const h1 = locale === "sv" && norm ? norm.title : title;
+const h1 = title;
+const eyebrow = norm?.title;
 const cta = composeCta(title, locale);
 const numDaysDesc = composeNumDaysDesc(numDays, locale);
 const heroButtons: HeroButton[] = [{ label: cta, href: "#boka" }];
@@ -127,9 +131,10 @@ if (norm?.url) {
         image={heroImage}
         data={heroImageData}
         title={h1}
+        eyebrow={eyebrow}
       />
     ) : (
-      <PageHead content={excerpt} title={h1}>
+      <PageHead {eyebrow} content={excerpt} title={h1}>
         <ButtonGroup slot="buttons">
           {heroButtons.map(({ href, label, target }, i) => (
             <ButtonLink
@@ -181,6 +186,7 @@ if (norm?.url) {
     }
     <Accordion title={TRANSLATIONS.pricing[locale]}>
       <PrivateBookingPricingList class="mt-4" {locale} />
+      <PriceCalculator />
     </Accordion>
   </Section>
   {formEntry && <FormSection form={formEntry} id="boka" title={cta} />}

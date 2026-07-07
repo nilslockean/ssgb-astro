@@ -15,8 +15,10 @@ import { Seo } from "@datocms/astro/Seo";
 import { getLocalizedConfig } from "../lib/contentUtils.ts";
 import { getLocalizedUrls } from "../lib/routeUtils.ts";
 import type { DatoSeoTag } from "../schemas/dato.ts";
+import { localeSchema } from "../schemas/locale";
 
-const config = await getLocalizedConfig(Astro.currentLocale);
+const locale = localeSchema.parse(Astro.currentLocale);
+const config = await getLocalizedConfig(locale);
 
 export interface Props {
   metaDescription: string;
@@ -48,33 +50,37 @@ try {
     <meta content="width=device-width" name="viewport" />
     <meta content={Astro.generator} name="generator" />
 
-    {allSeoData ? (
-      <Seo data={allSeoData} />
-    ) : (
-      <>
-        <link href="/favicon.svg" rel="icon" type="image/svg+xml" />
-        <title set:html={title} />
-        <meta content={metaDescription} name="description" />
-        <meta content={url} property="og:url" />
-        <meta content="website" property="og:type" />
-        <meta content={title} property="og:title" />
-        <meta content={metaDescription} property="og:description" />
-        <meta content="summary_large_image" name="twitter:card" />
-        <meta content={url} property="twitter:url" />
-        <meta content={title} name="twitter:title" />
-        <meta content={metaDescription} name="twitter:description" />
-      </>
-    )}
+    {
+      allSeoData ? (
+        <Seo data={allSeoData} />
+      ) : (
+        <>
+          <link href="/favicon.svg" rel="icon" type="image/svg+xml" />
+          <title set:html={title} />
+          <meta content={metaDescription} name="description" />
+          <meta content={url} property="og:url" />
+          <meta content="website" property="og:type" />
+          <meta content={title} property="og:title" />
+          <meta content={metaDescription} property="og:description" />
+          <meta content="summary_large_image" name="twitter:card" />
+          <meta content={url} property="twitter:url" />
+          <meta content={title} name="twitter:title" />
+          <meta content={metaDescription} name="twitter:description" />
+        </>
+      )
+    }
 
     <link href={url} rel="canonical" />
-    {localizedUrls && (
-      <>
-        {Object.entries(localizedUrls).map(([locale, href]) => (
-          <link href={href} rel="alternate" hreflang={locale} />
-        ))}
-        <link href={localizedUrls.sv} rel="alternate" hreflang="x-default" />
-      </>
-    )}
+    {
+      localizedUrls && (
+        <>
+          {Object.entries(localizedUrls).map(([locale, href]) => (
+            <link href={href} rel="alternate" hreflang={locale} />
+          ))}
+          <link href={localizedUrls.sv} rel="alternate" hreflang="x-default" />
+        </>
+      )
+    }
 
     <Font cssVariable="--font-barlow-condensed" preload />
     <Font cssVariable="--font-host-grotesk" preload />
