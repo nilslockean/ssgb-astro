@@ -5,6 +5,8 @@ import netlify from "@astrojs/netlify";
 import mdx from "@astrojs/mdx";
 import sitemap from "@astrojs/sitemap";
 
+import svelte from "@astrojs/svelte";
+
 // Load environment variables from local .env file into process.env
 dotenv.config();
 
@@ -13,12 +15,9 @@ export default defineConfig({
   site: "https://ssgb.se",
   trailingSlash: "always",
 
-  integrations: [
-    mdx(),
-    sitemap({
-      filter: (page) => !page.includes("/partials/"),
-    }),
-  ],
+  integrations: [mdx(), sitemap({
+    filter: (page) => !page.includes("/partials/"),
+  }), svelte()],
 
   adapter: netlify(),
 

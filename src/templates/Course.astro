@@ -8,13 +8,13 @@ import Hero, { type HeroButton } from "@components/Hero.astro";
 import Layout from "../layouts/Layout.astro";
 import PageHead from "@components/PageHead.astro";
 import FormSection from "@features/forms/FormSection.astro";
-import PrivateBookingPricingList from "@features/pricing/PrivateBookingPricingList.astro";
-import PriceCalculator from "@features/pricing/PriceCalculator.astro";
+import PriceCalculator from "../islands/PriceCalculator.svelte";
 import Link from "@components/Link.astro";
 import Section from "@components/Section.astro";
 import { getEntry } from "astro:content";
 import { defaultLocale, type Locale } from "@lib/routeUtils";
 import { localeSchema } from "../schemas/locale";
+import { getLocalizedConfig } from "@lib/contentUtils";
 
 interface Props {
   entry: CollectionEntry<"courses">;
@@ -92,10 +92,17 @@ const {
       prerequisites,
       form,
       seo,
+      maxParticipants,
     },
   },
 } = Astro.props;
 const locale = localeSchema.parse(Astro.currentLocale);
+const config = await getLocalizedConfig(locale);
+const {
+  single: priceSingle,
+  double: priceDouble,
+  many: priceMany,
+} = config.defaultPrices;
 const formEntry = form && (await getEntry("forms", form));
 const h1 = title;
 const eyebrow = norm?.title;
@@ -153,7 +160,7 @@ if (norm?.url) {
     <div class="collection-entry">
       {body && <StructuredText data={body} />}
       <p>
-        <strong>{TRANSLATIONS.duration[locale]}:</strong>
+        <strong>{TRANSLATIONS.duration[locale]}: </strong>
         {numDaysDesc}.
       </p>
     </div>
@@ -185,8 +192,17 @@ if (norm?.url) {
       )
     }
     <Accordion title={TRANSLATIONS.pricing[locale]}>
-      <PrivateBookingPricingList class="mt-4" {locale} />
-      <PriceCalculator />
+      <PriceCalculator
+        client:visible
+        {priceSingle}
+        {priceDouble}
+        {priceMany}
+        {maxParticipants}
+        {locale}
+      />
+      <ButtonGroup class="mt-6">
+        <a href="#boka" class="btn btn--primary">{cta}</a>
+      </ButtonGroup>
     </Accordion>
   </Section>
   {formEntry && <FormSection form={formEntry} id="boka" title={cta} />}
