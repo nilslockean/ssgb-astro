@@ -38,6 +38,22 @@ const action = composePath(data.redirect, currentLocale);
         });
       });
     });
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const numParticipantsInputField = document.querySelector<HTMLInputElement>(
+      "input[type=number][name=numParticipants]",
+    );
+    if (!numParticipantsInputField) {
+      return;
+    }
+
+    window.addEventListener("num_participants_updated", (evt) => {
+      if ("detail" in evt === false || typeof evt.detail !== "number") {
+        return;
+      }
+      numParticipantsInputField.value = String(evt.detail);
+    });
+  });
 </script>
 
 <Section {id} class="mt-8">
@@ -92,7 +108,10 @@ const action = composePath(data.redirect, currentLocale);
                   <FormOptions {...field} />
                 )}
                 {field.__typename === "FormInputCoursesOptionRecord" && (
-                  <FormCourseOptions {...field} defaultValue={currentSlug} />
+                  <FormCourseOptions
+                    {...field}
+                    defaultValue={currentSlug || null}
+                  />
                 )}
               </p>
             );
