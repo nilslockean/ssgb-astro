@@ -33,7 +33,7 @@
   });
   const TRANSLATIONS = {
     labelSingle: {
-      sv: "Om bokar ensam",
+      sv: "Om du bokar ensam",
       da: "Hvis du tager kurset allene",
       en: "If you take the course alone",
     },
@@ -95,11 +95,14 @@
     >
   </p>
   <p>
-    {t(
-      nParticipants === 1 ? "subTextSingle" : "subTextMultiple",
-      formatPrice([price.perPerson]),
-    )}
-    <br /><small>{t("inclTax")}</small>
+    {#if !(nParticipants === 1 && Number(numDays) === 1)}
+      {t(
+        nParticipants === 1 ? "subTextSingle" : "subTextMultiple",
+        formatPrice([price.perPerson]),
+      )}
+      <br />
+    {/if}
+    <small>{t("inclTax")}</small>
   </p>
 </div>
 
