@@ -12,8 +12,7 @@ import PostHog from "@features/third-party/posthog.astro";
 import { ENABLE_POSTHOG, POSTHOG_PROJECT_API_KEY } from "astro:env/client";
 import { Font } from "astro:assets";
 import { Seo } from "@datocms/astro/Seo";
-import { getLocalizedConfig } from "../lib/contentUtils.ts";
-import { getLocalizedUrls } from "../lib/routeUtils.ts";
+import { getLocalizedConfig, getLocalizedUrls } from "@lib/contentUtils.ts";
 import type { DatoSeoTag } from "../schemas/dato.ts";
 import { localeSchema } from "../schemas/locale";
 

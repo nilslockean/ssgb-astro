@@ -2,7 +2,7 @@
 import { LOCALES, languages } from "@lib/i18nUtils";
 import { localeSchema } from "src/schemas/locale";
 import LocaleFlag from "@components/flags/LocaleFlag.astro";
-import { getLocalizedUrls } from "@lib/routeUtils";
+import { getLocalizedUrls } from "@lib/contentUtils";
 
 const currentLocale = localeSchema.parse(Astro.currentLocale);
 const localizedUrls = await getLocalizedUrls(Astro.url);

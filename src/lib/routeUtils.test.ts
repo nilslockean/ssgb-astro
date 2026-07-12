@@ -1,6 +1,6 @@
 import { describe, expect, test, vi } from "vitest";
 import { composePath, courseUrl } from "./routeUtils";
-import { detectPageType, getLocalizedUrls } from "./routeUtils";
+import { detectPageType, getLocalizedUrls } from "./contentUtils.ts";
 
 const mockGetCollection = vi.fn();
 
