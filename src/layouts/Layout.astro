@@ -20,16 +20,11 @@ const locale = localeSchema.parse(Astro.currentLocale);
 const config = await getLocalizedConfig(locale);
 
 export interface Props {
-  metaDescription: string;
-  metaTitle?: string;
   tagline?: string;
   seoData?: DatoSeoTag[];
 }
-const { metaDescription, tagline, metaTitle, seoData } = Astro.props;
+const { tagline, seoData } = Astro.props;
 const url = Astro.url.toString();
-const title = metaTitle
-  ? `${metaTitle} • ${config.siteTitle}`
-  : `${config.siteTitle} • ${tagline || config.siteTagline}`;
 
 const faviconData = config.faviconMetaTags ?? [];
 const allSeoData = seoData ? [...seoData, ...faviconData] : undefined;
@@ -49,25 +44,7 @@ try {
     <meta content="width=device-width" name="viewport" />
     <meta content={Astro.generator} name="generator" />
 
-    {
-      allSeoData ? (
-        <Seo data={allSeoData} />
-      ) : (
-        <>
-          <link href="/favicon.svg" rel="icon" type="image/svg+xml" />
-          <title set:html={title} />
-          <meta content={metaDescription} name="description" />
-          <meta content={url} property="og:url" />
-          <meta content="website" property="og:type" />
-          <meta content={title} property="og:title" />
-          <meta content={metaDescription} property="og:description" />
-          <meta content="summary_large_image" name="twitter:card" />
-          <meta content={url} property="twitter:url" />
-          <meta content={title} name="twitter:title" />
-          <meta content={metaDescription} name="twitter:description" />
-        </>
-      )
-    }
+    {allSeoData && <Seo data={allSeoData} />}
 
     <link href={url} rel="canonical" />
     {
