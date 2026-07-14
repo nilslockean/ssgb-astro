@@ -11,5 +11,23 @@ import Layout from "../layouts/Layout.astro";
   <div class="p-8">
     <h1>404</h1>
   </div>
-  <div class="min-h-screen p-8"></div>
 </Layout>
+
+<style>
+  @import "../styles/breakpoints.css";
+
+  h1 {
+    font-size: 10rem;
+    opacity: 0.4;
+  }
+  @media (--breakpoint-md) {
+    h1 {
+      font-size: 15rem;
+    }
+  }
+  @media (--breakpoint-lg) {
+    h1 {
+      font-size: 18rem;
+    }
+  }
+</style>
