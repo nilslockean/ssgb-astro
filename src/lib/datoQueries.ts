@@ -455,15 +455,7 @@ export const HOME_PAGE_QUERY = `
           }
         }
       }
-      heroVideo {
-        video {
-          muxPlaybackId
-          streamingUrl
-          mp4High: mp4Url(res: high)
-          mp4Med: mp4Url(res: medium)
-          thumbnailUrl(format: jpg)
-        }
-      }
+      heroVideoUrl
     }
   }
 `;

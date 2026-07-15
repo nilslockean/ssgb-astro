@@ -27,22 +27,6 @@ const datoButtonSchema = z.object({
   link: datoLinkSchema.nullable(),
 });
 
-const datoVideoSchema = z
-  .object({
-    muxPlaybackId: z.string(),
-    streamingUrl: z.string(),
-    mp4High: z.string().nullable(),
-    mp4Med: z.string().nullable(),
-    thumbnailUrl: z.string(),
-  })
-  .nullable();
-
-const datoUploadSchema = z
-  .object({
-    video: datoVideoSchema,
-  })
-  .nullable();
-
 const datoStructuredTextSchema = z.object({
   value: z.custom<CdaStructuredTextValue["value"]>(),
   blocks: z.custom<CdaStructuredTextValue["blocks"]>().optional(),
@@ -57,7 +41,7 @@ const datoHomePageSchema = z.object({
   heroDescription: z.string().nullable(),
   heroButtons: z.array(datoButtonSchema).nullable(),
   structuredText: datoStructuredTextSchema.nullable(),
-  heroVideo: datoUploadSchema,
+  heroVideoUrl: z.string().nullable(),
 });
 
 export const heroButtonSchema = z.object({
@@ -152,12 +136,7 @@ export function homePageLoader(): Loader {
         structuredText[locale] = data.structuredText as CdaStructuredTextValue;
         seo[locale] = data.seo;
 
-        if (!heroVideo && data.heroVideo?.video?.mp4High) {
-          heroVideo = data.heroVideo.video.mp4High;
-        }
-        if (!heroVideo && data.heroVideo?.video?.mp4Med) {
-          heroVideo = data.heroVideo.video.mp4Med;
-        }
+        heroVideo = data.heroVideoUrl ?? "";
       }
 
       const data = await parseData({
