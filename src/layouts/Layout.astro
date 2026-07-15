@@ -108,6 +108,17 @@ try {
             </nav>
             <LanguageList />
           </div>
+          <div class="layout__footer-nav-mobile">
+            <nav>
+              {
+                config.navigation.secondary.map((item) => (
+                  <NavLink href={item.link.path} small>
+                    {item.link.label}
+                  </NavLink>
+                ))
+              }
+            </nav>
+          </div>
           <p class="layout__copyright">
             &copy; {new Date().getFullYear()}&nbsp;{config.siteTitle}
           </p>
