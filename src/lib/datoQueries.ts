@@ -273,8 +273,7 @@ export const COURSES_QUERY = `
         url width height alt
         responsiveImage(imgixParams: { auto: format, w: 1600 }) { src width height alt base64 }
       }
-      numDaysMin
-      numDaysMax
+      numDays
       prerequisites
       maxParticipants
       norm { title url }

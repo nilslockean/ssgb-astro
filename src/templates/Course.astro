@@ -20,15 +20,14 @@ interface Props {
   entry: CollectionEntry<"courses">;
 }
 
-function composeNumDaysDesc(input: number[], locale = defaultLocale) {
+function composeNumDaysDesc(numDays: number, locale = defaultLocale) {
   const suffixMap: Record<Locale, { one: string; many: string }> = {
     sv: { one: "dag", many: "dagar" },
     da: { one: "dag", many: "dage" },
     en: { one: "day", many: "days" },
   };
-  const numDays = input.join("-");
   const numDaysSuffix =
-    numDays === "1" ? suffixMap[locale].one : suffixMap[locale].many;
+    numDays === 1 ? suffixMap[locale].one : suffixMap[locale].many;
   return `${numDays} ${numDaysSuffix}`;
 }
 
