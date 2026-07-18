@@ -15,9 +15,13 @@ export default defineConfig({
   site: "https://ssgb.se",
   trailingSlash: "always",
 
-  integrations: [mdx(), sitemap({
-    filter: (page) => !page.includes("/partials/"),
-  }), svelte()],
+  integrations: [
+    mdx(),
+    sitemap({
+      filter: (page) => !page.includes("/partials/"),
+    }),
+    svelte(),
+  ],
 
   adapter: netlify(),
 
@@ -75,6 +79,9 @@ export default defineConfig({
   },
   redirects: {
     "/admin": "https://ssgb.admin.datocms.com/",
-    "/kurser/topprepskurs": "/kurser/introkurs",
+    "/kurser/topprepskurs": "/kurser/introkurs/",
+    "/dolomiterna": "/resor/italien/",
+    "/spanien": "/resor/spanien/",
   },
 });
+
