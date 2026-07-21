@@ -205,5 +205,17 @@ if (norm?.url) {
       </ButtonGroup>
     </Accordion>
   </Section>
-  {formEntry && <FormSection form={formEntry} id="boka" title={cta} />}
+  {formEntry && (
+    <FormSection
+      form={formEntry}
+      id="boka"
+      title={cta}
+      {priceSingle}
+      {priceDouble}
+      {priceMany}
+      {maxParticipants}
+      {numDays}
+      {locale}
+    />
+  )}
 </Layout>

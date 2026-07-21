@@ -420,6 +420,10 @@ export const FORMS_QUERY = `
           name
           required
         }
+        ... on FormOrderTotalRecord {
+          id
+          __typename
+        }
       }
       subtext {
         ... GlobalStructuredTextBlock

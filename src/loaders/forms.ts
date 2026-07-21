@@ -77,6 +77,11 @@ const formInputCheckboxSchema = z.object({
   required: z.boolean().nullable(),
 });
 
+const formOrderTotalSchema = z.object({
+  id: z.string(),
+  __typename: z.literal("FormOrderTotalRecord"),
+});
+
 export const formBlockSchema = z.discriminatedUnion("__typename", [
   formInputTextSchema,
   formInputTextareaSchema,
@@ -85,6 +90,7 @@ export const formBlockSchema = z.discriminatedUnion("__typename", [
   formInputOptionSchema,
   formInputCoursesOptionSchema,
   formInputCheckboxSchema,
+  formOrderTotalSchema,
 ]);
 
 export type FormBlock = z.infer<typeof formBlockSchema>;

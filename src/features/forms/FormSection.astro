@@ -11,16 +11,27 @@ import FormInputCheckbox from "./FormInputCheckbox.astro";
 import { composePath } from "@lib/routeUtils";
 import { localeSchema } from "../../schemas/locale";
 import StructuredText from "@features/dato/StructuredText.astro";
+import FormOrderTotal from "./FormOrderTotal.svelte";
 
 interface Props {
   form: CollectionEntry<"forms">;
   id?: string;
   title?: string;
+  priceSingle?: number;
+  priceDouble?: number;
+  priceMany?: number;
+  maxParticipants?: number;
+  numDays?: number;
 }
 const {
   form: { data },
   id,
   title = data.title,
+  priceSingle,
+  priceDouble,
+  priceMany,
+  maxParticipants,
+  numDays,
 } = Astro.props;
 const currentLocale = localeSchema.parse(Astro.currentLocale);
 const currentSlug = Astro.url.pathname
@@ -54,6 +65,7 @@ const action = composePath(data.redirect, currentLocale);
         return;
       }
       numParticipantsInputField.value = String(evt.detail);
+      numParticipantsInputField.dispatchEvent(new Event("input"));
     });
   });
 </script>
@@ -104,7 +116,15 @@ const action = composePath(data.redirect, currentLocale);
                   <FormInputDate {...field} />
                 )}
                 {field.__typename === "FormInputNumberRecord" && (
-                  <FormInputNumber {...field} />
+                  <FormInputNumber
+                    {...field}
+                    max={
+                      field.name === "numParticipants" &&
+                      maxParticipants != null
+                        ? maxParticipants
+                        : field.max
+                    }
+                  />
                 )}
                 {field.__typename === "FormInputOptionRecord" && (
                   <FormOptions {...field} />
@@ -123,6 +143,18 @@ const action = composePath(data.redirect, currentLocale);
                     required={field.required}
                   />
                 )}
+                {field.__typename === "FormOrderTotalRecord" &&
+                  priceSingle != null && (
+                    <FormOrderTotal
+                      client:load
+                      {priceSingle}
+                      {priceDouble}
+                      {priceMany}
+                      {maxParticipants}
+                      {numDays}
+                      locale={currentLocale}
+                    />
+                  )}
               </p>
             );
           })
