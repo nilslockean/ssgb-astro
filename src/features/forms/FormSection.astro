@@ -7,8 +7,10 @@ import FormInputDate from "./FormInputDate.astro";
 import FormInputNumber from "./FormInputNumber.astro";
 import FormOptions from "./FormOptions.astro";
 import FormCourseOptions from "./FormCourseOptions.astro";
+import FormInputCheckbox from "./FormInputCheckbox.astro";
 import { composePath } from "@lib/routeUtils";
 import { localeSchema } from "../../schemas/locale";
+import StructuredText from "@features/dato/StructuredText.astro";
 
 interface Props {
   form: CollectionEntry<"forms">;
@@ -113,11 +115,27 @@ const action = composePath(data.redirect, currentLocale);
                     defaultValue={currentSlug || null}
                   />
                 )}
+                {field.__typename === "FormInputCheckboxRecord" && (
+                  <FormInputCheckbox
+                    id={field.id}
+                    label={field.label}
+                    name={field.name}
+                    required={field.required}
+                  />
+                )}
               </p>
             );
           })
         }
       </div>
+
+      {
+        data.subtext && (
+          <div class="contact-form__subtext">
+            <StructuredText data={data.subtext} />
+          </div>
+        )
+      }
 
       <p class="contact-form__submit">
         <button class="btn btn--primary" type="submit">{data.cta}</button>
@@ -154,6 +172,11 @@ const action = composePath(data.redirect, currentLocale);
   .contact-form__grid {
     display: grid;
     gap: var(--space-8);
+  }
+
+  .contact-form__subtext {
+    margin-top: var(--space-8);
+    margin-bottom: var(--space-4);
   }
 
   @media (--breakpoint-lg) {

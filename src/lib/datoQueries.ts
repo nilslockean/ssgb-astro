@@ -309,6 +309,46 @@ export const TRIPS_QUERY = `
   }
 `;
 
+export const GLOBAL_STRUCTURED_TEXT_FRAGMENT = `
+  fragment GlobalStructuredTextBlock on GlobalStructuredTextRecord {
+    id
+    __typename
+    structuredText {
+      value
+      blocks {
+        ${BUTTON_GROUP_RECORD_BLOCK}
+        ... on CourseCollectionRecord {
+          id
+          __typename
+          filter
+          eyebrow
+          limit
+          manualCourses { id }
+        }
+        ... on TripCollectionRecord {
+          id
+          __typename
+          eyebrow
+        }
+        ... on TeamCollectionRecord {
+          id
+          __typename
+        }
+        ${ACCORDION_RECORD_BLOCK}
+      }
+      inlineBlocks {
+        ... on ContactDetailRecord { id __typename value }
+        ... on PriceDetailRecord { id __typename value }
+      }
+      links {
+        ... on CourseRecord { id __typename slug }
+        ... on PageRecord { id __typename slug(locale: $locale) }
+        ... on TripRecord { id __typename slug }
+      }
+    }
+  }
+`;
+
 export const FORMS_QUERY = `
   query AllForms($locale: SiteLocale!) {
     allForms(locale: $locale) {
@@ -373,6 +413,16 @@ export const FORMS_QUERY = `
           required
           placeholder
         }
+        ... on FormInputCheckboxRecord {
+          id
+          __typename
+          label
+          name
+          required
+        }
+      }
+      subtext {
+        ... GlobalStructuredTextBlock
       }
       cta(locale: $locale)
       redirect {
@@ -382,6 +432,7 @@ export const FORMS_QUERY = `
       }
     }
   }
+  ${GLOBAL_STRUCTURED_TEXT_FRAGMENT}
 `;
 
 export const TEAMS_QUERY = `

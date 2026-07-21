@@ -4,6 +4,7 @@ import { executeQuery } from "@lib/datocms";
 import { FORMS_QUERY } from "@lib/datoQueries";
 import { LOCALE_CODES } from "@lib/routeUtils";
 import { localeSchema } from "src/schemas/locale";
+import type { CdaStructuredTextValue } from "@datocms/astro/StructuredText";
 
 const formInputTextSchema = z.object({
   id: z.string(),
@@ -68,6 +69,14 @@ const formInputCoursesOptionSchema = z.object({
   placeholder: z.string().nullable(),
 });
 
+const formInputCheckboxSchema = z.object({
+  id: z.string(),
+  __typename: z.literal("FormInputCheckboxRecord"),
+  label: z.string(),
+  name: z.string(),
+  required: z.boolean().nullable(),
+});
+
 export const formBlockSchema = z.discriminatedUnion("__typename", [
   formInputTextSchema,
   formInputTextareaSchema,
@@ -75,6 +84,7 @@ export const formBlockSchema = z.discriminatedUnion("__typename", [
   formInputNumberSchema,
   formInputOptionSchema,
   formInputCoursesOptionSchema,
+  formInputCheckboxSchema,
 ]);
 
 export type FormBlock = z.infer<typeof formBlockSchema>;
@@ -83,6 +93,7 @@ export const formSchema = z.object({
   title: z.string(),
   description: z.string().nullable(),
   content: z.array(formBlockSchema).default([]),
+  subtext: z.custom<CdaStructuredTextValue>().nullable(),
   cta: z.string(),
   language: localeSchema.default("sv"),
   redirect: z.string(),
@@ -93,6 +104,11 @@ const datoFormSchema = z.object({
   title: z.string(),
   description: z.string().nullable(),
   content: z.array(formBlockSchema).default([]),
+  subtext: z
+    .object({
+      structuredText: z.custom<CdaStructuredTextValue>(),
+    })
+    .nullable(),
   cta: z.string(),
   redirect: z.object({ slug: z.string() }),
 });
@@ -119,6 +135,7 @@ export function datoFormsLoader(): Loader {
               title: form.title,
               description: form.description ?? null,
               content: form.content,
+              subtext: form.subtext?.structuredText ?? null,
               cta: form.cta,
               language: locale,
               redirect: form.redirect.slug,

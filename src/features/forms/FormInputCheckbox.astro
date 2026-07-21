@@ -1,0 +1,28 @@
+---
+export interface Props {
+  id: string;
+  label: string;
+  name: string;
+  required: boolean | null;
+}
+
+const { id, label, name, required } = Astro.props;
+---
+
+<label>
+  <input autocomplete="on" type="checkbox" {id} {name} {required} />
+  <span set:html={label} />
+</label>
+
+<style>
+  label {
+    display: flex;
+    gap: var(--space-2);
+    align-items: center;
+    accent-color: var(--color-accent);
+  }
+
+  input {
+    width: initial;
+  }
+</style>
