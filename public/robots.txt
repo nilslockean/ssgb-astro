@@ -1,0 +1,5 @@
+# Block admin page
+User-Agent: *
+Disallow: /admin
+
+Sitemap: https://ssgb.se/sitemap-0.xml
