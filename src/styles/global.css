@@ -551,6 +551,10 @@
     margin-block: var(--space-4);
     margin-left: var(--space-5);
     list-style: disc;
+    ul {
+      margin-top: var(--space-2);
+      list-style: circle;
+    }
   }
 
   .collection-entry ul:not(.course-grid) > li + li {
