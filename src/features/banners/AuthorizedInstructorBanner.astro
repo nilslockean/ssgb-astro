@@ -1,8 +1,10 @@
 ---
 import { Image } from "astro:assets";
 import { getLocalizedConfig } from "@lib/contentUtils";
+import { localeSchema } from "../../schemas/locale.ts";
 
-const config = await getLocalizedConfig(Astro.currentLocale);
+const currentLocale = localeSchema.parse(Astro.currentLocale);
+const config = await getLocalizedConfig(currentLocale);
 const { title, content, image } = config.authorizedInstructor;
 ---
 
@@ -29,6 +31,7 @@ const { title, content, image } = config.authorizedInstructor;
     flex-wrap: wrap;
     gap: var(--space-6);
     margin: var(--space-8) 0;
+    width: 100%;
   }
 
   .card__inner {
