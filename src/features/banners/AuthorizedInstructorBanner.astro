@@ -1,29 +1,26 @@
 ---
 import { Image } from "astro:assets";
 import { getLocalizedConfig } from "@lib/contentUtils";
-import Section from "@components/Section.astro";
 
 const config = await getLocalizedConfig(Astro.currentLocale);
 const { title, content, image } = config.authorizedInstructor;
 ---
 
-<Section>
-  <div class="card">
-    <Image
-      src={{
-        src: image.url,
-        width: image.width,
-        height: image.height,
-        format: "webp",
-      }}
-      alt={image.alt}
-    />
-    <div class="card__inner">
-      <h2 class="h3">{title}</h2>
-      <p>{content}</p>
-    </div>
+<div class="card">
+  <Image
+    src={{
+      src: image.url,
+      width: image.width,
+      height: image.height,
+      format: "webp",
+    }}
+    alt={image.alt}
+  />
+  <div class="card__inner">
+    <h2 class="h3">{title}</h2>
+    <p>{content}</p>
   </div>
-</Section>
+</div>
 
 <style>
   .card {
@@ -31,6 +28,7 @@ const { title, content, image } = config.authorizedInstructor;
     flex-direction: row;
     flex-wrap: wrap;
     gap: var(--space-6);
+    margin: var(--space-8) 0;
   }
 
   .card__inner {
