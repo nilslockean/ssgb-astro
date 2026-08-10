@@ -33,13 +33,25 @@ const {
   {
     image && (
       <div class="card__img-wrapper">
-        <img
-          class="card__img"
-          src={image.src}
-          alt={image.alt ?? ""}
-          role={!image.alt ? "presentation" : null}
-          loading="lazy"
-        />
+        {href ? (
+          <a href={href} class="card__img-link">
+            <img
+              class="card__img"
+              src={image.src}
+              alt={image.alt ?? ""}
+              role={!image.alt ? "presentation" : null}
+              loading="lazy"
+            />
+          </a>
+        ) : (
+          <img
+            class="card__img"
+            src={image.src}
+            alt={image.alt ?? ""}
+            role={!image.alt ? "presentation" : null}
+            loading="lazy"
+          />
+        )}
       </div>
     )
   }
@@ -84,6 +96,12 @@ const {
   .card__img-wrapper {
     aspect-ratio: 16 / 9;
     overflow: hidden;
+  }
+
+  .card__img-link {
+    display: block;
+    width: 100%;
+    height: 100%;
   }
 
   .card__img {
