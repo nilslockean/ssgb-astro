@@ -454,12 +454,6 @@
     padding: var(--space-8);
   }
 
-  .card {
-    background-color: var(--color-surface-light);
-    border-radius: var(--border-radius-xl);
-    padding: var(--space-8);
-  }
-
   .btn {
     display: inline-block;
     font-family: var(--font-barlow-condensed);

@@ -29,19 +29,20 @@ const {
 } = Astro.props;
 ---
 
-<Tag class:list={["card", image && "card--has-image", className]}>
+<Tag class:list={["card", className]}>
   {
     image && (
-      <img
-        class="card__bg"
-        src={image.src}
-        alt={image.alt ?? ""}
-        role="presentation"
-        loading="lazy"
-      />
+      <div class="card__img-wrapper">
+        <img
+          class="card__img"
+          src={image.src}
+          alt={image.alt ?? ""}
+          role={!image.alt ? "presentation" : null}
+          loading="lazy"
+        />
+      </div>
     )
   }
-  {image && <span aria-hidden="true" class="card__overlay" />}
   <div class="card__body">
     {
       title && (
@@ -74,48 +75,28 @@ const {
     position: relative;
     background-color: var(--color-surface-light);
     border-radius: var(--border-radius-xl);
-    padding: var(--space-8);
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     overflow: hidden;
   }
 
-  .card:not(.card--has-image) {
-    background-color: var(--color-surface-light);
+  .card__img-wrapper {
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
   }
 
-  .card__bg {
-    position: absolute;
-    inset: 0;
-    z-index: 0;
+  .card__img {
     width: 100%;
     height: 100%;
     object-fit: cover;
   }
 
-  .card__overlay {
-    --opacity: 0.9;
-    position: absolute;
-    inset: 0;
-    z-index: 1;
-    background: linear-gradient(
-      65deg,
-      rgb(0 0 0 / var(--opacity)),
-      rgb(0 0 0 / 0.5)
-    );
-  }
-
   .card__body {
-    position: relative;
-    z-index: 2;
     display: flex;
     flex-direction: column;
     flex-grow: 1;
-  }
-
-  .card--has-image .card__body {
-    color: var(--color-white);
+    padding: var(--space-8);
   }
 
   .card__link {
