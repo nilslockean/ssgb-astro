@@ -16,7 +16,6 @@ interface Props extends HTMLAttributes<"section"> {
   video?: string;
   title: string;
   content: string;
-  size?: "default" | "large";
   buttons?: HeroButton[];
   eyebrow?: string;
 }
@@ -29,99 +28,93 @@ const {
   content,
   buttons,
   eyebrow,
-  size = "default",
   class: className,
   ...rest
 } = Astro.props;
 ---
 
 <section
-  class:list={[
-    "hero",
-    { "hero--large": size === "large", "hero--video": Boolean(video) },
-    className,
-  ]}
+  class:list={["hero", className]}
   {...rest}
 >
-  {
-    video ? (
-      <video autoplay class="hero__video" loop muted playsinline>
-        <source src={video} type="video/mp4" />
-      </video>
-    ) : data ? (
-      <Image
-        data={data}
-        pictureClass="hero__img"
-        priority
-        usePlaceholder={false}
-        imgStyle={{
-          objectFit: "cover",
-          width: "100%",
-          height: "100%",
-          maxWidth: "none",
-          opacity: 0,
-          transition: "opacity 0.4s ease-in",
-        }}
-        pictureStyle={{
-          position: "absolute",
-          inset: 0,
-          width: "100%",
-          height: "100%",
-          backgroundImage: data.base64 ? `url("${data.base64}")` : undefined,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-        }}
-      />
-    ) : image ? (
-      <Picture
-        alt=""
-        class="hero__img"
-        fetchpriority="high"
-        formats={["avif", "webp"]}
-        loading="eager"
-        role="presentation"
-        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 90vw, 80vw"
-        src={"format" in image ? image : image.src}
-        width={"format" in image ? undefined : image.width}
-        height={"format" in image ? undefined : image.height}
-        widths={[640, 1024, 1600]}
-      />
-    ) : null
-  }
-  <span aria-hidden="true" class="hero__overlay"></span>
-  <div class="hero__content text-white">
-    <div class="hero__inner">
-      <div>
-        {eyebrow && <Eyebrow class="hero__eyebrow">{eyebrow}</Eyebrow>}
-        <h1 class="hero__title text-white text-h1" set:html={title} />
-      </div>
+  <div class="hero__img-wrapper">
+    {
+      video ? (
+        <video autoplay class="hero__video" loop muted playsinline>
+          <source src={video} type="video/mp4" />
+        </video>
+      ) : data ? (
+        <Image
+          data={data}
+          pictureClass="hero__img"
+          priority
+          usePlaceholder={false}
+          imgStyle={{
+            objectFit: "cover",
+            width: "100%",
+            height: "100%",
+            maxWidth: "none",
+            opacity: 0,
+            transition: "opacity 0.4s ease-in",
+          }}
+          pictureStyle={{
+            position: "absolute",
+            inset: 0,
+            width: "100%",
+            height: "100%",
+            backgroundImage: data.base64 ? `url("${data.base64}")` : undefined,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+          }}
+        />
+      ) : image ? (
+        <Picture
+          alt=""
+          class="hero__img"
+          fetchpriority="high"
+          formats={["avif", "webp"]}
+          loading="eager"
+          role="presentation"
+          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 90vw, 80vw"
+          src={"format" in image ? image : image.src}
+          width={"format" in image ? undefined : image.width}
+          height={"format" in image ? undefined : image.height}
+          widths={[640, 1024, 1600]}
+        />
+      ) : null
+    }
+  </div>
+  <div class="hero__plate">
+    <div>
+      {eyebrow && <Eyebrow class="hero__eyebrow text-white">{eyebrow}</Eyebrow>}
+      <h1 class="hero__title text-h1" set:html={title} />
+    </div>
 
-      <div class="hero__bottom">
-        <p class="hero__text intro">{content}</p>
+    <div class="hero__bottom">
+      <p class="hero__text intro">{content}</p>
 
-        {
-          buttons && buttons.length && (
-            <ButtonGroup class="hero__buttons">
-              {buttons.map(({ label, href, target }, i) => (
-                <ButtonLink
-                  href={href}
-                  target={target}
-                  variant={i === 0 ? "primary" : "default"}
-                >
-                  {label}
-                </ButtonLink>
-              ))}
-            </ButtonGroup>
-          )
-        }
-      </div>
+      {
+        buttons && buttons.length && (
+          <ButtonGroup class="hero__buttons">
+            {buttons.map(({ label, href, target }, i) => (
+              <ButtonLink
+                href={href}
+                target={target}
+                variant={i === 0 ? "primary" : "default"}
+              >
+                {label}
+              </ButtonLink>
+            ))}
+          </ButtonGroup>
+        )
+      }
     </div>
   </div>
 </section>
 
 <script>
   (function () {
-    function fadeIn(img) {
+    function fadeIn(img: HTMLImageElement) {
       img.style.opacity = "1";
     }
     function setup() {
@@ -170,29 +163,29 @@ const {
   }
 
   .hero {
+    padding-bottom: var(--space-12);
+    background-color: var(--color-surface);
+  }
+
+  .hero__img-wrapper {
     position: relative;
-    padding: var(--space-8);
-    overflow: clip;
+    aspect-ratio: 6 / 3;
+    overflow: hidden;
   }
 
-  .hero--large .hero__inner {
-    min-height: 80vh;
-  }
-
-  .hero__overlay {
-    --opacity: 0.9;
+  .hero__img-wrapper .hero__img,
+  .hero__img-wrapper .hero__video {
     position: absolute;
     inset: 0;
-    z-index: 1;
-    background: linear-gradient(
-      65deg,
-      rgb(0 0 0 / var(--opacity)),
-      rgb(0 0 0 / 0.5)
-    );
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    animation: blur-on-scroll linear;
+    animation-timeline: scroll();
   }
 
-  .hero--video .hero__overlay {
-    --opacity: 0.65;
+  .hero__img img {
+    animation: hero-fade-in 0.6s ease-in 10s forwards;
   }
 
   @keyframes hero-fade-in {
@@ -201,46 +194,22 @@ const {
     }
   }
 
-  .hero__img img {
-    animation: hero-fade-in 0.6s ease-in 10s forwards;
-  }
-
-  .hero__img {
-    position: absolute;
-    inset: 0;
-    height: 100%;
-    width: 100%;
-    object-fit: cover;
-    animation: blur-on-scroll linear;
-    animation-timeline: scroll();
-  }
-
-  .hero__video {
-    position: absolute;
-    inset: 0;
-    height: 100%;
-    width: 100%;
-    object-fit: cover;
-    animation: blur-on-scroll linear;
-    animation-timeline: scroll();
-  }
-
-  .hero__content {
+  .hero__plate {
+    --offset: var(--space-8);
     position: relative;
     z-index: 2;
-    width: 100%;
-  }
-
-  .hero__inner {
+    margin-inline: var(--space-8);
+    margin-top: calc(-1 * var(--offset));
+    background-color: var(--color-surface-light);
+    border-radius: var(--border-radius-xl);
+    padding: var(--space-8);
     display: flex;
     flex-direction: column;
-    padding-bottom: var(--space-6);
-    gap: 16vw;
-    justify-content: space-between;
+    gap: var(--space-6);
   }
 
   .hero__eyebrow {
-    color: rgb(255 255 255 / 0.7);
+    color: var(--color-white);
   }
 
   .hero__title {
@@ -251,6 +220,18 @@ const {
   @media (--breakpoint-lg) {
     .hero__title {
       font-size: var(--text-h0);
+    }
+
+    .hero__plate {
+      --offset: var(--space-24);
+    }
+  }
+
+  @media (--breakpoint-xl) {
+    .hero__plate {
+      --offset: var(--space-36);
+      padding: var(--space-16);
+      max-width: 56rem;
     }
   }
 
