@@ -37,16 +37,6 @@
       da: "I alt",
       en: "Total",
     },
-    subTextSingle: {
-      sv: "Det är $1 per dag.",
-      da: "Det er $1 om dagen.",
-      en: "That is $1 per day.",
-    },
-    subTextMultiple: {
-      sv: "Det är $1 per person och dag.",
-      da: "Det er $1 per person per dag.",
-      en: "That is $1 per person per day.",
-    },
     inclTax: {
       sv: "Inklusive moms.",
       da: "SEK inklusive moms.",
@@ -63,14 +53,6 @@
   <div class="order-total">
     <p class="order-total__label">{t("total")}:</p>
     <output class="order-total__price">{formatPrice([total])}</output>
-    {#if !(nParticipants === 1 && Number(numDays) === 1)}
-      <p class="order-total__per-person">
-        {t(
-          nParticipants === 1 ? "subTextSingle" : "subTextMultiple",
-          formatPrice([basePrice]),
-        )}
-      </p>
-    {/if}
     <p class="order-total__tax">{t("inclTax")}</p>
   </div>
 {/if}
@@ -95,11 +77,6 @@
     font-weight: 500;
     font-family: var(--font-heading);
     margin: var(--space-1) 0;
-  }
-
-  .order-total__per-person {
-    margin: var(--space-1) 0 0;
-    font-size: var(--text-sm);
   }
 
   .order-total__tax {
