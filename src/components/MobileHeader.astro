@@ -3,7 +3,7 @@ import NavLink from "./NavLink.astro";
 import SiteLogo from "@features/navigation/SiteLogo.astro";
 import type { Navigation } from "@lib/routeUtils";
 import LanguageList from "@features/locale/LanguageList.astro";
-import { LOCALES } from "@lib/i18nUtils";
+import { LOCALES, MENU_TOGGLE_LABELS } from "@lib/i18nUtils";
 import { localeSchema } from "../schemas/locale";
 import LocaleFlag from "@components/flags/LocaleFlag.astro";
 
@@ -25,8 +25,12 @@ const currentLocale = localeSchema.parse(Astro.currentLocale);
     >
       <LocaleFlag locale={currentLocale} size={28} />
     </button>
-    <button aria-haspopup="dialog" aria-label="Toggle menu" id="menu-toggle">
-      <span class="sr-only">Öppna eller stäng huvudmenyn</span>
+    <button
+      aria-haspopup="dialog"
+      aria-label={MENU_TOGGLE_LABELS[currentLocale]}
+      id="menu-toggle"
+    >
+      <span class="sr-only">{MENU_TOGGLE_LABELS[currentLocale]}</span>
       <svg
         aria-hidden="true"
         class="mobile-menu__icon--open"
