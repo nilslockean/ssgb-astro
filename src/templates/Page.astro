@@ -12,7 +12,7 @@ interface Props {
 }
 
 const {
-  data: { excerpt, eyebrow, title, body, form, seo },
+  data: { excerpt, eyebrow, h1, body, form, seo },
 } = Astro.props.data;
 
 const formEntry = form && (await getEntry("forms", form));
@@ -21,7 +21,7 @@ const formEntry = form && (await getEntry("forms", form));
 <Layout seoData={seo}>
   <Section class="pb-0">
     {eyebrow && <Eyebrow>{eyebrow}</Eyebrow>}
-    <h1 class="mb-6">{title}</h1>
+    <h1 class="mb-6">{h1}</h1>
     <p class="intro">{excerpt}</p>
   </Section>
   <div class="collection-entry p-8">

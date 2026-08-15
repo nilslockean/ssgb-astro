@@ -18,7 +18,6 @@ const NAV_MENU_ITEMS = `
           title(locale: $locale)
         }
       }
-      label
       newTab
       subMenu {
         items(locale: $locale) {
@@ -40,7 +39,6 @@ const NAV_MENU_ITEMS = `
                 title(locale: $locale)
               }
             }
-            label
           }
         }
       }
@@ -159,10 +157,11 @@ export const PAGES_QUERY = `
   query AllPages($locale: SiteLocale!) {
     allPages(locale: $locale) {
       id
-      eyebrow(locale: $locale)
       title(locale: $locale)
-      excerpt(locale: $locale)
       slug(locale: $locale)
+      eyebrow(locale: $locale)
+      h1(locale: $locale)
+      excerpt(locale: $locale)
       seo: _seoMetaTags { attributes content tag }
       form { id }
       structuredText(locale: $locale) {

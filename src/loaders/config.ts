@@ -3,7 +3,11 @@ import { z } from "astro/zod";
 import { executeQuery } from "@lib/datocms";
 import { SITE_CONFIG_QUERY } from "@lib/datoQueries";
 import { localeSchema } from "../schemas/locale";
-import { datoImageSchema, datoSeoTagsSchema, type DatoSeoTag } from "../schemas/dato";
+import {
+  datoImageSchema,
+  datoSeoTagsSchema,
+  type DatoSeoTag,
+} from "../schemas/dato";
 import {
   composePath,
   courseUrl,
@@ -41,7 +45,6 @@ const datoLinkSchema = z.object({
 });
 
 const datoMenuItemSchema = z.object({
-  label: z.string().nullable(),
   link: datoLinkSchema,
   newTab: z.boolean().default(false),
   get subMenu() {
@@ -77,24 +80,28 @@ const datoSiteConfigSchema = z.object({
     height: z.number(),
     alt: z.string(),
   }),
-  logo: z.object({
-    url: z.string(),
-    width: z.number(),
-    height: z.number(),
-    alt: z.string(),
-    format: z.string(),
-  }).nullable(),
+  logo: z
+    .object({
+      url: z.string(),
+      width: z.number(),
+      height: z.number(),
+      alt: z.string(),
+      format: z.string(),
+    })
+    .nullable(),
 });
 
 const datoSiteResponseSchema = z.object({
   _site: z.object({
     faviconMetaTags: datoSeoTagsSchema,
-    globalSeo: z.object({
-      siteName: z.string().nullable(),
-      titleSuffix: z.string().nullable(),
-      twitterAccount: z.string().nullable(),
-      facebookPageUrl: z.string().nullable(),
-    }).nullable(),
+    globalSeo: z
+      .object({
+        siteName: z.string().nullable(),
+        titleSuffix: z.string().nullable(),
+        twitterAccount: z.string().nullable(),
+        facebookPageUrl: z.string().nullable(),
+      })
+      .nullable(),
   }),
   siteConfig: datoSiteConfigSchema,
 });
@@ -185,7 +192,7 @@ function linkPath(
 }
 
 function toItem(item: DatoMenuItem, locale = defaultLocale): NavItem {
-  const label = item.label || item.link.title;
+  const label = item.link.title;
   const path = linkPath(item.link, locale);
   return {
     link: { label, path, locale, newTab: item.newTab },
@@ -278,7 +285,12 @@ export function configLoader(): Loader {
           faviconMetaTags,
           globalSeo,
           logo: svConfig.logo
-            ? { src: svConfig.logo.url, width: svConfig.logo.width, height: svConfig.logo.height, alt: svConfig.logo.alt }
+            ? {
+                src: svConfig.logo.url,
+                width: svConfig.logo.width,
+                height: svConfig.logo.height,
+                alt: svConfig.logo.alt,
+              }
             : null,
         },
       });
