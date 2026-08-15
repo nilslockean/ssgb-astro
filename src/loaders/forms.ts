@@ -97,6 +97,7 @@ export type FormBlock = z.infer<typeof formBlockSchema>;
 
 export const formSchema = z.object({
   title: z.string(),
+  id: z.string(),
   description: z.string().nullable(),
   content: z.array(formBlockSchema).default([]),
   subtext: z.custom<CdaStructuredTextValue>().nullable(),
@@ -107,6 +108,7 @@ export const formSchema = z.object({
 
 const datoFormSchema = z.object({
   id: z.string(),
+  formId: z.string(),
   title: z.string(),
   description: z.string().nullable(),
   content: z.array(formBlockSchema).default([]),
@@ -141,6 +143,7 @@ export function datoFormsLoader(): Loader {
               title: form.title,
               description: form.description ?? null,
               content: form.content,
+              id: form.formId,
               subtext: form.subtext?.structuredText ?? null,
               cta: form.cta,
               language: locale,

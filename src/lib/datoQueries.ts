@@ -352,6 +352,7 @@ export const FORMS_QUERY = `
   query AllForms($locale: SiteLocale!) {
     allForms(locale: $locale) {
       id
+      formId
       title(locale: $locale)
       description(locale: $locale)
       content(locale: $locale) {
