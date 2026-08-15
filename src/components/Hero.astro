@@ -83,7 +83,7 @@ const {
   </div>
   <div class="hero__plate">
     <div>
-      {eyebrow && <Eyebrow class="hero__eyebrow text-white">{eyebrow}</Eyebrow>}
+      {eyebrow && <Eyebrow class="hero__eyebrow">{eyebrow}</Eyebrow>}
       <h1 class="hero__title text-h1" set:html={title} />
     </div>
 
@@ -205,18 +205,16 @@ const {
     gap: var(--space-6);
   }
 
-  .hero__eyebrow {
-    color: var(--color-white);
-  }
-
   .hero__title {
     font-size: var(--text-h1);
     max-width: 30ch;
+    margin-left: -2px;
   }
 
   @media (--breakpoint-lg) {
     .hero__title {
       font-size: var(--text-h0);
+      margin-left: -3px;
     }
 
     .hero__plate {
