@@ -458,7 +458,7 @@ export const TEAMS_QUERY = `
 export const HOME_PAGE_QUERY = `
   query HomePage($locale: SiteLocale!) {
     homePage {
-      seo: _seoMetaTags { attributes content tag }
+      seo: _seoMetaTags(locale: $locale) { attributes content tag }
       eyebrow(locale: $locale)
       tagline(locale: $locale)
       title(locale: $locale)
