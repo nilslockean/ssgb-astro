@@ -44,7 +44,7 @@
     },
     priceEyebrow: {
       sv: "kostar kursen totalt",
-      da: "er den samlade pris",
+      da: "er den samlede pris",
       en: "the total is",
     },
     subTextSingle: {
