@@ -1,5 +1,6 @@
 <script lang="ts">
   import { defaultLocale, type Locale } from "@lib/routeUtils";
+  import { calculateCoursePrice } from "@lib/pricingUtils";
   import { formatPrice } from "@lib/stringUtils";
 
   let {
@@ -21,10 +22,9 @@
     }
     return priceMany;
   });
-  let price = $derived({
-    total: nParticipants * basePrice * numDays,
-    perPerson: basePrice,
-  });
+  let price = $derived(
+    calculateCoursePrice(nParticipants, basePrice, Number(numDays)),
+  );
   $effect(() => {
     const event = new CustomEvent("num_participants_updated", {
       detail: nParticipants,
@@ -32,30 +32,30 @@
     window.dispatchEvent(event);
   });
   const TRANSLATIONS = {
-    labelSingle: {
-      sv: "Om du bokar ensam",
-      da: "Hvis du tager kurset allene",
-      en: "If you take the course alone",
+    participantsLabel: {
+      sv: "Antal deltagare",
+      da: "Antal deltagere",
+      en: "Number of participants",
     },
-    labelMultiple: {
-      sv: "Om ni är $1 personer",
-      en: "If you are $1 people",
-      da: "Hvis I er $1 personer",
+    daysLabel: {
+      sv: "Antal dagar",
+      da: "Antal dage",
+      en: "Number of days",
     },
-    priceEyebrow: {
-      sv: "kostar kursen totalt",
-      da: "er den samlede pris",
-      en: "the total is",
+    dailyPriceLabel: {
+      sv: "Pris per person och dag",
+      da: "Pris per person per dag",
+      en: "Price per person per day",
     },
-    subTextSingle: {
-      sv: "Det är $1 per dag.",
-      da: "Det er $1 om dagen.",
-      en: "That is $1 per day.",
+    perPersonLabel: {
+      sv: "Totalt per person",
+      da: "I alt per person",
+      en: "Total per person",
     },
-    subTextMultiple: {
-      sv: "Det är $1 per person och dag.",
-      da: "Det er $1 per person per dag.",
-      en: "That is $1 per person per day.",
+    totalLabel: {
+      sv: "Totalt",
+      da: "I alt",
+      en: "Grand total",
     },
     inclTax: {
       sv: "Inklusive moms.",
@@ -63,20 +63,15 @@
       en: "SEK, VAT included.",
     },
   } as const satisfies Record<string, Record<Locale, string>>;
-  function t(key: keyof typeof TRANSLATIONS, interpolate = ""): string {
-    return TRANSLATIONS[key][locale].replaceAll("$1", interpolate);
+  function t(key: keyof typeof TRANSLATIONS): string {
+    return TRANSLATIONS[key][locale];
   }
 </script>
 
 <div class="calculator">
-  <p>
-    <label for="pricing-calculator-numparticipants"
-      >{t(
-        nParticipants === 1 ? "labelSingle" : "labelMultiple",
-        String(nParticipants),
-      )}</label
-    >
-  </p>
+  <label for="pricing-calculator-numparticipants">
+    {t("participantsLabel")}: {nParticipants}
+  </label>
   <div class="calculator__input">
     <small>1</small>
     <input
@@ -88,34 +83,65 @@
     />
     <small>{maxParticipants}</small>
   </div>
-  <p>
-    {t("priceEyebrow")}
-    <output for="pricing-calculator-numparticipants"
-      >{formatPrice([price.total])}</output
-    >
-  </p>
-  <p>
-    {#if !(nParticipants === 1 && Number(numDays) === 1)}
-      {t(
-        nParticipants === 1 ? "subTextSingle" : "subTextMultiple",
-        formatPrice([price.perPerson]),
-      )}
-      <br />
-    {/if}
-    <small>{t("inclTax")}</small>
-  </p>
+  <dl class="calculator__breakdown">
+    <div class="calculator__row">
+      <dt>{t("daysLabel")}</dt>
+      <dd>{numDays}</dd>
+    </div>
+    <div class="calculator__row">
+      <dt>{t("dailyPriceLabel")}</dt>
+      <dd>{formatPrice([price.perPersonDaily])}</dd>
+    </div>
+    <div class="calculator__row">
+      <dt>{t("perPersonLabel")}</dt>
+      <dd>{formatPrice([price.perPersonTotal])}</dd>
+    </div>
+    <div class="calculator__row calculator__row--emphasis">
+      <dt>{t("totalLabel")}</dt>
+      <dd>
+        <output for="pricing-calculator-numparticipants"
+          >{formatPrice([price.total])}</output
+        >
+      </dd>
+    </div>
+  </dl>
+  <small class="calculator__tax-note">{t("inclTax")}</small>
 </div>
 
 <style>
-  p {
-    margin-top: var(--space-4);
-  }
-  output {
-    margin: 0;
+  .calculator > label {
     display: block;
-    font-size: var(--text-4xl);
-    font-weight: 500;
-    font-family: var(--font-heading);
+    margin-bottom: var(--space-2);
+  }
+
+  .calculator__breakdown {
+    margin-top: var(--space-6);
+  }
+
+  .calculator__row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: var(--space-4);
+    padding-block: var(--space-2);
+    border-bottom: 1px solid var(--color-muted);
+  }
+
+  .calculator__row dd {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+
+  .calculator__row--emphasis {
+    color: var(--color-default);
+    font-weight: var(--font-weight-bold);
+  }
+
+  .calculator__tax-note {
+    display: block;
+    text-align: right;
+    margin-top: var(--space-2);
   }
 
   .calculator__input {
