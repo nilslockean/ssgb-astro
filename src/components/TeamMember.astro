@@ -8,35 +8,80 @@ interface Props extends HTMLAttributes<"li"> {
 }
 const {
   person: {
-    data: { name, bio, image, imageData, alt, title },
+    id,
+    data: { name, bio, image, imageData, alt, titles },
   },
 } = Astro.props;
+const safeId = (value: string) => value.replace(/[^a-zA-Z0-9_-]/g, "-");
 ---
 
 <div class="team-member">
   <figure class="team-member__figure">
     <div class="team-member__image-wrapper">
-      {imageData ? (
-        <Image
-          data={imageData}
-          imgClass="team-member__image"
-          usePlaceholder
-        />
-      ) : (
-        <img
-          alt={alt ?? ""}
-          class="team-member__image"
-          height={image?.height ?? 800}
-          src={image?.src ?? ""}
-          width={image?.width ?? 600}
-        />
-      )}
+      {
+        imageData ? (
+          <Image
+            data={imageData}
+            pictureStyle={{ display: "block", width: "100%" }}
+            imgClass="team-member__image"
+            imgStyle={{ maxWidth: "none" }}
+            usePlaceholder
+          />
+        ) : (
+          <img
+            alt={alt ?? ""}
+            class="team-member__image"
+            height={image?.height ?? 800}
+            src={image?.src ?? ""}
+            width={image?.width ?? 600}
+          />
+        )
+      }
     </div>
   </figure>
 
   <div class="team-member__content">
     <h3 class="team-member__name font-heading mt-0">{name}</h3>
-    {title && <p class="team-member__title">{title}</p>}
+    {
+      titles.length > 0 && (
+        <ul class="team-member__titles">
+          {titles.map(({ id: titleId, title, description }) => {
+            const uniqueId = safeId(`${id}-${titleId}`);
+            const anchorName = `--team-title-${uniqueId}`;
+            const popoverId = `team-title-description-${uniqueId}`;
+
+            return (
+              <li class="team-member__title-item">
+                {description ? (
+                  <>
+                    <button
+                      class="team-member__title-badge"
+                      type="button"
+                      popovertarget={popoverId}
+                      aria-describedby={popoverId}
+                      title={description}
+                      style={`anchor-name: ${anchorName}`}
+                    >
+                      {title}
+                    </button>
+                    <span
+                      class="team-member__title-popover"
+                      id={popoverId}
+                      popover="auto"
+                      style={`position-anchor: ${anchorName}`}
+                    >
+                      {description}
+                    </span>
+                  </>
+                ) : (
+                  <span class="team-member__title-badge">{title}</span>
+                )}
+              </li>
+            );
+          })}
+        </ul>
+      )
+    }
     <p>{bio}</p>
   </div>
 </div>
@@ -65,8 +110,60 @@ const {
     padding: var(--space-8);
   }
 
-  .team-member__title {
-    margin-bottom: var(--space-4);
-    font-weight: bold;
+  .team-member__titles {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin-block: var(--space-4);
+    padding: 0;
+    list-style: none;
+    margin-left: 0;
+  }
+  .team-member__title-item {
+    margin: 0;
+  }
+
+  .team-member__title-badge {
+    display: inline-flex;
+    align-items: center;
+    border: 1px solid rgb(255 255 255 / 0.55);
+    border-radius: var(--border-radius-full);
+    padding: var(--space-1) var(--space-3);
+    background: var(--color-surface-lighter);
+    color: var(--color-default);
+    font: inherit;
+    font-size: var(--text-sm);
+    line-height: var(--leading-normal);
+  }
+
+  button.team-member__title-badge {
+    cursor: help;
+  }
+
+  .team-member__title-popover {
+    position: fixed;
+    inset: auto;
+    max-width: min(20rem, calc(100vw - 2rem));
+    margin: 0;
+    padding: var(--space-3) var(--space-4);
+    border: 1px solid rgb(255 255 255 / 0.55);
+    border-radius: var(--border-radius-md);
+    background: var(--color-surface-lighter);
+    color: var(--color-default);
+    box-shadow: 0 0.5rem 1.5rem rgb(0 0 0 / 0.3);
+    font-size: var(--text-sm);
+    line-height: var(--leading-normal);
+  }
+
+  @supports (anchor-name: --team-title-anchor) {
+    .team-member__title-popover {
+      position-area: bottom;
+      justify-self: anchor-center;
+      margin-block-start: var(--space-2);
+    }
+  }
+
+  .team-member__title-popover:popover-open {
+    display: block;
   }
 </style>

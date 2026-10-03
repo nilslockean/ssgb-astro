@@ -444,7 +444,11 @@ export const TEAMS_QUERY = `
     allTeams(locale: $locale, orderBy: position_ASC) {
       id
       name
-      title(locale: $locale)
+      titles {
+        id
+        title(locale: $locale)
+        description(locale: $locale)
+      }
       bio(locale: $locale)
       image {
         url width height alt
