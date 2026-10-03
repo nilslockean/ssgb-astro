@@ -95,6 +95,10 @@ const safeId = (value: string) => value.replace(/[^a-zA-Z0-9_-]/g, "-");
     justify-content: space-between;
   }
 
+  .team-member__name {
+    margin-bottom: var(--space-4);
+  }
+
   .team-member__image-wrapper {
     overflow: clip;
     border-radius: var(--border-radius-2xl);
@@ -118,6 +122,7 @@ const safeId = (value: string) => value.replace(/[^a-zA-Z0-9_-]/g, "-");
     padding: 0;
     list-style: none;
     margin-left: 0;
+    margin-bottom: var(--space-6);
   }
   .team-member__title-item {
     margin: 0;
