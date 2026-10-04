@@ -27,6 +27,12 @@ export const courseSchema = z.object({
   body: z.custom<CdaStructuredTextValue>().optional(),
   form: z.string().optional(),
   seo: datoSeoTagsSchema.optional(),
+  location: z
+    .object({
+      title: z.string(),
+      slug: z.string(),
+    })
+    .optional(),
 });
 
 const datoCourseSchema = z.object({
@@ -55,6 +61,12 @@ const datoCourseSchema = z.object({
     })
     .nullable(),
   form: z.object({ id: z.string() }).nullable(),
+  location: z
+    .object({
+      title: z.string(),
+      slug: z.string(),
+    })
+    .nullable(),
 });
 
 export function datoCoursesLoader(): Loader {
@@ -106,6 +118,7 @@ export function datoCoursesLoader(): Loader {
               body: course.content ?? undefined,
               form: course.form ? `${locale}-${course.form.id}` : undefined,
               seo: course.seo,
+              location: course.location ?? undefined,
             },
           });
 

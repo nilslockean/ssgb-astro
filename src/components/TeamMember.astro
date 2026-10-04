@@ -44,7 +44,7 @@ const safeId = (value: string) => value.replace(/[^a-zA-Z0-9_-]/g, "-");
     <h3 class="team-member__name font-heading mt-0">{name}</h3>
     {
       titles.length > 0 && (
-        <ul class="team-member__titles">
+        <ul class="list-reset team-member__titles">
           {titles.map(({ id: titleId, title, description }) => {
             const uniqueId = safeId(`${id}-${titleId}`);
             const anchorName = `--team-title-${uniqueId}`;
@@ -55,7 +55,7 @@ const safeId = (value: string) => value.replace(/[^a-zA-Z0-9_-]/g, "-");
                 {description ? (
                   <>
                     <button
-                      class="team-member__title-badge"
+                      class="pill team-member__title-badge"
                       type="button"
                       popovertarget={popoverId}
                       aria-describedby={popoverId}
@@ -74,7 +74,7 @@ const safeId = (value: string) => value.replace(/[^a-zA-Z0-9_-]/g, "-");
                     </span>
                   </>
                 ) : (
-                  <span class="team-member__title-badge">{title}</span>
+                  <span class="pill team-member__title-badge">{title}</span>
                 )}
               </li>
             );
@@ -119,26 +119,10 @@ const safeId = (value: string) => value.replace(/[^a-zA-Z0-9_-]/g, "-");
     flex-wrap: wrap;
     gap: var(--space-2);
     margin-block: var(--space-4);
-    padding: 0;
-    list-style: none;
-    margin-left: 0;
     margin-bottom: var(--space-6);
   }
   .team-member__title-item {
     margin: 0;
-  }
-
-  .team-member__title-badge {
-    display: inline-flex;
-    align-items: center;
-    border: 1px solid rgb(255 255 255 / 0.55);
-    border-radius: var(--border-radius-full);
-    padding: var(--space-1) var(--space-3);
-    background: var(--color-surface-lighter);
-    color: var(--color-default);
-    font: inherit;
-    font-size: var(--text-sm);
-    line-height: var(--leading-normal);
   }
 
   button.team-member__title-badge {

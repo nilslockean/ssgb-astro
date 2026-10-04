@@ -4,7 +4,11 @@ import { z } from "astro/zod";
 import { executeQuery } from "@lib/datocms";
 import { TRIPS_QUERY } from "@lib/datoQueries";
 import { LOCALE_CODES } from "@lib/routeUtils";
-import { datoImageSchema, datoNormSchema, datoResponsiveImageSchema } from "src/schemas/dato";
+import {
+  datoImageSchema,
+  datoNormSchema,
+  datoResponsiveImageSchema,
+} from "src/schemas/dato";
 import { datoSeoTagsSchema, type DatoSeoTag } from "../schemas/dato";
 import { localeSchema } from "src/schemas/locale";
 
@@ -19,6 +23,12 @@ export const tripSchema = z.object({
   body: z.custom<CdaStructuredTextValue>().optional(),
   language: localeSchema.default("sv"),
   seo: datoSeoTagsSchema.optional(),
+  location: z
+    .object({
+      title: z.string(),
+      slug: z.string(),
+    })
+    .optional(),
 });
 
 const datoTripSchema = z.object({
@@ -38,6 +48,12 @@ const datoTripSchema = z.object({
     .nullable(),
   content: z.custom<CdaStructuredTextValue>().nullable(),
   cta: z.string(),
+  location: z
+    .object({
+      title: z.string(),
+      slug: z.string(),
+    })
+    .nullable(),
   position: z.number(),
 });
 
@@ -82,6 +98,7 @@ export function datoTripsLoader(): Loader {
               body: trip.content ?? undefined,
               language: locale,
               seo: trip.seo,
+              location: trip.location ?? undefined,
             },
           });
 

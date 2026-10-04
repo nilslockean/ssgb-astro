@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { HOME_PAGE_QUERY, TEAMS_QUERY } from "./datoQueries";
+import { HOME_PAGE_QUERY, TEAMS_QUERY, TRIPS_QUERY } from "./datoQueries";
 
 describe("HOME_PAGE_QUERY", () => {
   it("fetches SEO metadata for the requested locale", () => {
@@ -15,5 +15,11 @@ describe("TEAMS_QUERY", () => {
     expect(TEAMS_QUERY).toContain("title(locale: $locale)");
     expect(TEAMS_QUERY).toContain("description(locale: $locale)");
     expect(TEAMS_QUERY).not.toContain("title(locale: $locale)\n      bio");
+  });
+});
+
+describe("TRIPS_QUERY", () => {
+  it("fetches the linked location title and slug", () => {
+    expect(TRIPS_QUERY).toContain("location { title slug }");
   });
 });

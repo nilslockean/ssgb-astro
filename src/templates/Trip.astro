@@ -7,6 +7,7 @@ import Hero, { type HeroButton } from "@components/Hero.astro";
 import Layout from "../layouts/Layout.astro";
 import PageHead from "@components/PageHead.astro";
 import Section from "@components/Section.astro";
+import LocationIcon from "@components/icons/LocationIcon.astro";
 import { composePath } from "@lib/routeUtils";
 import { defaultLocale } from "@lib/routeUtils";
 import { localeSchema } from "../schemas/locale";
@@ -22,7 +23,17 @@ const CONTACT_SLUG: Record<string, string> = {
 };
 
 const {
-  data: { title, excerpt, cta, slug, heroImage, heroImageData, body, seo },
+  data: {
+    title,
+    excerpt,
+    cta,
+    slug,
+    heroImage,
+    heroImageData,
+    body,
+    seo,
+    location,
+  },
 } = Astro.props;
 
 const locale = localeSchema.catch(defaultLocale).parse(Astro.currentLocale);
@@ -70,7 +81,23 @@ const heroButtons: HeroButton[] = [
   }
   <Section>
     <div class="collection-entry">
+      {
+        location && (
+          <p class="trip__location-badge">
+            <span class="pill">
+              <LocationIcon />
+              {location.title}
+            </span>
+          </p>
+        )
+      }
       {body && <StructuredText data={body} />}
     </div>
   </Section>
 </Layout>
+
+<style>
+  .trip__location-badge {
+    margin-bottom: var(--space-6);
+  }
+</style>

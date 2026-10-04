@@ -11,10 +11,15 @@ import FormSection from "@features/forms/FormSection.astro";
 import PriceCalculator from "../islands/PriceCalculator.svelte";
 import Link from "@components/Link.astro";
 import Section from "@components/Section.astro";
+import ClockIcon from "@components/icons/ClockIcon.astro";
+import LocationIcon from "@components/icons/LocationIcon.astro";
+import MoneyIcon from "@components/icons/MoneyIcon.astro";
 import { getEntry } from "astro:content";
 import { defaultLocale, type Locale } from "@lib/routeUtils";
 import { localeSchema } from "../schemas/locale";
 import { getLocalizedConfig } from "@lib/contentUtils";
+import { formatPrice } from "@lib/stringUtils";
+import { getCoursePriceRange } from "@lib/pricingUtils";
 
 interface Props {
   entry: CollectionEntry<"courses">;
@@ -45,11 +50,6 @@ const TRANSLATIONS = {
     da: "Læs kursusstandarderne",
     en: "Read course standard",
   },
-  duration: {
-    sv: "Tidsåtgång",
-    da: "Varighed",
-    en: "Duration",
-  },
   prerequisites: {
     sv: "Förkunskapskrav",
     da: "Forudsætninger",
@@ -75,6 +75,11 @@ const TRANSLATIONS = {
     da: "Pris",
     en: "Pricing",
   },
+  perPerson: {
+    sv: "per person",
+    da: "per person",
+    en: "per person",
+  },
 } as const satisfies Record<string, Record<Locale, string>>;
 
 const {
@@ -87,6 +92,7 @@ const {
       heroImageData,
       body,
       numDays,
+      location,
       norm,
       prerequisites,
       form,
@@ -107,6 +113,14 @@ const h1 = title;
 const eyebrow = norm?.title;
 const cta = composeCta(title, locale);
 const numDaysDesc = composeNumDaysDesc(numDays, locale);
+const [minimumCoursePrice, maximumCoursePrice] = getCoursePriceRange(
+  [priceSingle, priceDouble, priceMany],
+  numDays,
+);
+const priceRangeLabel =
+  minimumCoursePrice === maximumCoursePrice
+    ? formatPrice([minimumCoursePrice])
+    : `${formatPrice([minimumCoursePrice])}–${formatPrice([maximumCoursePrice])}`;
 const heroButtons: HeroButton[] = [{ label: cta, href: "#boka" }];
 if (norm?.url) {
   heroButtons.push({
@@ -157,11 +171,33 @@ if (norm?.url) {
   }
   <Section>
     <div class="collection-entry">
+      <ul class="list-reset course-badges">
+        {
+          location && (
+            <li>
+              <span class="pill">
+                <LocationIcon />
+                {location.title}
+              </span>
+            </li>
+          )
+        }
+        <li>
+          <span class="pill">
+            <ClockIcon />
+            {numDaysDesc}
+          </span>
+        </li>
+        <li>
+          <span class="pill">
+            <MoneyIcon />
+            {priceRangeLabel}
+            {" "}
+            {TRANSLATIONS.perPerson[locale]}
+          </span>
+        </li>
+      </ul>
       {body && <StructuredText data={body} />}
-      <p>
-        <strong>{TRANSLATIONS.duration[locale]}: </strong>
-        {numDaysDesc}.
-      </p>
     </div>
   </Section>
 
@@ -205,17 +241,28 @@ if (norm?.url) {
       </ButtonGroup>
     </Accordion>
   </Section>
-  {formEntry && (
-    <FormSection
-      form={formEntry}
-      id="boka"
-      title={cta}
-      {priceSingle}
-      {priceDouble}
-      {priceMany}
-      {maxParticipants}
-      {numDays}
-      {locale}
-    />
-  )}
+  {
+    formEntry && (
+      <FormSection
+        form={formEntry}
+        id="boka"
+        title={cta}
+        {priceSingle}
+        {priceDouble}
+        {priceMany}
+        {maxParticipants}
+        {numDays}
+        {locale}
+      />
+    )
+  }
 </Layout>
+
+<style>
+  .course-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin-block: var(--space-6);
+  }
+</style>

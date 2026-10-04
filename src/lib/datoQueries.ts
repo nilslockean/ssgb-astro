@@ -277,7 +277,8 @@ export const COURSES_QUERY = `
       maxParticipants
       norm { title url }
       form { id }
-    }
+      location { title slug }
+}
   }
 `;
 
@@ -303,6 +304,7 @@ export const TRIPS_QUERY = `
         links
       }
       cta(locale: $locale)
+      location { title slug }
       position
     }
   }
