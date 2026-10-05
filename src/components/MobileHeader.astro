@@ -94,7 +94,7 @@ const currentLocale = localeSchema.parse(Astro.currentLocale);
     {
       links.map((item) => (
         <li>
-          <a class="font-heading text-5xl" href={item.link.path}>
+          <a class="font-heading" href={item.link.path}>
             {item.link.label}
           </a>
           {item.subMenu && (
@@ -144,6 +144,10 @@ const currentLocale = localeSchema.parse(Astro.currentLocale);
 
   svg {
     fill: white;
+  }
+
+  .font-heading {
+    font-size: var(--text-3xl);
   }
 
   #lang-toggle {
