@@ -61,7 +61,11 @@ try {
     <Font cssVariable="--font-barlow-condensed" preload />
     <Font cssVariable="--font-host-grotesk" preload />
 
-    {ENABLE_POSTHOG && <PostHog projectApiKey={POSTHOG_PROJECT_API_KEY} />}
+    {
+      ENABLE_POSTHOG && POSTHOG_PROJECT_API_KEY && (
+        <PostHog projectApiKey={POSTHOG_PROJECT_API_KEY} />
+      )
+    }
 
     <slot name="head" />
   </head>
