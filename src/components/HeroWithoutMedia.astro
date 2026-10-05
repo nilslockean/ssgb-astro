@@ -1,0 +1,86 @@
+---
+import type { HeroProps } from "./Hero.astro";
+import ButtonGroup from "./ButtonGroup.astro";
+import ButtonLink from "./ButtonLink.astro";
+import Eyebrow from "./Eyebrow.astro";
+
+interface Props extends Omit<HeroProps, "image" | "data" | "video"> {}
+
+const {
+  title,
+  content,
+  buttons,
+  eyebrow,
+  class: className,
+  ...rest
+} = Astro.props;
+---
+
+<section class:list={["hero hero--without-media", className]} {...rest}>
+  <div class="hero__plate">
+    <div>
+      {eyebrow && <Eyebrow class="hero__eyebrow">{eyebrow}</Eyebrow>}
+      <h1 class="hero__title text-h1" set:html={title} />
+    </div>
+    <div class="hero__bottom">
+      <p class="hero__text intro">{content}</p>
+      <slot name="metadata" />
+      {
+        buttons && buttons.length > 0 && (
+          <ButtonGroup class="hero__buttons">
+            {buttons.map(({ label, href, target }, index) => (
+              <ButtonLink
+                href={href}
+                target={target}
+                variant={index === 0 ? "primary" : "default"}
+              >
+                {label}
+              </ButtonLink>
+            ))}
+          </ButtonGroup>
+        )
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  @import "../styles/breakpoints.css";
+
+  .hero--without-media {
+    padding: var(--space-8);
+    background-color: var(--color-surface);
+  }
+
+  .hero--without-media .hero__plate {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+    max-width: var(--container-7xl);
+    padding: 0;
+    background: transparent;
+  }
+
+  .hero--without-media .hero__title {
+    font-size: var(--text-h1);
+  }
+
+  .hero--without-media .hero__bottom {
+    max-width: var(--prose);
+  }
+
+  .hero--without-media .hero__text {
+    font-size: var(--text-xl);
+  }
+
+  .hero--without-media .hero__buttons {
+    margin-top: var(--space-6);
+    font-size: var(--text-lg);
+  }
+
+  @media (--breakpoint-lg) {
+    .hero--without-media .hero__title {
+      font-size: var(--text-h0);
+    }
+  }
+</style>

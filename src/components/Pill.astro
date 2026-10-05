@@ -1,0 +1,98 @@
+---
+import ClockIcon from "@components/icons/ClockIcon.astro";
+import LocationIcon from "@components/icons/LocationIcon.astro";
+import MoneyIcon from "@components/icons/MoneyIcon.astro";
+
+type IconName = "location" | "clock" | "money";
+
+interface Props {
+  label: string;
+  tooltip?: string;
+  href?: string;
+  icon?: IconName;
+  class?: string;
+}
+
+const { label, tooltip, href, icon, class: className } = Astro.props;
+const icons = {
+  location: LocationIcon,
+  clock: ClockIcon,
+  money: MoneyIcon,
+};
+const Icon = icon ? icons[icon] : undefined;
+---
+
+{
+  href ? (
+    <a
+      class:list={["pill", "pill--link", className]}
+      href={href}
+      title={tooltip}
+    >
+      {Icon && <Icon />}
+      {label}
+    </a>
+  ) : (
+    <span class:list={["pill", className]} title={tooltip}>
+      {Icon && <Icon />}
+      {label}
+    </span>
+  )
+}
+
+<style>
+  @import "../styles/breakpoints.css";
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    border: 1px solid rgb(255 255 255 / 0.55);
+    border-radius: var(--border-radius-lg);
+    padding: var(--space-1) var(--space-3);
+    background: var(--color-surface-lighter);
+    color: var(--color-default);
+    font: inherit;
+    font-size: var(--text-xs);
+    line-height: var(--leading-normal);
+    text-decoration: none;
+  }
+
+  @media (--breakpoint-sm) {
+    .pill {
+      font-size: var(--text-sm);
+    }
+  }
+
+  .pill :global(.pill__icon) {
+    width: 1em;
+    height: 1em;
+    flex: 0 0 auto;
+  }
+
+  .pill[title] {
+    cursor: help;
+  }
+
+  .pill--link {
+    border-color: rgb(255 255 255 / 0.8);
+    cursor: pointer;
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 2px;
+    transition:
+      background-color var(--default-transition-duration)
+        var(--default-transition-timing-function),
+      border-color var(--default-transition-duration)
+        var(--default-transition-timing-function);
+  }
+
+  .pill--link:hover {
+    background: var(--color-surface-light);
+    border-color: var(--color-white);
+  }
+
+  .pill--link:focus-visible {
+    outline: 2px solid var(--color-brand-light);
+    outline-offset: 2px;
+  }
+</style>

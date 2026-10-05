@@ -3,17 +3,13 @@ import type { CollectionEntry } from "astro:content";
 import StructuredText from "@features/dato/StructuredText.astro";
 import Accordion from "@components/Accordion.astro";
 import ButtonGroup from "@components/ButtonGroup.astro";
-import ButtonLink from "@components/ButtonLink.astro";
 import Hero, { type HeroButton } from "@components/Hero.astro";
 import Layout from "../layouts/Layout.astro";
-import PageHead from "@components/PageHead.astro";
 import FormSection from "@features/forms/FormSection.astro";
 import PriceCalculator from "../islands/PriceCalculator.svelte";
 import Link from "@components/Link.astro";
 import Section from "@components/Section.astro";
-import ClockIcon from "@components/icons/ClockIcon.astro";
-import LocationIcon from "@components/icons/LocationIcon.astro";
-import MoneyIcon from "@components/icons/MoneyIcon.astro";
+import Pill from "@components/Pill.astro";
 import { getEntry } from "astro:content";
 import { defaultLocale, type Locale } from "@lib/routeUtils";
 import { localeSchema } from "../schemas/locale";
@@ -143,60 +139,35 @@ if (norm?.url) {
       locale: courseLocale,
     });
   </script>
-  {
-    heroImage || heroImageData ? (
-      <Hero
-        buttons={heroButtons}
-        content={excerpt}
-        image={heroImage}
-        data={heroImageData}
-        title={h1}
-        eyebrow={eyebrow}
-      />
-    ) : (
-      <PageHead {eyebrow} content={excerpt} title={h1}>
-        <ButtonGroup slot="buttons">
-          {heroButtons.map(({ href, label, target }, i) => (
-            <ButtonLink
-              {href}
-              {target}
-              variant={i == 0 ? "primary" : "default"}
-            >
-              {label}
-            </ButtonLink>
-          ))}
-        </ButtonGroup>
-      </PageHead>
-    )
-  }
+  <Hero
+    buttons={heroButtons}
+    content={excerpt}
+    image={heroImage}
+    data={heroImageData}
+    title={h1}
+    eyebrow={eyebrow}
+  >
+    <ul slot="metadata" class="list-reset course-badges">
+      {
+        location && (
+          <li>
+            <Pill icon="location" label={location.title} />
+          </li>
+        )
+      }
+      <li>
+        <Pill icon="clock" label={numDaysDesc} />
+      </li>
+      <li>
+        <Pill
+          icon="money"
+          label={`${priceRangeLabel} ${TRANSLATIONS.perPerson[locale]}`}
+        />
+      </li>
+    </ul>
+  </Hero>
   <Section>
     <div class="collection-entry">
-      <ul class="list-reset course-badges">
-        {
-          location && (
-            <li>
-              <span class="pill">
-                <LocationIcon />
-                {location.title}
-              </span>
-            </li>
-          )
-        }
-        <li>
-          <span class="pill">
-            <ClockIcon />
-            {numDaysDesc}
-          </span>
-        </li>
-        <li>
-          <span class="pill">
-            <MoneyIcon />
-            {priceRangeLabel}
-            {" "}
-            {TRANSLATIONS.perPerson[locale]}
-          </span>
-        </li>
-      </ul>
       {body && <StructuredText data={body} />}
     </div>
   </Section>

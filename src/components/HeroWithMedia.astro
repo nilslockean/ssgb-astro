@@ -1,0 +1,239 @@
+---
+import { Picture } from "astro:assets";
+import { Image } from "@datocms/astro/Image";
+import ButtonGroup from "./ButtonGroup.astro";
+import ButtonLink from "./ButtonLink.astro";
+import Eyebrow from "./Eyebrow.astro";
+import type { HeroProps } from "./Hero.astro";
+
+interface Props extends HeroProps {}
+
+const {
+  image,
+  data,
+  video,
+  title,
+  content,
+  buttons,
+  eyebrow,
+  class: className,
+  ...rest
+} = Astro.props;
+---
+
+<section class:list={["hero", className]} {...rest}>
+  <div class="hero__img-wrapper">
+    {
+      video ? (
+        <video autoplay class="hero__video" loop muted playsinline>
+          <source src={video} type="video/mp4" />
+        </video>
+      ) : data ? (
+        <Image
+          data={data}
+          pictureClass="hero__img"
+          priority
+          usePlaceholder={false}
+          imgStyle={{
+            objectFit: "cover",
+            width: "100%",
+            height: "100%",
+            maxWidth: "none",
+            opacity: 0,
+            transition: "opacity 0.4s ease-in",
+          }}
+          pictureStyle={{
+            position: "absolute",
+            inset: 0,
+            width: "100%",
+            height: "100%",
+            backgroundImage: data.base64 ? `url("${data.base64}")` : undefined,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+          }}
+        />
+      ) : image ? (
+        <Picture
+          alt=""
+          class="hero__img"
+          fetchpriority="high"
+          formats={["avif", "webp"]}
+          loading="eager"
+          role="presentation"
+          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 90vw, 80vw"
+          src={"format" in image ? image : image.src}
+          width={"format" in image ? undefined : image.width}
+          height={"format" in image ? undefined : image.height}
+          widths={[640, 1024, 1600]}
+        />
+      ) : null
+    }
+  </div>
+  <div class="hero__plate">
+    <div>
+      {eyebrow && <Eyebrow class="hero__eyebrow">{eyebrow}</Eyebrow>}
+      <h1 class="hero__title text-h1" set:html={title} />
+    </div>
+
+    <div class="hero__bottom">
+      <p class="hero__text intro">{content}</p>
+      <slot name="metadata" />
+      {
+        buttons && buttons.length && (
+          <ButtonGroup class="hero__buttons">
+            {buttons.map(({ label, href, target }, i) => (
+              <ButtonLink
+                href={href}
+                target={target}
+                variant={i === 0 ? "primary" : "default"}
+              >
+                {label}
+              </ButtonLink>
+            ))}
+          </ButtonGroup>
+        )
+      }
+    </div>
+  </div>
+</section>
+
+<script>
+  (function () {
+    function fadeIn(img: HTMLImageElement) {
+      img.style.opacity = "1";
+    }
+    function setup() {
+      var pictures = document.querySelectorAll(".hero__img");
+      for (var i = 0; i < pictures.length; i++) {
+        var img = pictures[i].querySelector("img");
+        if (!img) continue;
+        if (img.complete) {
+          fadeIn(img);
+        } else {
+          img.addEventListener("load", fadeIn.bind(null, img));
+          img.addEventListener("error", fadeIn.bind(null, img));
+        }
+      }
+    }
+    document.addEventListener("DOMContentLoaded", setup);
+    document.addEventListener("astro:page-load", setup);
+    if (document.readyState === "complete") {
+      setup();
+    }
+  })();
+
+  document
+    .querySelectorAll<HTMLAnchorElement>(".hero__buttons a")
+    .forEach((btn, i) => {
+      btn.addEventListener("click", () => {
+        (window as any).posthog?.capture("booking_cta_clicked", {
+          label: btn.textContent?.trim(),
+          href: btn.getAttribute("href"),
+          is_primary: i === 0,
+        });
+      });
+    });
+</script>
+
+<style>
+  @import "../styles/breakpoints.css";
+
+  @keyframes blur-on-scroll {
+    from {
+      filter: blur(0px) grayscale(0%);
+    }
+    to {
+      filter: blur(48px) grayscale(0%);
+    }
+  }
+
+  .hero {
+    padding-bottom: var(--space-12);
+    background-color: var(--color-surface);
+  }
+
+  .hero__img-wrapper {
+    position: relative;
+    aspect-ratio: 6 / 3;
+    overflow: hidden;
+  }
+
+  .hero__img-wrapper .hero__img,
+  .hero__img-wrapper .hero__video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    animation: blur-on-scroll linear;
+    animation-timeline: scroll();
+  }
+
+  .hero__img img {
+    animation: hero-fade-in 0.6s ease-in 10s forwards;
+  }
+
+  @keyframes hero-fade-in {
+    to {
+      opacity: 1;
+    }
+  }
+
+  .hero__plate {
+    --offset: var(--space-8);
+    position: relative;
+    z-index: 2;
+    margin-inline: var(--space-8);
+    margin-top: calc(-1 * var(--offset));
+    background-color: var(--color-surface-light);
+    border-radius: var(--border-radius-xl);
+    padding: var(--space-8);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+  }
+
+  .hero__title {
+    font-size: var(--text-h1);
+    max-width: 30ch;
+    margin-left: -2px;
+  }
+
+  @media (--breakpoint-lg) {
+    .hero__title {
+      font-size: var(--text-h0);
+      margin-left: -3px;
+    }
+
+    .hero__plate {
+      --offset: var(--space-24);
+    }
+  }
+
+  @media (--breakpoint-xl) {
+    .hero__plate {
+      --offset: var(--space-36);
+      padding: var(--space-16);
+      max-width: 56rem;
+    }
+  }
+
+  .hero__bottom {
+    max-width: var(--prose);
+  }
+
+  .hero__text {
+    font-size: var(--text-xl);
+  }
+
+  .hero__buttons {
+    margin-top: var(--space-10);
+    font-size: var(--text-lg);
+  }
+
+  @media (--breakpoint-lg) {
+    .hero__buttons {
+      margin-top: var(--space-6);
+    }
+  }
+</style>
