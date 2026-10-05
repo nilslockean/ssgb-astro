@@ -16,6 +16,7 @@ import { localeSchema } from "../schemas/locale";
 import { getLocalizedConfig } from "@lib/contentUtils";
 import { formatPrice } from "@lib/stringUtils";
 import { getCoursePriceRange } from "@lib/pricingUtils";
+import { getCourseStructuredText } from "@lib/courseContentUtils";
 
 interface Props {
   entry: CollectionEntry<"courses">;
@@ -87,6 +88,7 @@ const {
       heroImage,
       heroImageData,
       body,
+      structuredText,
       numDays,
       location,
       norm,
@@ -98,6 +100,7 @@ const {
   },
 } = Astro.props;
 const locale = localeSchema.parse(Astro.currentLocale);
+const courseBody = getCourseStructuredText(structuredText, body);
 const config = await getLocalizedConfig(locale);
 const {
   single: priceSingle,
@@ -168,7 +171,7 @@ if (norm?.url) {
   </Hero>
   <Section>
     <div class="collection-entry">
-      {body && <StructuredText data={body} />}
+      {courseBody && <StructuredText data={courseBody} />}
     </div>
   </Section>
 

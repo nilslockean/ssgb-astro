@@ -1,0 +1,110 @@
+---
+import { Image } from "@datocms/astro/Image";
+import "@fancyapps/ui/dist/fancybox/fancybox.css";
+import type { DatoResponsiveImage } from "src/schemas/dato";
+
+interface Props {
+  block: {
+    id: string;
+    images: Array<{
+      url: string;
+      alt: string | null;
+      title: string | null;
+      responsiveImage: DatoResponsiveImage;
+    }>;
+  };
+}
+
+const { block } = Astro.props;
+const galleryName = `gallery-${block.id}`;
+---
+
+{
+  block.images.length > 0 && (
+    <div class="gallery-grid">
+      {block.images.map((image) => {
+        const alt = image.responsiveImage.alt ?? image.alt ?? "";
+        const caption = image.title ?? "";
+
+        return (
+          <a
+            class="gallery-grid__item"
+            style={`--width: ${image.responsiveImage.width}; --height: ${image.responsiveImage.height};`}
+            href={image.url}
+            data-fancybox={galleryName}
+            data-caption={caption}
+          >
+            <Image
+              data={{ ...image.responsiveImage, alt }}
+              imgClass="gallery-grid__image"
+            />
+          </a>
+        );
+      })}
+    </div>
+  )
+}
+
+<script>
+  import { Fancybox } from "@fancyapps/ui/dist/fancybox/";
+
+  Fancybox.bind('[data-fancybox^="gallery-"]', {
+    theme: "dark",
+    mainStyle: {
+      "--f-button-width": "44px",
+      "--f-button-height": "44px",
+      "--f-button-border-radius": "50%",
+      "--f-toolbar-padding": "16px",
+    },
+    Carousel: {
+      Arrows: false,
+      Toolbar: {
+        display: {
+          left: [],
+          middle: [],
+          right: ["close"],
+        },
+      },
+      transition: "slide",
+    },
+  });
+</script>
+
+<style>
+  .gallery-grid {
+    --space: max(2.5vw, var(--space-3));
+    --min-height: clamp(200px, 20vw, 400px);
+
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space);
+    margin-top: var(--space-12);
+  }
+
+  .gallery-grid__item {
+    flex-grow: calc(var(--width) * (100000 / var(--height)));
+    flex-basis: calc(var(--min-height) * (var(--width) / var(--height)));
+    aspect-ratio: var(--width) / var(--height);
+    overflow: hidden;
+    border-radius: var(--border-radius-xl);
+    transition: all 0.2s;
+  }
+
+  .gallery-grid__image {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .gallery-grid__item:focus-visible {
+    outline: 3px solid var(--color-accent);
+    outline-offset: 2px;
+    z-index: 1;
+  }
+
+  .gallery-grid::after {
+    content: " ";
+    flex-grow: 1000000000;
+  }
+</style>

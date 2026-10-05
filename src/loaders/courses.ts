@@ -22,6 +22,7 @@ export const courseSchema = z.object({
   prerequisites: z.string().nullable().optional(),
   heroImage: datoImageSchema.optional(),
   heroImageData: datoResponsiveImageSchema.optional(),
+  structuredText: z.custom<CdaStructuredTextValue>().optional(),
   maxParticipants: z.number().min(1).default(4),
   norm: datoNormSchema.optional(),
   body: z.custom<CdaStructuredTextValue>().optional(),
@@ -41,7 +42,12 @@ const datoCourseSchema = z.object({
   slug: z.string().nullable(),
   excerpt: z.string(),
   seo: datoSeoTagsSchema,
-  content: z.custom<CdaStructuredTextValue>().nullable(),
+  legacyContent: z.custom<CdaStructuredTextValue>().nullable(),
+  structuredText: z
+    .object({
+      structuredText: z.custom<CdaStructuredTextValue>().nullable(),
+    })
+    .nullable(),
   featuredImage: z
     .object({
       url: z.string(),
@@ -115,7 +121,9 @@ export function datoCoursesLoader(): Loader {
               heroImageData: course.featuredImage?.responsiveImage ?? undefined,
               maxParticipants: course.maxParticipants ?? 4,
               norm: course.norm ?? undefined,
-              body: course.content ?? undefined,
+              body: course.legacyContent ?? undefined,
+              structuredText:
+                course.structuredText?.structuredText ?? undefined,
               form: course.form ? `${locale}-${course.form.id}` : undefined,
               seo: course.seo,
               location: course.location ?? undefined,

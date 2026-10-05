@@ -224,6 +224,62 @@ export const PAGES_QUERY = `
   }
 `;
 
+export const GLOBAL_STRUCTURED_TEXT_FRAGMENT = `
+  fragment GlobalStructuredTextBlock on GlobalStructuredTextRecord {
+    id
+    __typename
+    structuredText {
+      value
+      blocks {
+        ${BUTTON_GROUP_RECORD_BLOCK}
+        ... on GalleryRecord {
+          id
+          __typename
+          images {
+            url
+            alt
+            title
+            responsiveImage(imgixParams: { auto: format, w: 1600 }) {
+              src
+              width
+              height
+              alt
+              base64
+            }
+          }
+        }
+        ... on CourseCollectionRecord {
+          id
+          __typename
+          filter
+          eyebrow
+          limit
+          manualCourses { id }
+        }
+        ... on TripCollectionRecord {
+          id
+          __typename
+          eyebrow
+        }
+        ... on TeamCollectionRecord {
+          id
+          __typename
+        }
+        ${ACCORDION_RECORD_BLOCK}
+      }
+      inlineBlocks {
+        ... on ContactDetailRecord { id __typename value }
+        ... on PriceDetailRecord { id __typename value }
+      }
+      links {
+        ... on CourseRecord { id __typename slug }
+        ... on PageRecord { id __typename slug(locale: $locale) }
+        ... on TripRecord { id __typename slug }
+      }
+    }
+  }
+`;
+
 export const COURSES_QUERY = `
   query AllCourses($locale: SiteLocale!) {
     allCourses(locale: $locale, orderBy: position_ASC) {
@@ -232,7 +288,10 @@ export const COURSES_QUERY = `
       slug
       excerpt
       seo: _seoMetaTags { attributes content tag }
-      content { 
+      structuredText {
+        ... GlobalStructuredTextBlock
+      }
+      legacyContent: content {
         value
         blocks {
           ${BUTTON_GROUP_RECORD_BLOCK}
@@ -280,6 +339,7 @@ export const COURSES_QUERY = `
       location { title slug }
 }
   }
+  ${GLOBAL_STRUCTURED_TEXT_FRAGMENT}
 `;
 
 export const TRIPS_QUERY = `
@@ -306,46 +366,6 @@ export const TRIPS_QUERY = `
       cta(locale: $locale)
       location { title slug }
       position
-    }
-  }
-`;
-
-export const GLOBAL_STRUCTURED_TEXT_FRAGMENT = `
-  fragment GlobalStructuredTextBlock on GlobalStructuredTextRecord {
-    id
-    __typename
-    structuredText {
-      value
-      blocks {
-        ${BUTTON_GROUP_RECORD_BLOCK}
-        ... on CourseCollectionRecord {
-          id
-          __typename
-          filter
-          eyebrow
-          limit
-          manualCourses { id }
-        }
-        ... on TripCollectionRecord {
-          id
-          __typename
-          eyebrow
-        }
-        ... on TeamCollectionRecord {
-          id
-          __typename
-        }
-        ${ACCORDION_RECORD_BLOCK}
-      }
-      inlineBlocks {
-        ... on ContactDetailRecord { id __typename value }
-        ... on PriceDetailRecord { id __typename value }
-      }
-      links {
-        ... on CourseRecord { id __typename slug }
-        ... on PageRecord { id __typename slug(locale: $locale) }
-        ... on TripRecord { id __typename slug }
-      }
     }
   }
 `;

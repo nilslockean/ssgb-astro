@@ -1,5 +1,11 @@
 import { describe, expect, it } from "vitest";
-import { HOME_PAGE_QUERY, TEAMS_QUERY, TRIPS_QUERY } from "./datoQueries";
+import {
+  COURSES_QUERY,
+  GLOBAL_STRUCTURED_TEXT_FRAGMENT,
+  HOME_PAGE_QUERY,
+  TEAMS_QUERY,
+  TRIPS_QUERY,
+} from "./datoQueries";
 
 describe("HOME_PAGE_QUERY", () => {
   it("fetches SEO metadata for the requested locale", () => {
@@ -21,5 +27,18 @@ describe("TEAMS_QUERY", () => {
 describe("TRIPS_QUERY", () => {
   it("fetches the linked location title and slug", () => {
     expect(TRIPS_QUERY).toContain("location { title slug }");
+  });
+});
+
+describe("global structured text queries", () => {
+  it("queries current and legacy course content", () => {
+    expect(COURSES_QUERY).toContain("... GlobalStructuredTextBlock");
+    expect(COURSES_QUERY).toContain("legacyContent: content {");
+  });
+
+  it("queries responsive gallery images", () => {
+    expect(GLOBAL_STRUCTURED_TEXT_FRAGMENT).toContain("... on GalleryRecord");
+    expect(GLOBAL_STRUCTURED_TEXT_FRAGMENT).toContain("images {");
+    expect(GLOBAL_STRUCTURED_TEXT_FRAGMENT).toContain("responsiveImage");
   });
 });
